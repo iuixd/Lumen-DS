@@ -6,7 +6,7 @@ export const badgeVariants = cva(
   {
     variants: {
       tone: {
-        neutral: "bg-neutral-black-50 text-[var(--color-text-title)]",
+        neutral: "bg-neutral-50 text-[var(--color-text-title)]",
         brand: "bg-[var(--color-brand-subtle)] text-[var(--color-brand-default)]",
         success: "bg-[var(--color-status-success-subtle)] text-green-700",
         warning: "bg-[var(--color-status-warning-subtle)] text-orange-700",

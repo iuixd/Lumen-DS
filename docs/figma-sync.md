@@ -9,31 +9,53 @@ product code should reference the code, not re-derive values from Figma.
 
 ## Where the current tokens came from
 
-`packages/tokens/src/*.json` was populated from the `Lumen-DS` Figma file
-(library: "Lumen AI - DS - base"):
+As of the most recent token refresh, `packages/tokens/src/*.json` is sourced
+from the **`Lumen-DS-2027`** Figma file (fileKey `GJBYRm6ySR7XIECFcHMgy2`,
+page "Design Tokens"). This file supersedes the earlier `Lumen-DS` /
+"Lumen AI - DS - base" library as the tokens source of truth. It contains
+five documentation frames, each pulled in full:
 
-- Color primitives and the brand color: `Colors` page (Brand Color, Neutral
-  Colors, and the 11 hue ramps — Red, Orange, Yellow, Green, Teal, Cyan,
-  Blue, Light Blue, Indigo, Purple, Pink — each at 50/100/300/500/700/900).
-- Typography scale: `Typography > Baseline` (Display/Headline/Title/Label/
-  Body × Large/Medium/Small, font family Inter).
-- Layout spacing scale: `Spacing > Spacing Scale` (3XS–3XL).
+- **`01 Colors`** (node `426:4396`) — Brand Color, Foundation (White/Black),
+  and 14 hue ramps (Gray, Primary, Lumen Gray, Red, Green, Blue, Orange,
+  Yellow, Purple, Pink, Light Blue, Teal, Sand, Lemon Green), each at
+  50/100/200/300/400/**Default**/600/700/800. Primary's Default step
+  (`#BE003C`) is the brand color. Note: several "Default" rows in the source
+  file have a mislabeled hex caption (a copy/paste artifact) — values here
+  were read from the actual swatch fill, not the printed text.
+- **`02 Typography`** (node `428:13769`) — font family Inter (UI text) /
+  Roboto Mono (code), and the H1–H6 / Body (lg/md/sm/xs) / Label (lg/md/sm) /
+  Overline / Caption / Code (md/sm) scale.
+- **`04 Spacing`** (node `511:2`) — a flat, literal-pixel 8pt-grid scale
+  (0, 2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 128).
+  **This is a breaking change from the old index-based scale** — e.g. the
+  `Stack`/`Grid` `gap` prop used to take `4` meaning 16px; it now takes `16`
+  meaning 16px literally. Check every `gap={N}` call site when upgrading.
+- **`05 Radius`** (node `511:78`) — none/xs/sm/md/lg/xl/2xl/3xl/full
+  (0–24px, plus a `full` pill value).
+
+**This Figma file defines tokens only — no components.** `get_libraries`
+confirms zero component libraries are linked to it. As a result:
+- `@lumen/ui` and `@lumen/patterns` were rebuilt generically (same component
+  catalog and prop APIs as before, restyled against the new tokens) rather
+  than matched against a Figma component spec — there is currently no
+  component-bearing Figma file to reconcile against. If/when one becomes
+  available, re-run the taxonomy-matching pass described in hard rule #3 of
+  `CLAUDE.md`.
+- The **shadow/elevation token tier was dropped entirely** (no shadow scale
+  in the new file) — `Card`, `Modal`, and `Toast` now rely on borders instead
+  of drop shadows for surface separation.
+- Icons (`packages/ui/src/icons/`) were **not** touched by this refresh —
+  they remain sourced from the old "Lumen AI - DS - base" Iconly library
+  (see "Icons" below) since the new file has no icon set of its own.
 
 **Known gaps to close with design before this is fully authoritative:**
-- Dark-theme semantic color mappings in `src/semantic/color.json` are an
-  engineering extrapolation from the single light/dark example row found in
-  the file (`Background Colors`) — validate the full dark palette with
-  design before shipping a dark mode.
-- Border radius and elevation/shadow scales were extended from a single
-  observed value (~10px radius, one drop-shadow effect) into a standard
-  scale — confirm exact per-component radii once Code Connect is set up.
-- Icons (the Iconly set used throughout the library) are not yet extracted;
-  see "Icons" below.
-- Component variant props (states, sizes) for Primary/Secondary/Neutral/
-  Error/Clear Button, Table Row, Container, Text Link, Button Groups, and
-  Next/Prev pagination were rebuilt from the visible instances in the
-  showcase file, not pulled from the component library file directly —
-  reconcile against the library via Figma Dev Mode once available.
+- Dark-theme semantic color mappings in `src/semantic/color.json` are a
+  manual engineering decision, not sourced from Figma — the file's variable
+  collections each have only one mode (no real Light/Dark modes to read).
+  Validate the full dark palette with design before shipping a dark mode.
+- No shadow/elevation scale exists in the new file at all (previously this
+  was an extrapolated scale); if elevation returns to the design system,
+  source it fresh rather than reintroducing the old extrapolated values.
 
 ## Recommended ongoing workflow
 

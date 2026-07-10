@@ -13,9 +13,9 @@ export interface MetricCard {
 export function DashboardPage({ title, metrics, children }: { title: string; metrics: MetricCard[]; children?: ReactNode }) {
   return (
     <Container size="xl">
-      <Stack gap={6}>
+      <Stack gap={24}>
         <h1 className="text-headline-sm text-[var(--color-text-title)]">{title}</h1>
-        <Grid columns={metrics.length || 1} gap={4}>
+        <Grid columns={metrics.length || 1} gap={16}>
           {metrics.map((m) => (
             <Card key={m.label}>
               <p className="text-label-lg text-[var(--color-text-muted)]">{m.label}</p>

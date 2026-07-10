@@ -1,15 +1,17 @@
 import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
 
+export type GridGapKey = 0 | 2 | 4 | 6 | 8 | 10 | 12 | 16 | 20 | 24 | 28 | 32 | 40 | 48 | 56 | 64 | 80 | 96 | 128;
+
 export function Grid({
   children,
   columns = 12,
-  gap = 4,
+  gap = 16,
   className
 }: {
   children: ReactNode;
   columns?: number;
-  gap?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16 | 20;
+  gap?: GridGapKey;
   className?: string;
 }) {
   return (

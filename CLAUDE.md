@@ -8,11 +8,14 @@ to *your product repo's* CLAUDE.md instead.
 ## What this repo is
 
 The single source of truth for Lumen's design tokens, UI components, layout
-primitives, and enterprise patterns. It is derived from the `Lumen-DS` Figma
-file / "Lumen AI - DS - base" library and published as three packages:
+primitives, and enterprise patterns. Tokens are derived from the
+`Lumen-DS-2027` Figma file (page "Design Tokens"); see `docs/figma-sync.md`
+for exactly which nodes and what's still provisional. Published as three
+packages:
 
-- `@lumen/tokens` — color, typography, spacing, radius, shadow. Generated
-  from JSON in `packages/tokens/src/*.json` via `packages/tokens/scripts/build.mjs`.
+- `@lumen/tokens` — color, typography, spacing, radius. No shadow/elevation
+  tier (not defined in the current Figma source). Generated from JSON in
+  `packages/tokens/src/*.json` via `packages/tokens/scripts/build.mjs`.
 - `@lumen/ui` — React + TypeScript + Tailwind primitives, composite
   components, and layout primitives, all built on `@lumen/tokens`.
 - `@lumen/patterns` — composed enterprise-SaaS screen patterns (CRUD list,
@@ -33,10 +36,13 @@ the patterns. Run it with `pnpm storybook`. See "Component checklist" below.
    anything to `packages/ui/src`, search `packages/ui/src/{primitives,composite,layout}`
    and `packages/patterns/src`. Extend an existing component with a new
    variant/prop before creating a new one.
-3. **Match the Figma component taxonomy.** The button family (Primary,
-   Secondary, Neutral, Error, Clear) and the other component sets in
-   `docs/figma-sync.md` are named to mirror the Figma library 1:1. Keep new
-   components named consistently so Code Connect mapping stays possible.
+3. **Match the Figma component taxonomy when one exists.** The current
+   tokens-source Figma file has no linked component library, so
+   `@lumen/ui`/`@lumen/patterns` are a generic rebuild, not matched 1:1
+   against Figma component nodes — see `docs/figma-sync.md`. If a
+   component-bearing Figma file is added back, reconcile naming/variants
+   against it and keep new components named consistently so Code Connect
+   mapping stays possible.
 4. **Every new/changed component ships with:** a TypeScript-typed props
    interface, semantic-token-only styling, keyboard + screen-reader support
    (see `docs/accessibility.md`), a colocated Storybook story
@@ -48,10 +54,10 @@ the patterns. Run it with `pnpm storybook`. See "Component checklist" below.
 ## Working with Figma
 
 Known gaps between the current Figma file and this repo (dark-theme
-semantic colors, radius/shadow scale, icon set, exact component variant
-props) are tracked in `docs/figma-sync.md`. If you're asked to close one of
-these gaps, read that file first — it lists exactly what's provisional vs.
-sourced.
+semantic colors, no shadow/elevation scale, icon set sourced from an
+unrelated older library, no linked component library) are tracked in
+`docs/figma-sync.md`. If you're asked to close one of these gaps, read that
+file first — it lists exactly what's provisional vs. sourced.
 
 ## Repo map
 

@@ -50,9 +50,9 @@ export function CrudListPage<T>({
 
   return (
     <Container size="xl">
-      <Stack gap={6}>
+      <Stack gap={24}>
         <Stack direction="row" justify="between" align="center">
-          <Stack direction="row" gap={2} align="center">
+          <Stack direction="row" gap={8} align="center">
             <h1 className="text-headline-sm text-[var(--color-text-title)]">{title}</h1>
             <Badge tone="neutral">{data.length}</Badge>
           </Stack>

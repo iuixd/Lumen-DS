@@ -1,7 +1,8 @@
 # @lumen/tokens
 
-Design tokens generated from the Lumen-DS Figma library — the single source
-of truth for color, typography, spacing, radius, and elevation.
+Design tokens generated from the Lumen-DS-2027 Figma file — the single
+source of truth for color, typography, spacing, and radius. There is no
+elevation/shadow tier; see `docs/figma-sync.md` for why.
 
 ## Editing tokens
 
@@ -9,9 +10,9 @@ Edit the JSON files in `src/`, never `dist/` directly:
 
 - `src/primitives/color.json` — raw color scale (Figma primitives)
 - `src/semantic/color.json` — light/dark semantic mapping (background, text, border, brand, status)
-- `src/typography.json` — type scale (font family + Display/Headline/Title/Label/Body sizes)
-- `src/spacing.json` — layout scale (Figma-sourced) + finer component `space` scale
-- `src/radius.json` / `src/shadow.json` — corner radius and elevation scales
+- `src/typography.json` — type scale (font family + Display/Headline/Title/Label/Body/Overline/Caption/Code sizes)
+- `src/spacing.json` — layout scale (Figma-sourced) + finer component `space` scale, both keyed by literal pixel value
+- `src/radius.json` — corner radius scale
 
 Then rebuild:
 

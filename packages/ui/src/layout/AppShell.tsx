@@ -33,7 +33,7 @@ export function AppShell({ nav, children, header, logo }: AppShellProps) {
                 "flex items-center gap-2 rounded-md px-3 py-2 text-label-lg font-medium transition-colors",
                 item.active
                   ? "bg-[var(--color-brand-subtle)] text-[var(--color-brand-default)]"
-                  : "text-[var(--color-text-body)] hover:bg-neutral-black-50"
+                  : "text-[var(--color-text-body)] hover:bg-neutral-50"
               )}
             >
               {item.icon}

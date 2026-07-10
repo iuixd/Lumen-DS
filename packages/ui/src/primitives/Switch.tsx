@@ -10,11 +10,11 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
   ({ className, label, id, ...props }, ref) => {
     const inputId = id ?? props.name;
     return (
-      <label htmlFor={inputId} className="inline-flex min-w-[120px] items-center gap-2 text-body-md text-[var(--color-text-title)]">
+      <label htmlFor={inputId} className="inline-flex min-w-128 items-center gap-2 text-body-md text-[var(--color-text-title)]">
         <input ref={ref} type="checkbox" role="switch" id={inputId} className="peer sr-only" {...props} />
         <span
           className={cn(
-            "relative inline-block h-6 w-10 shrink-0 rounded-full bg-neutral-black-100 transition-colors",
+            "relative inline-block h-6 w-10 shrink-0 rounded-full bg-neutral-100 transition-colors",
             "peer-checked:bg-[var(--color-brand-default)] peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--color-border-focus)]",
             "after:absolute after:left-0.5 after:top-0.5 after:size-5 after:rounded-full after:bg-neutral-white after:transition-transform peer-checked:after:translate-x-4",
             className

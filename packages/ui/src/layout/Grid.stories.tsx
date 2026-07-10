@@ -14,9 +14,9 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     columns: { control: { type: "number", min: 1, max: 12 } },
-    gap: { control: "select", options: [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20] }
+    gap: { control: "select", options: [0, 2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 128] }
   },
-  args: { columns: 3, gap: 4, children: null },
+  args: { columns: 3, gap: 16, children: null },
   render: (args: ComponentProps<typeof Grid>) => (
     <Grid {...args}>
       {[1, 2, 3, 4, 5, 6].map((n) => cell(`Cell ${n}`))}

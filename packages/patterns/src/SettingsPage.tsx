@@ -13,7 +13,7 @@ export interface SettingsSection {
 export function SettingsPage({ title, sections }: { title: string; sections: SettingsSection[] }) {
   return (
     <Container size="md">
-      <Stack gap={6}>
+      <Stack gap={24}>
         <h1 className="text-headline-sm text-[var(--color-text-title)]">{title}</h1>
         <Tabs defaultValue={sections[0]?.id}>
           <TabList>

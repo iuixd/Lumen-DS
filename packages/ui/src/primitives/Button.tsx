@@ -18,11 +18,11 @@ export const buttonVariants = cva(
         secondary:
           "border border-[var(--color-brand-default)] text-[var(--color-brand-default)] bg-transparent hover:bg-[var(--color-brand-subtle)]",
         neutral:
-          "bg-neutral-black-50 text-[var(--color-text-title)] hover:bg-neutral-black-100",
+          "bg-neutral-50 text-[var(--color-text-title)] hover:bg-neutral-100",
         error:
-          "bg-[var(--color-status-error)] text-neutral-white hover:bg-red-700 active:bg-red-900",
+          "bg-[var(--color-status-error)] text-neutral-white hover:bg-red-700 active:bg-red-800",
         clear:
-          "bg-transparent text-[var(--color-text-body)] hover:bg-neutral-black-50"
+          "bg-transparent text-[var(--color-text-body)] hover:bg-neutral-50"
       },
       size: {
         sm: "h-8 px-3 text-label-md",

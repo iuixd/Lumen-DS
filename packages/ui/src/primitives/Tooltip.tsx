@@ -28,7 +28,7 @@ export function Tooltip({ label, children, side = "top" }: { label: string; chil
           id={tooltipId}
           role="tooltip"
           className={cn(
-            "absolute z-10 whitespace-nowrap rounded-md bg-neutral-black-700 px-2 py-1 text-label-md text-neutral-white shadow-2",
+            "absolute z-10 whitespace-nowrap rounded-md bg-neutral-800 px-2 py-1 text-label-md text-neutral-white",
             side === "top" ? "bottom-full left-1/2 mb-1 -translate-x-1/2" : "top-full left-1/2 mt-1 -translate-x-1/2"
           )}
         >

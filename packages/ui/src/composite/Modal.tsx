@@ -34,7 +34,7 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className={cn("relative w-full max-w-lg rounded-lg bg-[var(--color-background-raised)] p-6 shadow-3")}
+        className={cn("relative w-full max-w-lg rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-background-raised)] p-6")}
       >
         <h2 id="modal-title" className="mb-4 text-title-lg text-[var(--color-text-title)]">
           {title}

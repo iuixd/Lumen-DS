@@ -1,9 +1,12 @@
 {
-  "_comment": "Corner radius observed in Figma component containers (~10px). Extended into a standard scale for consistency across all component sizes; confirm exact per-component values against Figma Code Connect when available.",
+  "_comment": "Sourced from Figma 'Lumen-DS-2027' file, page 'Design Tokens' > '05 Radius' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 511:78).",
   "none": { "value": 0 },
-  "sm": { "value": 4 },
-  "md": { "value": 8 },
-  "lg": { "value": 10 },
-  "xl": { "value": 16 },
+  "xs":   { "value": 2 },
+  "sm":   { "value": 4 },
+  "md":   { "value": 6 },
+  "lg":   { "value": 8 },
+  "xl":   { "value": 12 },
+  "2xl":  { "value": 16 },
+  "3xl":  { "value": 24 },
   "full": { "value": 9999 }
 }

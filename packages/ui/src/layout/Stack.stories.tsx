@@ -20,12 +20,12 @@ const meta = {
   },
   argTypes: {
     direction: { control: "select", options: ["row", "column"] },
-    gap: { control: "select", options: [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20] },
+    gap: { control: "select", options: [0, 2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 128] },
     align: { control: "select", options: ["start", "center", "end", "stretch"] },
     justify: { control: "select", options: ["start", "center", "end", "between"] },
     wrap: { control: "boolean" }
   },
-  args: { direction: "row", gap: 4, align: "stretch", justify: "start", wrap: false, children: null },
+  args: { direction: "row", gap: 16, align: "stretch", justify: "start", wrap: false, children: null },
   render: (args: StackProps) => (
     <Stack {...args}>
       {swatch("One")}

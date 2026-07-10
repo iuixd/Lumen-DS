@@ -17,7 +17,6 @@ const semanticColor = JSON.parse(readFileSync(path.join(srcDir, "semantic/color.
 const typography = JSON.parse(readFileSync(path.join(srcDir, "typography.json"), "utf8"));
 const spacing = JSON.parse(readFileSync(path.join(srcDir, "spacing.json"), "utf8"));
 const radius = JSON.parse(readFileSync(path.join(srcDir, "radius.json"), "utf8"));
-const shadow = JSON.parse(readFileSync(path.join(srcDir, "shadow.json"), "utf8"));
 
 function kebab(str) {
   return String(str).replace(/[._]/g, "-");
@@ -61,11 +60,6 @@ css += "\n  /* radius */\n";
 for (const [key, val] of Object.entries(radius)) {
   if (key.startsWith("_")) continue;
   css += `  --radius-${key}: ${val.value}px;\n`;
-}
-css += "\n  /* shadow */\n";
-for (const [key, val] of Object.entries(shadow)) {
-  if (key.startsWith("_")) continue;
-  css += `  --shadow-${key}: ${val.value};\n`;
 }
 css += "\n  /* typography */\n";
 css += `  --font-sans: ${typography.fontFamily.sans.value.map((f) => (f.includes(" ") ? `"${f}"` : f)).join(", ")};\n`;
@@ -127,12 +121,6 @@ for (const key of Object.keys(radius)) {
   tailwindRadius[key] = `var(--radius-${key})`;
 }
 
-const tailwindShadow = {};
-for (const key of Object.keys(shadow)) {
-  if (key.startsWith("_")) continue;
-  tailwindShadow[key] = `var(--shadow-${key})`;
-}
-
 const tailwindFontSize = {};
 for (const [key, val] of Object.entries(typography.scale)) {
   tailwindFontSize[key] = [`var(--text-${key}-size)`, { lineHeight: `var(--text-${key}-line-height)`, fontWeight: `var(--text-${key}-weight)` }];
@@ -146,7 +134,6 @@ module.exports = {
       colors: ${JSON.stringify(tailwindColors, null, 2)},
       spacing: ${JSON.stringify(tailwindSpacing, null, 2)},
       borderRadius: ${JSON.stringify(tailwindRadius, null, 2)},
-      boxShadow: ${JSON.stringify(tailwindShadow, null, 2)},
       fontSize: ${JSON.stringify(tailwindFontSize, null, 2)},
       fontFamily: {
         sans: ["var(--font-sans)"],
@@ -165,13 +152,11 @@ export const semanticColor = ${JSON.stringify(semanticColor, null, 2)} as const;
 export const typography = ${JSON.stringify(typography, null, 2)} as const;
 export const spacing = ${JSON.stringify(spacing, null, 2)} as const;
 export const radius = ${JSON.stringify(radius, null, 2)} as const;
-export const shadow = ${JSON.stringify(shadow, null, 2)} as const;
 
 export type ColorPrimitive = keyof typeof colorPrimitives;
 export type SpacingLayoutKey = keyof typeof spacing.layout;
 export type SpacingKey = keyof typeof spacing.space;
 export type RadiusKey = Exclude<keyof typeof radius, "_comment">;
-export type ShadowKey = Exclude<keyof typeof shadow, "_comment">;
 export type TypographyStyle = keyof typeof typography.scale;
 `;
 writeFileSync(path.join(distDir, "index.ts"), indexTs);

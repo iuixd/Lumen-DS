@@ -9,7 +9,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
   ({ className, label, id, ...props }, ref) => {
     const inputId = id ?? `${props.name}-${props.value}`;
     return (
-      <label htmlFor={inputId} className="inline-flex min-w-[120px] items-center gap-2 text-body-md text-[var(--color-text-title)]">
+      <label htmlFor={inputId} className="inline-flex min-w-128 items-center gap-2 text-body-md text-[var(--color-text-title)]">
         <input
           ref={ref}
           type="radio"

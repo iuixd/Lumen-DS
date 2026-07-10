@@ -12,7 +12,7 @@ export function AuthForm({
     <div className="flex min-h-screen items-center justify-center bg-[var(--color-background-subtle)] p-6">
       <Card className="w-full max-w-sm">
         <form onSubmit={onSubmit}>
-          <Stack gap={5}>
+          <Stack gap={20}>
             <h1 className="text-headline-sm text-[var(--color-text-title)]">
               {mode === "sign-in" ? "Sign in" : "Create your account"}
             </h1>

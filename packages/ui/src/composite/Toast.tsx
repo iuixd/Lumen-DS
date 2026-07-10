@@ -46,7 +46,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             key={t.id}
             role="status"
             className={cn(
-              "w-80 rounded-lg border-l-4 bg-[var(--color-background-raised)] p-4 shadow-2",
+              "w-80 rounded-lg border border-l-4 border-[var(--color-border-default)] bg-[var(--color-background-raised)] p-4",
               toneClass[t.tone ?? "neutral"]
             )}
           >

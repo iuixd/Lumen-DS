@@ -7,7 +7,7 @@ const sections: SettingsSection[] = [
     id: "profile",
     label: "Profile",
     content: (
-      <Stack gap={4}>
+      <Stack gap={16}>
         <FormField label="Full name" htmlFor="name">
           <Input id="name" defaultValue="Jane Cooper" />
         </FormField>
@@ -21,7 +21,7 @@ const sections: SettingsSection[] = [
     id: "notifications",
     label: "Notifications",
     content: (
-      <Stack gap={3}>
+      <Stack gap={12}>
         <Switch name="email-notifs" label="Email notifications" defaultChecked />
         <Switch name="push-notifs" label="Push notifications" />
       </Stack>
