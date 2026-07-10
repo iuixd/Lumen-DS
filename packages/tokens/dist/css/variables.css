@@ -233,6 +233,18 @@
   --text-code-sm-size: 12px;
   --text-code-sm-line-height: 20px;
   --text-code-sm-weight: 400;
+  --text-button-xs-size: 11px;
+  --text-button-xs-line-height: 18px;
+  --text-button-xs-weight: 600;
+  --text-button-sm-size: 12px;
+  --text-button-sm-line-height: 20px;
+  --text-button-sm-weight: 600;
+  --text-button-md-size: 14px;
+  --text-button-md-line-height: 22px;
+  --text-button-md-weight: 600;
+  --text-button-lg-size: 16px;
+  --text-button-lg-line-height: 24px;
+  --text-button-lg-weight: 600;
 
   /* semantic: light (default) */
   --color-background-default: #FFFFFF;

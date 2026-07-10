@@ -318,6 +318,34 @@ module.exports = {
       "lineHeight": "var(--text-code-sm-line-height)",
       "fontWeight": "var(--text-code-sm-weight)"
     }
+  ],
+  "button-xs": [
+    "var(--text-button-xs-size)",
+    {
+      "lineHeight": "var(--text-button-xs-line-height)",
+      "fontWeight": "var(--text-button-xs-weight)"
+    }
+  ],
+  "button-sm": [
+    "var(--text-button-sm-size)",
+    {
+      "lineHeight": "var(--text-button-sm-line-height)",
+      "fontWeight": "var(--text-button-sm-weight)"
+    }
+  ],
+  "button-md": [
+    "var(--text-button-md-size)",
+    {
+      "lineHeight": "var(--text-button-md-line-height)",
+      "fontWeight": "var(--text-button-md-weight)"
+    }
+  ],
+  "button-lg": [
+    "var(--text-button-lg-size)",
+    {
+      "lineHeight": "var(--text-button-lg-line-height)",
+      "fontWeight": "var(--text-button-lg-weight)"
+    }
   ]
 },
       fontFamily: {

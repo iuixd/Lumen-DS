@@ -207,7 +207,7 @@ export const semanticColor = {
   }
 } as const;
 export const typography = {
-  "_comment": "Sourced from Figma 'Lumen-DS-2027' file, page 'Design Tokens' > '02 Typography' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 428:13769). Font family: Inter (UI text), Roboto Mono (code). H1-H6/Body/Label/Overline/Caption/Code map directly onto this scale's tiers: display-*=H1-H3, headline-*=H4-H6, title-* sits between H6 and Body at medium weight (Figma has no distinct 'title' tier), label-*/body-*/overline/caption/code-* are exact matches.",
+  "_comment": "Sourced from Figma 'Lumen-DS-2027' file, page 'Design Tokens' > '02 Typography' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 428:13769). Font family: Inter (UI text), Roboto Mono (code). H1-H6/Body/Label/Overline/Caption/Code map directly onto this scale's tiers: display-*=H1-H3, headline-*=H4-H6, title-* sits between H6 and Body at medium weight (Figma has no distinct 'title' tier), label-*/body-*/overline/caption/code-* are exact matches. button-* is a separate scale read directly off the Button component's own text spans on the 'Buttons' page (node 466:4365) — it's close to label-* but not pixel-identical on line-height, and button-lg (16px) has no equivalent at all in label-* (label tops out at 14px), which is why reusing label-lg for both md and lg previously made those two sizes render identically.",
   "fontFamily": {
     "sans": {
       "value": [
@@ -347,6 +347,30 @@ export const typography = {
       "lineHeight": 20,
       "weight": 400,
       "usage": "Small inline code — pair with `font-mono` (Figma Code sm)"
+    },
+    "button-xs": {
+      "fontSize": 11,
+      "lineHeight": 18,
+      "weight": 600,
+      "usage": "Button label text, size=xs"
+    },
+    "button-sm": {
+      "fontSize": 12,
+      "lineHeight": 20,
+      "weight": 600,
+      "usage": "Button label text, size=sm"
+    },
+    "button-md": {
+      "fontSize": 14,
+      "lineHeight": 22,
+      "weight": 600,
+      "usage": "Button label text, size=md"
+    },
+    "button-lg": {
+      "fontSize": 16,
+      "lineHeight": 24,
+      "weight": 600,
+      "usage": "Button label text, size=lg"
     }
   }
 } as const;

@@ -5,14 +5,15 @@ import { cn } from "../lib/cn";
 /**
  * Button
  * Sourced from the Figma "Buttons" page (Lumen-DS-2027, node 466:4365): variant
- * taxonomy (Primary/Secondary/Tertiary/Link), sizes (xs/sm/md/lg), and per-state
- * colors all trace to real component instances there — see that page's
- * "02 Accessibility & WCAG 2.1" and "04 Design Tokens" sections for the source
- * of the aria-disabled/aria-busy/aria-label requirements below. Text size per
- * size tier is a reasonable inference (not captured in the extracted spec).
+ * taxonomy (Primary/Secondary/Tertiary/Link), sizes (xs/sm/md/lg), per-size text
+ * (the dedicated `button-*` type scale — read directly off each size's own text
+ * span, not shared with `label-*`), and per-state colors all trace to real
+ * component instances there. See that page's "02 Accessibility & WCAG 2.1" and
+ * "04 Design Tokens" sections for the source of the aria-disabled/aria-busy/
+ * aria-label requirements below.
  */
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-[var(--spacing-6)] whitespace-nowrap rounded-md font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-border-focus)] aria-disabled:pointer-events-none aria-disabled:opacity-60",
+  "inline-flex items-center justify-center gap-[var(--spacing-6)] whitespace-nowrap rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-border-focus)] aria-disabled:pointer-events-none aria-disabled:opacity-60",
   {
     variants: {
       variant: {
@@ -25,10 +26,10 @@ export const buttonVariants = cva(
         link: "min-w-0 bg-transparent p-[var(--spacing-4)] text-[var(--color-brand-default)] hover:text-[var(--color-brand-hover)] hover:underline aria-disabled:text-neutral-400"
       },
       size: {
-        xs: "h-[var(--spacing-32)] min-w-[var(--spacing-64)] px-[var(--spacing-10)] py-[var(--spacing-5)] text-label-sm",
-        sm: "h-[var(--spacing-36)] min-w-[var(--spacing-80)] px-[var(--spacing-12)] py-[var(--spacing-6)] text-label-md",
-        md: "h-[var(--spacing-40)] min-w-[var(--spacing-96)] px-[var(--spacing-16)] py-[var(--spacing-8)] text-label-lg",
-        lg: "h-[var(--spacing-48)] min-w-[var(--spacing-120)] px-[var(--spacing-20)] py-[var(--spacing-10)] text-label-lg"
+        xs: "h-[var(--spacing-32)] min-w-[var(--spacing-64)] px-[var(--spacing-10)] py-[var(--spacing-5)] text-button-xs",
+        sm: "h-[var(--spacing-36)] min-w-[var(--spacing-80)] px-[var(--spacing-12)] py-[var(--spacing-6)] text-button-sm",
+        md: "h-[var(--spacing-40)] min-w-[var(--spacing-96)] px-[var(--spacing-16)] py-[var(--spacing-8)] text-button-md",
+        lg: "h-[var(--spacing-48)] min-w-[var(--spacing-120)] px-[var(--spacing-20)] py-[var(--spacing-10)] text-button-lg"
       },
       iconOnly: {
         true: "min-w-0 p-0"
