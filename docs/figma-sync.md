@@ -44,10 +44,11 @@ confirms zero component libraries are linked to it. As a result:
 - The **shadow/elevation token tier was dropped entirely** (no shadow scale
   in the new file) — `Card`, `Modal`, and `Toast` now rely on borders instead
   of drop shadows for surface separation.
-- Icons (`packages/ui/src/icons/`) draw from **two** sources: the original
-  22-icon Iconly starter set (old "Lumen AI - DS - base" library) plus 5
-  form-control state glyphs added later from `Lumen-DS-2027`'s own "Icons"
-  page (node `432:15231`) — see "Icons" below.
+- Icons (`packages/ui/src/icons/`) draw from **three** sources: the original
+  22-icon Iconly starter set (old "Lumen AI - DS - base" library), 5
+  form-control state glyphs from `Lumen-DS-2027`'s own "Icons" page (node
+  `432:15231`), and 1,893 icons imported from `Lumen-DS-2027`'s much larger
+  bulk icon library (canvas `432:14782`, ~51 categories) — see "Icons" below.
 
 **Known gaps to close with design before this is fully authoritative:**
 - Dark-theme semantic color mappings in `src/semantic/color.json` are a
@@ -70,7 +71,7 @@ confirms zero component libraries are linked to it. As a result:
 
 ## Icons
 
-Two Figma sources feed `packages/ui/src/icons/`, both processed by the same
+Three Figma sources feed `packages/ui/src/icons/`, all processed by the same
 `pnpm --filter @lumen/ui icons:import` script (`packages/ui/scripts/icons-import.mjs`).
 Source SVGs live in `packages/ui/src/icons/svg/`; generated components in
 `packages/ui/src/icons/generated/` (do not hand-edit — regenerate instead).
@@ -96,32 +97,80 @@ enough to pull individually. The page is a large, mostly-empty canvas — more
 icons are likely to be added over time; re-check `get_metadata` on
 `432:15231` for new symbols before assuming this list is complete.
 
-**To extend coverage from either source:**
+**3. Lumen-DS-2027's bulk icon library** (canvas `432:14782`, ~51 category
+frames — Alignment & Spacing, Arrows, Files & Documents, Shapes & Geometry,
+UI Controls, Brand Logos, etc.) — a much larger, separate icon set from the
+small "Icons" page above. As of the last import this held **1,904 icons**
+across a Lucide-style generic set (kebab-case names: `chevron-down`,
+`circle-alert`, ...) plus a curated Lumen-branded subset (PascalCase names:
+`AddFilled`, `EditOutlined`, ..., `lm-`-prefixed custom icons, and 16
+third-party **Brand Logos**). **1,893 were imported**; 9 were skipped because
+their kebab name collided with an existing curated Iconly icon (the curated
+version wins — `arrow-left`, `arrow-right`, `bookmark`, `calendar`, `delete`,
+`download`, `heart`, `plus`, `search`), and 2 (`UiPath_logo`, `Tableau_logo`)
+were skipped because Figma exported them as embedded raster PNGs rather than
+vector paths — incompatible with this system's `currentColor`/`1em` SVG
+component pattern; source them as static image assets separately if needed.
+
+Because `download_assets` exports one whole node per call and extracting
+~1,900 icons individually isn't practical, this source uses a different
+two-step pipeline instead of a human batch export:
+
+1. `get_metadata` on `432:14782` once, recursively — Figma returns the full
+   nested tree (every category frame's every icon child, with x/y/width/height)
+   in one response, since it's valid XML.
+2. `download_assets` (`defaultFormat: "svg"`) **per category frame** (~51
+   calls, not ~1,900) — each returns one combined SVG with every icon in that
+   category rendered as a sibling `<g id="{icon-name}">` inside it, positioned
+   at that icon's real x/y within the frame.
+3. `packages/ui/scripts/icons-bulk-split.mjs` takes a manifest (built from
+   step 1's metadata) plus the raw per-category exports (step 2) and splits
+   each category SVG into individual `packages/ui/src/icons/svg/{name}.svg`
+   files — extracting each icon's `<g>` with a balanced open/close-tag scan
+   (some icons, especially multi-path brand logos, nest their own inner
+   `<g>`, which a naive non-greedy regex truncates) and wrapping it in a
+   `0 0 W H` viewBox translated so the icon's own bounding box becomes the
+   origin. Colors are left untouched at this stage — recoloring is
+   `icons-import.mjs`'s job, applied uniformly across all three sources.
+4. Run `pnpm --filter @lumen/ui icons:import` as usual (see step 3 below).
+
+Re-running this whole pipeline (re-fetch metadata, re-export categories,
+re-split) is how you'd pick up new icons if this canvas grows further.
+
+**To extend coverage from source 1 or 2:**
 
 1. **Iconly:** in Figma, select the icons you need under the "Icons" frame
    in the `Lumen AI - DS - base` library file and batch-export as SVG
    (Export panel). Name each file in kebab-case matching the icon (e.g.
    `Arrow - Right` → `arrow-right.svg`).
-   **Lumen-DS-2027:** find the node ID for each new icon under `432:15231`
-   (via `get_metadata`) and export it with `download_assets`
+   **Lumen-DS-2027 "Icons" page:** find the node ID for each new icon under
+   `432:15231` (via `get_metadata`) and export it with `download_assets`
    (`defaultFormat: "svg"`). Name the saved file in kebab-case matching what
    the icon actually is (Figma's own layer names on this page aren't
    descriptive — they're literally `_hidden`).
 2. Drop the exported files into `packages/ui/src/icons/svg/` — the import
    script derives the component name and registry key from the filename.
 3. Run `pnpm --filter @lumen/ui icons:import`. This extracts the real
-   geometry out of Figma's export — it recognizes both the Iconly shape
-   (`<g id="Iconly/...">`) and the Lumen-DS-2027 page-export shape
-   (`<g id="Icons"><rect bleed/><g id="...">real geometry</g></g>`), and
-   strips the page-background bleed either way — recolors fixed
+   geometry out of Figma's export — it recognizes the Iconly shape
+   (`<g id="Iconly/...">`), the Lumen-DS-2027 "Icons" page-export shape
+   (`<g id="Icons"><rect bleed/><g id="...">real geometry</g></g>`), and the
+   bulk-library shape (source 3 above — already-normalized, so the whole
+   `<svg>` *is* the geometry, no wrapper to strip). It then recolors fixed
    fills/strokes (hex *or* named, e.g. `fill="black"`) to `currentColor` so
-   icons inherit text color, drops any baked-in `fill-opacity`, runs SVGO,
-   and regenerates every `{Name}Icon.tsx` component plus the `index.ts`
-   barrel and `registry.ts` name lookup.
+   icons inherit text color — **except** files ending `-logo.svg`, whose
+   authored colors are preserved untouched (multi-color brand marks would be
+   destroyed by flattening to one color) — drops any baked-in `fill-opacity`,
+   runs SVGO, and regenerates every `{Name}Icon.tsx` component plus the
+   `index.ts` barrel and `registry.ts` name lookup.
 4. Import the specific `{Name}Icon` component directly in JSX for
    tree-shaking, or use `<Icon name="arrow-right" />` (from
    `packages/ui/src/primitives/Icon.tsx`) when the icon name is
-   data-driven and not known until render.
+   data-driven and not known until render. **Bundle-size note:** `registry.ts`
+   eagerly imports every generated icon (now ~1,920), so any code path that
+   imports `Icon.tsx`'s registry pulls the whole set into the bundle —
+   product code should strongly prefer direct `{Name}Icon` imports over
+   `<Icon name>` now that the set is this large; reserve the dynamic lookup
+   for genuinely data-driven cases.
 
 If a future Iconly export uses a different weight/style than `Sharp/Light`,
 confirm with design first (do not silently mix styles within one product
