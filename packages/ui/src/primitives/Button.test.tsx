@@ -51,4 +51,25 @@ describe("Button", () => {
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("accessible name"));
     warnSpy.mockRestore();
   });
+
+  it.each(["xs", "sm", "md", "lg"] as const)(
+    "resolves iconOnly size=%s to a single square size class with no conflicting box-model classes left over",
+    (size) => {
+      render(
+        <Button iconOnly size={size} aria-label="Search">
+          {"✕"}
+        </Button>
+      );
+      const className = screen.getByRole("button", { name: "Search" }).className;
+      // cva emits the size variant's own min-w-*/px-*/py-* alongside iconOnly's
+      // min-w-0/p-0 and the compound variant's size-*; without tailwind-merge
+      // resolving the conflict, both survive in the class list and which one
+      // wins is down to Tailwind's generated stylesheet order, not intent —
+      // this is exactly what produced the squished, non-square icon buttons.
+      expect(className).toMatch(/\bsize-\[var\(--spacing-\d+\)\]/);
+      expect(className).not.toMatch(/\bmin-w-\[var\(--spacing-(64|80|96|120)\)\]/);
+      expect(className).not.toMatch(/\bpx-\[var\(--spacing-\d+\)\]/);
+      expect(className).not.toMatch(/\bpy-\[var\(--spacing-\d+\)\]/);
+    }
+  );
 });
