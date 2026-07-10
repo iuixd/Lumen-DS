@@ -37,10 +37,16 @@ export const Playground: Story = {
           title="Delete this record?"
           footer={
             <>
-              <Button variant="neutral" onClick={() => setOpen(false)}>
+              <Button variant="tertiary" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button variant="error" onClick={() => setOpen(false)}>
+              {/* Figma's Buttons page has no distinct destructive/error type — tint Secondary
+                  with the status-error token as a manual override until design adds one. */}
+              <Button
+                variant="secondary"
+                className="border-[var(--color-status-error)] text-[var(--color-status-error)] hover:bg-[var(--color-status-error-subtle)]"
+                onClick={() => setOpen(false)}
+              >
                 Delete
               </Button>
             </>

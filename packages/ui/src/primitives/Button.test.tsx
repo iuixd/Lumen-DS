@@ -27,10 +27,28 @@ describe("Button", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
-  it("disables the button and sets aria-busy while loading", () => {
+  it("marks the button aria-disabled and aria-busy while loading", () => {
     render(<Button isLoading>Save changes</Button>);
     const button = screen.getByRole("button", { name: "Save changes" });
-    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute("aria-disabled", "true");
     expect(button).toHaveAttribute("aria-busy", "true");
+  });
+
+  it("does not call onClick while loading", async () => {
+    const onClick = vi.fn();
+    render(
+      <Button onClick={onClick} isLoading>
+        Save changes
+      </Button>
+    );
+    await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it("warns in dev when an iconOnly button has no accessible name", () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    render(<Button iconOnly>{"✕"}</Button>);
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("accessible name"));
+    warnSpy.mockRestore();
   });
 });

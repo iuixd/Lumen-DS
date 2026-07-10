@@ -17,7 +17,7 @@ export const Playground: Story = {
     <Card className="max-w-sm">
       <CardHeader>
         <CardTitle>Filters</CardTitle>
-        <Button variant="clear" size="sm">
+        <Button variant="tertiary" size="sm">
           Reset
         </Button>
       </CardHeader>

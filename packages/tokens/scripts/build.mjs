@@ -111,8 +111,26 @@ for (const key of semanticColorKeys) {
   tailwindColors[key] = `var(--color-${key})`;
 }
 
+// Tailwind's core theme already defines numeric spacing keys (2, 4, 6, 8, ...96) on a
+// proportional ~4px-per-unit scale. Our `space` scale reuses the SAME numeric keys but
+// with a literal-pixel meaning (key "8" = 8px, not core's 32px). Merging all of them into
+// theme.extend.spacing would silently override core Tailwind's meaning for every matching
+// key across every spacing-based utility (h-*, w-*, p-*, gap-*, inset-*, ...) — including
+// plain utility classes that were never meant to reference this token scale at all. Only
+// merge keys core Tailwind does NOT already define, so existing classes like `h-8`/`px-4`/
+// `gap-2` keep their standard Tailwind meaning. The full `space` scale remains available as
+// `--spacing-*` CSS variables and the `spacing.space` JS export for exact token values, e.g.
+// `className="h-[var(--spacing-8)]"`.
+const TAILWIND_CORE_SPACING_KEYS = new Set([
+  "0", "px", "0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "6", "7", "8", "9",
+  "10", "11", "12", "14", "16", "20", "24", "28", "32", "36", "40", "44", "48", "52",
+  "56", "60", "64", "72", "80", "96"
+]);
 const tailwindSpacing = {};
-for (const key of Object.keys(spacing.space)) tailwindSpacing[key] = `var(--spacing-${key})`;
+for (const key of Object.keys(spacing.space)) {
+  if (TAILWIND_CORE_SPACING_KEYS.has(key)) continue;
+  tailwindSpacing[key] = `var(--spacing-${key})`;
+}
 for (const key of Object.keys(spacing.layout)) tailwindSpacing[`layout-${key}`] = `var(--spacing-layout-${key})`;
 
 const tailwindRadius = {};

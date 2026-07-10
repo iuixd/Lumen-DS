@@ -25,13 +25,13 @@ function Demo() {
   const { push } = useToast();
   return (
     <div className="flex flex-wrap gap-3">
-      <Button variant="neutral" onClick={() => push({ title: "Saved", tone: "success" })}>
+      <Button variant="tertiary" onClick={() => push({ title: "Saved", tone: "success" })}>
         Trigger success
       </Button>
-      <Button variant="neutral" onClick={() => push({ title: "Something went wrong", description: "Try again in a moment.", tone: "error" })}>
+      <Button variant="tertiary" onClick={() => push({ title: "Something went wrong", description: "Try again in a moment.", tone: "error" })}>
         Trigger error
       </Button>
-      <Button variant="neutral" onClick={() => push({ title: "3 records updated", tone: "neutral" })}>
+      <Button variant="tertiary" onClick={() => push({ title: "3 records updated", tone: "neutral" })}>
         Trigger neutral
       </Button>
     </div>

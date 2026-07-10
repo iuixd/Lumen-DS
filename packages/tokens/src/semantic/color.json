@@ -1,5 +1,5 @@
 {
-  "_comment": "Semantic tokens reference primitives by dot-path. Consumed by scripts/build.mjs to emit CSS variables that swap by [data-theme]. The Figma source (Lumen-DS-2027) defines only one mode per variable collection — there is no Figma-authored dark theme. The 'dark' block below is a manual, documented mapping onto the same primitive ramps, carried over from the previous system.",
+  "_comment": "Semantic tokens reference primitives by dot-path. Consumed by scripts/build.mjs to emit CSS variables that swap by [data-theme]. The Figma source (Lumen-DS-2027) defines only one mode per variable collection — there is no Figma-authored dark theme. The 'dark' block below is a manual, documented mapping onto the same primitive ramps, carried over from the previous system. light.brand.hover/pressed are sourced from the actual Primary-button Hover/Active instance fills on the 'Buttons' page (node 466:4365) — trust those over the page's '04 Design Tokens' documentation table, which has a stale/mismatched hover value (a copy-paste artifact, same pattern seen on the Colors page).",
   "light": {
     "background": {
       "default": "neutral.white",
@@ -22,8 +22,8 @@
     },
     "brand": {
       "default": "primary.500",
-      "hover": "primary.600",
-      "pressed": "primary.700",
+      "hover": "primary.700",
+      "pressed": "primary.800",
       "subtle": "primary.50"
     },
     "status": {

@@ -130,7 +130,7 @@ export const colorPrimitives = {
   "lemon-green.800": "#456301"
 } as const;
 export const semanticColor = {
-  "_comment": "Semantic tokens reference primitives by dot-path. Consumed by scripts/build.mjs to emit CSS variables that swap by [data-theme]. The Figma source (Lumen-DS-2027) defines only one mode per variable collection — there is no Figma-authored dark theme. The 'dark' block below is a manual, documented mapping onto the same primitive ramps, carried over from the previous system.",
+  "_comment": "Semantic tokens reference primitives by dot-path. Consumed by scripts/build.mjs to emit CSS variables that swap by [data-theme]. The Figma source (Lumen-DS-2027) defines only one mode per variable collection — there is no Figma-authored dark theme. The 'dark' block below is a manual, documented mapping onto the same primitive ramps, carried over from the previous system. light.brand.hover/pressed are sourced from the actual Primary-button Hover/Active instance fills on the 'Buttons' page (node 466:4365) — trust those over the page's '04 Design Tokens' documentation table, which has a stale/mismatched hover value (a copy-paste artifact, same pattern seen on the Colors page).",
   "light": {
     "background": {
       "default": "neutral.white",
@@ -153,8 +153,8 @@ export const semanticColor = {
     },
     "brand": {
       "default": "primary.500",
-      "hover": "primary.600",
-      "pressed": "primary.700",
+      "hover": "primary.700",
+      "pressed": "primary.800",
       "subtle": "primary.50"
     },
     "status": {
@@ -351,7 +351,7 @@ export const typography = {
   }
 } as const;
 export const spacing = {
-  "_comment": "Sourced from Figma 'Lumen-DS-2027' file, page 'Design Tokens' > '04 Spacing' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 511:2). An 8pt grid with 2px/4px sub-steps. Keys are literal pixel values, not indices. 'layout' is a curated subset of the same scale for page/section-level rhythm; 'space' is the full scale for component-internal spacing.",
+  "_comment": "Sourced from Figma 'Lumen-DS-2027' file, page 'Design Tokens' > '04 Spacing' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 511:2). An 8pt grid with 2px/4px sub-steps. Keys are literal pixel values, not indices. 'layout' is a curated subset of the same scale for page/section-level rhythm; 'space' is the full scale for component-internal spacing. '5' and '120' were added later, sourced from the Button component's exact box-model values on the 'Buttons' page (node 466:4365, e.g. the xs size's 5px vertical padding and the lg size's 120px min-width) rather than the Spacing page itself. IMPORTANT: these keys are literal pixel values and collide in name with Tailwind's own default proportional spacing scale (e.g. core `h-8` means 32px) — see the TAILWIND_CORE_SPACING_KEYS guard in scripts/build.mjs. Only keys Tailwind's core scale does not already define (plus '0') are merged into the Tailwind preset; use `[var(--spacing-N)]` arbitrary-value syntax for any other key.",
   "layout": {
     "xs": {
       "value": 8
@@ -378,6 +378,9 @@ export const spacing = {
     },
     "4": {
       "value": 4
+    },
+    "5": {
+      "value": 5
     },
     "6": {
       "value": 6
@@ -423,6 +426,9 @@ export const spacing = {
     },
     "96": {
       "value": 96
+    },
+    "120": {
+      "value": 120
     },
     "128": {
       "value": 128

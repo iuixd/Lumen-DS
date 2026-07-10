@@ -24,9 +24,9 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {
   render: () => (
     <ButtonGroup>
-      <Button variant="neutral">List</Button>
-      <Button variant="neutral">Board</Button>
-      <Button variant="neutral">Calendar</Button>
+      <Button variant="tertiary">List</Button>
+      <Button variant="tertiary">Board</Button>
+      <Button variant="tertiary">Calendar</Button>
     </ButtonGroup>
   )
 };

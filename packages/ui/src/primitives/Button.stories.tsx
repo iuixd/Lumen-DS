@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "./Button";
+import { SearchIcon } from "../icons/generated";
 
 const meta = {
   title: "Primitives/Button",
@@ -9,16 +10,16 @@ const meta = {
     docs: {
       description: {
         component:
-          "Maps 1:1 to the Figma component set family: Primary, Secondary, Neutral, Error, Clear. Extend with a new variant/prop instead of creating a new button component — see CONTRIBUTING.md."
+          "Sourced from the Figma 'Buttons' page (Lumen-DS-2027): Primary, Secondary, Tertiary, Link, each in xs/sm/md/lg. Extend with a new variant/prop instead of creating a new button component — see CONTRIBUTING.md."
       }
     }
   },
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "neutral", "error", "clear"]
+      options: ["primary", "secondary", "tertiary", "link"]
     },
-    size: { control: "select", options: ["sm", "md", "lg"] },
+    size: { control: "select", options: ["xs", "sm", "md", "lg"] },
     isLoading: { control: "boolean" },
     disabled: { control: "boolean" }
   },
@@ -39,12 +40,11 @@ export const Playground: Story = {};
 export const AllVariants: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap items-center gap-3">
       <Button variant="primary">Primary</Button>
       <Button variant="secondary">Secondary</Button>
-      <Button variant="neutral">Neutral</Button>
-      <Button variant="error">Error</Button>
-      <Button variant="clear">Clear</Button>
+      <Button variant="tertiary">Tertiary</Button>
+      <Button variant="link">Link</Button>
     </div>
   )
 };
@@ -53,9 +53,30 @@ export const Sizes: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="flex flex-wrap items-center gap-3">
+      <Button size="xs">Extra small</Button>
       <Button size="sm">Small</Button>
       <Button size="md">Medium</Button>
       <Button size="lg">Large</Button>
+    </div>
+  )
+};
+
+export const IconOnly: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button iconOnly size="xs" aria-label="Search">
+        <SearchIcon className="size-3" />
+      </Button>
+      <Button iconOnly size="sm" aria-label="Search">
+        <SearchIcon className="size-4" />
+      </Button>
+      <Button iconOnly size="md" aria-label="Search">
+        <SearchIcon className="size-5" />
+      </Button>
+      <Button iconOnly size="lg" aria-label="Search">
+        <SearchIcon className="size-5" />
+      </Button>
     </div>
   )
 };

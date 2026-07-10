@@ -140,6 +140,7 @@
   --spacing-0: 0px;
   --spacing-2: 2px;
   --spacing-4: 4px;
+  --spacing-5: 5px;
   --spacing-6: 6px;
   --spacing-8: 8px;
   --spacing-10: 10px;
@@ -155,6 +156,7 @@
   --spacing-64: 64px;
   --spacing-80: 80px;
   --spacing-96: 96px;
+  --spacing-120: 120px;
   --spacing-128: 128px;
 
   /* radius */
@@ -247,8 +249,8 @@
   --color-border-strong: #9F9F9F;
   --color-border-focus: #BE003C;
   --color-brand-default: #BE003C;
-  --color-brand-hover: #980030;
-  --color-brand-pressed: #720024;
+  --color-brand-hover: #720024;
+  --color-brand-pressed: #4C0018;
   --color-brand-subtle: #F9E6EC;
   --color-status-success: #00A700;
   --color-status-success-subtle: #E6F7E6;
