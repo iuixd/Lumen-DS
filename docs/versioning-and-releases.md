@@ -1,5 +1,11 @@
 # Versioning & Releases
 
+`docs/release-process.md` is the authoritative release process (principles,
+roles, release channels, quality gates, the Patch/Minor/Major stages). This
+page is the concrete "how it actually works in this repo" reference beneath
+it: the real commands, this repo's no-publish/git-dependency distribution
+model, and its tag-naming convention — detail the process doc doesn't cover.
+
 This repo uses [Changesets](https://github.com/changesets/changesets) so that
 `@lumen/tokens`, `@lumen/ui`, and `@lumen/patterns` can each be versioned
 independently but released together when they change together (a token

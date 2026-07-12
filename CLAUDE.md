@@ -5,6 +5,17 @@ This file governs how Claude Code (or any AI coding agent) should work
 design system, see `docs/claude-code-integration.md` for the snippet to add
 to *your product repo's* CLAUDE.md instead.
 
+## Living documentation policy
+
+`docs/` is the authoritative knowledge base for Lumen — every file in it is
+living and may evolve as the system grows. Use the latest version of the
+relevant docs before making a recommendation, architectural decision, code
+change, Storybook update, or release decision; don't rely on prior
+conversation assumptions once the documentation has changed.
+`docs/project-governance.md` owns the full policy (authority order when
+sources conflict, which docs to read per task type, when to recommend-and-
+confirm vs. implement directly) — read it rather than re-deriving it here.
+
 ## What this repo is
 
 The single source of truth for Lumen's design tokens, UI components, layout
@@ -24,6 +35,50 @@ packages:
 `packages/storybook` is the live showcase of all three — one page per
 component with controls and auto-generated usage code, plus MDX pages for
 the patterns. Run it with `pnpm storybook`. See "Component checklist" below.
+
+## Documentation system
+
+`docs/` implements a governance system that keeps Figma, tokens, components,
+Storybook, and releases in sync — read the relevant file(s) before touching
+anything they cover, and update them as part of the change, not as
+follow-up work. `docs/project-governance.md` §14 is the canonical Claude Code
+operating protocol (authority order when docs conflict, task-based reading
+lists, recommend-and-confirm vs. implement-directly); `docs/documentation-
+style.md` §31 and `docs/figma-sync.md` §23 point at that same protocol
+rather than repeating it. This table is the fast index so you don't have to
+open every file to find the right one:
+
+| File | Answers |
+|---|---|
+| `docs/project-governance.md` | **Start here for how to operate**, not just what's true: the authority order when docs conflict, which files to read for a given task type (§4), and when to recommend-and-confirm vs. implement directly (§5). |
+| `docs/changelog.md` | Its `[Unreleased]` section is the scope gate — implement only what's listed there; report anything else as out of scope instead of doing it silently. |
+| `docs/figma-source.md` | Which Figma file/node is canonical, and the source-of-truth hierarchy (Figma → tokens → code → Storybook). |
+| `docs/figma-sync.md` | Step-by-step procedure for turning an approved Figma delta into a code change. |
+| `docs/design-tokens.md` | Token architecture, naming, and layering (primitive → semantic → component). |
+| `docs/component-architecture.md` | Component hierarchy, API standards, and state model. |
+| `docs/component-specifications.md` | Required specification structure per component. |
+| `docs/accessibility.md` | Accessibility requirements per component. |
+| `docs/storybook-guidelines.md` | What Storybook must document and how. |
+| `docs/development-guidelines.md` | How Lumen must be developed and maintained in code. |
+| `docs/quality-checklist.md` | Release gate — run before merging, publishing Storybook, or marking a component Stable. |
+| `docs/design-review.md` | How to run a design review. |
+| `docs/release-process.md` | How a change moves from Figma to a released package and published Storybook. |
+| `docs/github-workflow.md` | How a change moves through GitHub — branches, PRs, required gates. |
+| `docs/roadmap.md` | Where the system is headed; check before proposing new scope. |
+| `docs/documentation-style.md` | Writing, structure, and terminology rules — follow it whenever you edit any doc in this table. |
+| `docs/versioning-and-releases.md` | Concrete Changesets commands and this repo's actual (no-publish, git-dependency) release mechanics — the implementation detail underneath `release-process.md`'s process. |
+
+Minimum required behavior when synchronizing a Figma change:
+
+1. Read `docs/changelog.md`'s `[Unreleased]` section — that's the authorized
+   scope, not a suggestion.
+2. Audit first: inspect the named Figma nodes and existing token/component
+   source, identify downstream consumers, and report the impact **before**
+   changing anything.
+3. After the scope is confirmed, implement only the approved delta —
+   affected tokens, components, stories, tests, and docs. Don't regenerate
+   or restyle anything outside that delta.
+4. Update the sync record/changelog and report remaining drift.
 
 ## Hard rules when working in this repo
 
@@ -49,15 +104,18 @@ the patterns. Run it with `pnpm storybook`. See "Component checklist" below.
    (`Component.stories.tsx`, `tags: ["autodocs"]`), and a Changeset
    (`pnpm changeset`).
 5. **Don't publish silently.** Version bumps happen through the Changesets
-   flow in `docs/versioning-and-releases.md`, not by hand-editing `package.json` versions.
+   flow, not by hand-editing `package.json` versions. `docs/release-process.md`
+   is the authoritative release process (gates, roles, channels); `docs/
+   versioning-and-releases.md` has this repo's actual commands and mechanics.
 
 ## Working with Figma
 
-Known gaps between the current Figma file and this repo (dark-theme
-semantic colors, no shadow/elevation scale, icon set sourced from an
-unrelated older library, no linked component library) are tracked in
-`docs/figma-sync.md`. If you're asked to close one of these gaps, read that
-file first — it lists exactly what's provisional vs. sourced.
+Start with `docs/figma-source.md` (canonical file/node and authority order),
+then `docs/figma-sync.md` (the sync procedure itself). Known gaps between
+the current Figma file and this repo (dark-theme semantic colors, no
+shadow/elevation scale, icon set sourced from an unrelated older library, no
+linked component library) are tracked in `docs/figma-sync.md` — read it
+before closing any of them.
 
 ## Repo map
 
@@ -66,6 +124,8 @@ packages/tokens/    design tokens (source of truth: src/*.json)
 packages/ui/        components (primitives, composite, layout) + colocated *.stories.tsx
 packages/patterns/  composed enterprise screen patterns + colocated *.stories.tsx / *.mdx
 packages/storybook/ the showcase app — Storybook config only, no component source
-docs/               usage, accessibility, versioning, figma-sync guidelines
+docs/               governance system: figma sync, tokens, components,
+                    accessibility, Storybook, release process, doc style —
+                    see "Documentation system" above for the full index
 .changeset/         pending version bumps
 ```
