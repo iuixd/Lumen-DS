@@ -50,7 +50,8 @@ Exported machine-readable token files
     ↓
 Repository documentation
     ↓
-React components and Storybook
+Framework packages (React today; Angular, Vue, and Web Components as they
+    ↓                ship — see `docs/component-architecture.md` §0) and Storybook
 ```
 
 When sources conflict:
@@ -88,7 +89,7 @@ Figma is authoritative for:
 
 The repository is authoritative for:
 
-- React implementation details
+- framework package implementation details (React today)
 - TypeScript APIs
 - runtime behavior
 - package exports
@@ -636,7 +637,7 @@ Before accepting a Figma-to-code synchronization, verify:
 
 ## Component validation
 
-- [ ] Figma and React variants match.
+- [ ] Figma and code variants match, for every shipped framework package.
 - [ ] Sizes match.
 - [ ] States match.
 - [ ] Typography matches.

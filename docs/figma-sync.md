@@ -1,6 +1,6 @@
 # Lumen Figma Sync
 
-> Synchronization contract for keeping the **Lumen Design System** aligned across Figma, design-token source files, generated code, React components, Storybook, tests, and release documentation.
+> Synchronization contract for keeping the **Lumen Design System** aligned across Figma, design-token source files, generated code, framework packages (React today), Storybook, tests, and release documentation.
 
 ## Source
 
@@ -66,8 +66,8 @@ Repository token source files
     ↓
 Generated token outputs
     ↓
-React components
-    ↓
+Framework packages (React today; Angular, Vue, and Web Components as they ship —
+    ↓                see `docs/component-architecture.md` §0)
 Storybook
     ↓
 Consuming applications
@@ -438,13 +438,15 @@ For each changed component:
 
 ## Component sync matrix
 
-| Figma | Code |
+The right column is framework-neutral; it names each shipped framework package's implementation, not a single canonical one. Today the only shipped framework package is React (`@lumen/ui`).
+
+| Figma | Code (React reference implementation today) |
 |---|---|
-| Component set | React component |
-| Variant property | Typed variant prop |
-| Boolean property | Boolean prop |
-| Text property | Content prop or children |
-| Instance swap | Icon or slot prop |
+| Component set | Component |
+| Variant property | Typed variant property |
+| Boolean property | Boolean property |
+| Text property | Content property or children/slot |
+| Instance swap | Icon or slot property |
 | Auto Layout | Flexible CSS layout |
 | Variable binding | CSS custom property or token reference |
 | Component description | Storybook and API documentation |

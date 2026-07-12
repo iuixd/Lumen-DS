@@ -56,6 +56,15 @@ Use the following headings for every release:
   - Migration: none
   - Validation: lint, typecheck, 42 tests, token build, and production Storybook build passed; deployed Storybook verification pending
   - Changeset: none (`@lumen/storybook` is private and no published package API changed)
+
+- Decoupled the component architecture and specification documentation from React so the design-system component contract is framework-neutral, as groundwork for supporting Angular, Vue, and Web Components alongside React.
+  - Source: repository documentation and user-directed architecture decision; no Figma node is involved
+  - Previous: `docs/component-architecture.md` and `docs/component-specifications.md` placed "React implementation" inside the specification authority chain and repeatedly presented React syntax (JSX examples, TypeScript prop interfaces) as the thing to synchronize against, with no documented layer between design tokens and React; `docs/roadmap.md` had no multi-framework phase
+  - Current: added a "0. Architecture layers" section to `docs/component-architecture.md` describing the Figma Variables → Design Tokens → Framework-Agnostic Foundations → Component Specifications → Framework Packages layering; relabeled every React-specific example across both documents as the current "reference implementation (React)" rather than the contract itself; added a framework-neutral "Property contract" section to the Button specification as a worked example other components can follow; added `docs/roadmap.md` Phase 13 (Multi-framework expansion) recommending Web Components as the first non-React proof-of-concept package, sequenced after the existing primitive/composite/Storybook phases; added scoping notes to `docs/development-guidelines.md` and `CLAUDE.md` clarifying that `@lumen/ui`/`@lumen/patterns` are Lumen's current framework package, not the source of truth for the component contract; updated `README.md`'s intro, package table, and architecture diagram to the same layering with a link to `docs/component-architecture.md` §0; updated the `React components` step in `docs/figma-sync.md`'s source-of-truth hierarchy and component sync matrix, and the `React Components` step in `docs/design-tokens.md`'s token hierarchy diagram, to read "Framework packages" with the same forward reference
+  - Affects: `docs/component-architecture.md`, `docs/component-specifications.md`, `docs/roadmap.md`, `docs/development-guidelines.md`, `CLAUDE.md`, `README.md`, `docs/figma-sync.md`, `docs/design-tokens.md`, `docs/figma-source.md`
+  - Migration: none — no code, package, or public API changed; `@lumen/ui` remains Lumen's only shipped framework package
+  - Validation: repository-wide search confirms no remaining React-as-authority language in any touched document; existing component contract content (anatomy, variants, states, tokens, accessibility) left unchanged, only reframed
+  - Changeset: none (documentation-only change)
 ### Deprecated
 ### Removed
 ### Fixed

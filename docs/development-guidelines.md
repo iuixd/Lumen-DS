@@ -1,6 +1,8 @@
 # Lumen Development Guidelines
 
 > Engineering standards for the **Lumen Design System**, including token implementation, React component development, Storybook maintenance, testing, accessibility, versioning, and incremental synchronization with Figma.
+>
+> This document covers the current React reference implementation package specifically (`@lumen/ui`, `@lumen/patterns`). It is not the design system's component contract — that is `docs/component-specifications.md`, which is framework-neutral. A future non-React framework package gets its own development-guidelines equivalent; see `docs/component-architecture.md` §0 for the layer diagram.
 
 ## Source
 

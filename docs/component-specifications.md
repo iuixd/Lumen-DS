@@ -48,20 +48,24 @@ Approved component-specific Dev Mode node
     ↓
 Component token definitions
     ↓
-This specification
+This specification                       (framework-neutral contract)
     ↓
-React implementation
-    ↓
+Framework package implementation          (React today; Angular, Vue, and
+    ↓                                       Web Components are future peers,
+    ↓                                       not replacements)
 Storybook and tests
 ```
+
+This specification is the component contract every framework package implements — it does not belong to React or any other single framework. React is currently the only shipped framework package (`@lumen/ui`, `@lumen/patterns`), so today it is also the only place this specification is realized in code; that is a statement about what has been built, not about which layer is authoritative. See `docs/component-architecture.md` §0 for the full layer diagram.
 
 When information conflicts:
 
 1. Approved and published Figma components define visual anatomy and supported variants.
 2. Exported token files define exact machine-readable values.
-3. This document defines behavior, governance, accessibility, and documentation requirements.
+3. This document defines behavior, governance, accessibility, and documentation requirements — independent of framework.
 4. `changelog.md` defines the authorized update scope.
-5. Claude Code must report ambiguity instead of inventing behavior or values.
+5. A framework package's implementation must conform to this specification; if a package's real behavior differs, the package is wrong, not the spec.
+6. Claude Code must report ambiguity instead of inventing behavior or values.
 
 ---
 
@@ -100,7 +104,7 @@ Supported size options.
 Supported interaction and validation states.
 
 ## Properties
-Figma properties and code API.
+Figma properties and the framework-neutral property contract (canonical name, type, and meaning — independent of any single framework's API syntax).
 
 ## Behavior
 Interaction rules, state transitions, layout, and content behavior.
@@ -124,7 +128,7 @@ Required stories, controls, and documentation.
 Unit, accessibility, visual, and integration coverage.
 
 ## Code mapping
-React export, source path, and Code Connect mapping.
+One entry per shipped framework package: export or custom-element name, source path, and Code Connect mapping. React is the only shipped framework package today.
 
 ## Change history
 Component-specific additions, changes, and deprecations.
@@ -452,7 +456,19 @@ Trailing icon
 Full width
 ```
 
-Recommended React API:
+Property contract (framework-neutral — every framework package exposes these, named and typed identically in spirit):
+
+```text
+variant     enum: primary | secondary | tertiary | ghost | link | danger | ai
+size        enum: sm | md | lg
+loading     boolean
+disabled    boolean
+fullWidth   boolean
+leadingIcon renderable content (icon)
+trailingIcon renderable content (icon)
+```
+
+Reference implementation — React (`@lumen/ui`, the only shipped framework package today):
 
 ```ts
 export interface ButtonProps
@@ -597,7 +613,7 @@ Lg
 - Loading must not cause layout shift.
 - Destructive icon buttons require clear context or confirmation.
 
-## Recommended API
+## Reference implementation (React)
 
 ```tsx
 <IconButton
@@ -1661,7 +1677,11 @@ Report changed files, validation results, and unresolved Figma-to-code differenc
 
 ## Figma properties
 
-## React API
+## Property contract
+Framework-neutral property names, types, and meanings.
+
+## Reference implementation (React)
+The current shipped implementation of the property contract above. Add one additional "Reference implementation ([Framework])" section per additional framework package once it ships.
 
 ## Behavior
 

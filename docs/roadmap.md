@@ -417,7 +417,7 @@ Build the stable interaction primitives required by most enterprise applications
 
 - approved Figma component
 - token bindings
-- typed React API
+- typed API in its framework package (React today)
 - semantic HTML
 - keyboard behavior
 - accessibility tests
@@ -888,6 +888,8 @@ Page templates
 Automated releases
 Adoption analytics
 Advanced AI governance patterns
+First additional framework package (Web Components proof of concept)
+Angular and Vue framework packages
 ```
 
 ---
@@ -1204,3 +1206,41 @@ The following require direct Figma Variable exports, repository inspection, or c
 - Storybook deployment status
 
 Do not mark roadmap deliverables complete without evidence.
+
+---
+
+# 28. Phase 13: Multi-framework expansion
+
+## Objective
+
+Support React, Angular, Vue, and future frameworks without treating any single framework's components as the source of truth. Lumen is structured as a framework-agnostic design-system core (tokens, framework-agnostic foundations, component specifications) with separate framework packages implementing that shared contract — see `docs/component-architecture.md` §0 for the full layer diagram.
+
+## Status
+
+```text
+Not started — docs decoupled from React as of 2026-07-12; no non-React package exists yet
+```
+
+## Sequencing
+
+This phase depends on Phases 0–8 (governance, foundations, primitive/composite libraries, Storybook) reaching a stable state in the React reference implementation first. Adding framework packages before the contract itself is stable multiplies the cost of every subsequent Figma-sourced change.
+
+## Deliverables
+
+- [x] Decouple `docs/component-architecture.md` and `docs/component-specifications.md` from React so the component contract is framework-neutral and React is documented as the current reference implementation, not the definition.
+- [ ] Build one additional framework package as a proof of concept: Web Components (chosen over Angular/Vue first because custom elements are natively consumable from both, reducing the total number of adapters ultimately needed, and validate the contract without committing to one framework's idioms).
+- [ ] Validate that the Web Components package can implement the existing Button specification (§5 of `docs/component-specifications.md`) without requiring spec changes.
+- [ ] Decide Storybook strategy for multiple frameworks (separate Storybook instance per framework package vs. one canonical live-example framework with contract-only docs for the rest).
+- [ ] Update `docs/versioning-and-releases.md` so each framework package versions against a shared contract version rather than independently.
+- [ ] Build the Angular framework package.
+- [ ] Build the Vue framework package.
+- [ ] Add a "Framework" column/section to every component specification's Code mapping once more than one framework package exists.
+
+## Exit criteria
+
+- at least one non-React framework package ships a component that conforms to an existing, unmodified component specification
+- the component contract in `docs/component-specifications.md` requires no React-specific language to be understood or implemented by a new framework package
+- Storybook (or its documented equivalent) covers every shipped framework package
+- release process versions framework packages against the shared contract without silent drift
+
+Do not begin building additional framework packages until the docs-only decoupling above is confirmed sufficient — see `docs/changelog.md` for the authorized scope of this phase's current increment.

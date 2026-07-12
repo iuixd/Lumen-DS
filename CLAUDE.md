@@ -28,7 +28,13 @@ packages:
   tier (not defined in the current Figma source). Generated from JSON in
   `packages/tokens/src/*.json` via `packages/tokens/scripts/build.mjs`.
 - `@lumen/ui` — React + TypeScript + Tailwind primitives, composite
-  components, and layout primitives, all built on `@lumen/tokens`.
+  components, and layout primitives, all built on `@lumen/tokens`. This is
+  Lumen's current framework package — see `docs/component-architecture.md`
+  §0: the design tokens, framework-agnostic foundations, and component
+  specifications above it are the actual source of truth for the component
+  contract, not this package. Future framework packages (Angular, Vue, Web
+  Components) implement the same contract; adding one does not make
+  `@lumen/ui` any less canonical for React consumers.
 - `@lumen/patterns` — composed enterprise-SaaS screen patterns (CRUD list,
   settings, auth, dashboard) built entirely from `@lumen/ui`.
 

@@ -1,7 +1,7 @@
 # Lumen Component Architecture
 
 > Canonical component architecture for the **Lumen Design System**.  
-> Figma is the design source of truth. React components, Storybook stories, tests, documentation, and published packages must mirror the approved Figma component model.
+> Figma is the design source of truth. The component contract defined in this document and in `docs/component-specifications.md` — not any single framework package — is what every framework implementation, Storybook story, test, and published package must mirror. React is Lumen's current reference implementation of that contract, not the contract itself; see "0. Architecture layers" below.
 
 ## Source
 
@@ -24,6 +24,38 @@ It exists to ensure that:
 - Claude Code performs incremental updates only
 - component APIs remain stable and predictable
 - enterprise-scale patterns do not become monolithic components
+
+---
+
+# 0. Architecture layers
+
+Lumen is structured as a framework-agnostic design-system core with separate framework packages, so it can support React today and Angular, Vue, or Web Components later without re-deriving the design language per framework.
+
+```text
+Figma Variables
+    ↓
+Design Tokens              (@lumen/tokens — CSS variables, Tailwind preset, typed exports)
+    ↓
+Framework-Agnostic Foundations   (layout, motion, density, and interaction rules that
+    ↓                              apply regardless of implementation framework)
+Component Specifications   (docs/component-specifications.md — anatomy, variants,
+    ↓                        sizes, states, behavior, accessibility, and token
+    ↓                        dependencies, expressed independent of any framework)
+Framework Packages
+    ├── React            (@lumen/ui, @lumen/patterns — current reference implementation)
+    ├── Angular           (not yet built)
+    ├── Vue                (not yet built)
+    └── Web Components      (not yet built)
+```
+
+The shared layers (tokens through component specifications) define the design language and the component contract once. Each framework package implements that same contract using framework-native APIs and idioms — a `variant` or `loading` property means the same thing everywhere, but a React package exposes it as a typed prop, an Angular package as an `@Input()`, and a Web Components package as an HTML attribute.
+
+Consequences for how this repo is read and changed:
+
+- **Figma remains the design source of truth** (§1.1 below) — that does not change.
+- **No framework package is the source of truth for the component contract.** `docs/component-specifications.md` is. A framework package that drifts from the spec is a bug in that package, not a redefinition of the contract.
+- Sections of this document and `docs/component-specifications.md` written in React-specific terms (prop interfaces, JSX examples) describe Lumen's current React reference implementation of the contract, not the contract itself. They are labeled as such.
+- Adding a new framework package means implementing the existing contract, not inventing a new one. It does not require changes to `docs/component-specifications.md` unless the contract itself is incomplete or ambiguous for that framework.
 
 ---
 
@@ -379,29 +411,30 @@ Every published Figma component must include:
 
 # 4. Code architecture
 
-Recommended repository structure:
+Repository structure — one package per framework, all consuming the same tokens and implementing the same component specifications:
 
 ```text
 packages/
-├── tokens/
+├── tokens/            # framework-agnostic: CSS variables, Tailwind preset, typed exports
 │   ├── src/
 │   └── dist/
 │
-├── components/
+├── ui/                 # React reference implementation (current)
 │   ├── src/
 │   │   ├── primitives/
-│   │   ├── composites/
-│   │   ├── enterprise/
-│   │   ├── patterns/
+│   │   ├── composite/
+│   │   ├── layout/
 │   │   ├── hooks/
 │   │   ├── utilities/
 │   │   └── index.ts
 │   ├── tests/
 │   └── package.json
 │
-├── icons/
-│   ├── src/
-│   └── package.json
+├── patterns/            # React composed enterprise patterns (current)
+│
+├── angular/              # future — implements the same component specs
+├── vue/                   # future — implements the same component specs
+├── web-components/         # future — implements the same component specs
 │
 └── storybook/
     ├── stories/
@@ -409,7 +442,7 @@ packages/
     └── .storybook/
 ```
 
-Alternative component-local structure:
+`docs/component-specifications.md` is the contract every package in `packages/` implements; it does not itself belong to any one framework package. A component-local structure inside a given framework package follows that framework's own conventions — for the current React package:
 
 ```text
 button/
@@ -440,7 +473,7 @@ Avoid mixing business logic into foundational components.
 
 ## 4.2 Public exports
 
-Only supported public APIs should be exported from package entry points.
+Only supported public APIs should be exported from package entry points. Illustrated below in the current React package's syntax; each framework package follows its own module and export conventions for the same public surface.
 
 ```ts
 export { Button } from "./primitives/button";
@@ -451,14 +484,14 @@ Do not export internal implementation helpers unless they are intentionally publ
 
 ## 4.3 Styling
 
-Components should use token-backed styles through the project’s approved styling approach.
-
-Allowed:
+Every framework package must use token-backed styles through `@lumen/tokens` (CSS custom properties or the generated Tailwind preset) — never a framework-local color, spacing, or typography system. The specific styling mechanism is framework-dependent; the current React package (`@lumen/ui`) uses:
 
 - CSS custom properties
 - token utilities
 - Tailwind classes mapped to Lumen tokens
 - component variants generated from a typed configuration
+
+A future non-React package may use plain CSS custom properties or a scoped stylesheet instead of Tailwind, as long as it resolves to the same token values.
 
 Avoid:
 
@@ -474,7 +507,7 @@ Avoid:
 
 ## 5.1 Naming
 
-Use PascalCase for React components.
+Every component's canonical name is PascalCase, regardless of framework — this is the name used in Figma, `docs/component-specifications.md`, and Storybook's story hierarchy.
 
 ```text
 Button
@@ -484,7 +517,17 @@ DataGrid
 AIActionButton
 ```
 
-Use camelCase for props.
+Each framework package maps that canonical name to its own idiom:
+
+```text
+React               PascalCase component      Button
+Angular              PascalCase class,          ButtonComponent, selector lumen-button
+                       kebab-case selector
+Vue                   PascalCase component      Button (LumenButton if globally registered)
+Web Components         kebab-case custom element  <lumen-button>
+```
+
+Property names follow the same pattern: a canonical camelCase name in the specification (`isLoading`, `leadingIcon`), mapped to each framework's convention (a React prop, an Angular `@Input()`, a Vue prop, or a Web Components attribute/property pair).
 
 ```text
 isLoading
@@ -672,6 +715,8 @@ Button
 ```
 
 ## 7.5 Suggested API
+
+The properties listed in §7.3 form the framework-neutral contract. Below is the current React reference implementation of that contract; a future Angular, Vue, or Web Components package exposes the same properties through its own idiom.
 
 ```tsx
 <Button
@@ -927,15 +972,16 @@ Examples:
 
 # 13. Figma-to-code mapping
 
-Each published Figma component should map to a code component where possible.
+Each published Figma component should map to one component-specification entry, which in turn maps to one implementation per shipped framework package.
 
-Recommended mapping record:
+Recommended mapping record — one row per framework package that ships the component:
 
 | Field | Description |
 |---|---|
 | Figma component | Published component or component-set name |
 | Node ID | Stable Figma node identifier |
-| Code component | React export name |
+| Framework | React, Angular, Vue, Web Components, ... |
+| Code component | Export name or custom-element tag in that framework package |
 | Source | Repository path |
 | Storybook | Story path |
 | Status | Mapped, partial, pending, deprecated |
@@ -943,16 +989,17 @@ Recommended mapping record:
 
 Use Figma Code Connect for approved production mappings.
 
-Example:
+Example (current React reference implementation — the only shipped framework package today):
 
 ```text
 Figma: Button
+Framework: React
 Code: Button
-Source: packages/components/src/primitives/button/Button.tsx
+Source: packages/ui/src/primitives/button/Button.tsx
 Storybook: Components/Primitives/Button
 ```
 
-Figma and code variant names should match unless a documented platform constraint requires an explicit mapping.
+Figma and code variant names should match unless a documented platform constraint requires an explicit mapping. When a second framework package ships a component, add its own row rather than replacing the React row.
 
 ---
 

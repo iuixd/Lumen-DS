@@ -818,8 +818,8 @@ Semantic Tokens
         ↓
 Component Tokens
         ↓
-React Components
-        ↓
+Framework Packages     (React today; Angular, Vue, and Web Components as they
+        ↓                ship — see `docs/component-architecture.md` §0)
 Storybook
         ↓
 Applications

@@ -1,6 +1,6 @@
 # Lumen Design System
 
-Lumen is the shared design language and implementation system for Lumen products. It provides design tokens, accessible React components, layout primitives, and reusable enterprise application patterns.
+Lumen is the shared design language and implementation system for Lumen products. It provides design tokens, framework-agnostic component specifications, layout primitives, and reusable enterprise application patterns. React is Lumen's current framework package — see [Architecture](#architecture) below — with Angular, Vue, and Web Components planned as peers, not replacements.
 
 [![CI](https://github.com/iuixd/Lumen-DS/actions/workflows/ci.yml/badge.svg)](https://github.com/iuixd/Lumen-DS/actions/workflows/ci.yml)
 [![Storybook deployment](https://github.com/iuixd/Lumen-DS/actions/workflows/deploy-storybook.yml/badge.svg)](https://github.com/iuixd/Lumen-DS/actions/workflows/deploy-storybook.yml)
@@ -41,7 +41,7 @@ Use Storybook to:
 | Package | Contents | Current delivery model |
 |---|---|---|
 | `@lumen/tokens` | Color, typography, spacing, and radius tokens. Generated CSS variables, a Tailwind preset, and typed TypeScript exports. | Built output consumed from this repository |
-| `@lumen/ui` | React, TypeScript, and Tailwind primitives, composite components, and layout primitives. | TypeScript source consumed from this repository |
+| `@lumen/ui` | React, TypeScript, and Tailwind primitives, composite components, and layout primitives. Lumen's current framework package — see [Architecture](#architecture). | TypeScript source consumed from this repository |
 | `@lumen/patterns` | Composed enterprise screens built from `@lumen/ui`, including CRUD, settings, authentication, and dashboard patterns. | TypeScript source consumed from this repository |
 | `@lumen/storybook` | Interactive component and pattern documentation with controls, usage code, themes, and accessibility tooling. | Private; deployed as static documentation |
 
@@ -49,19 +49,28 @@ Lumen does not currently define an elevation or shadow token tier because it is 
 
 ## Architecture
 
+Lumen is a framework-agnostic design-system core with separate framework packages, so it does not treat any one framework's components as the source of truth:
+
 ```text
 Approved Figma source
         ↓
-  @lumen/tokens
-        ↓
-     @lumen/ui
-        ↓
-  @lumen/patterns
+  @lumen/tokens                  (framework-agnostic: CSS variables,
+        ↓                          Tailwind preset, typed exports)
+Framework-agnostic foundations
+  and component specifications   (docs/component-specifications.md —
+        ↓                          the component contract itself)
+Framework packages
+   ├── React    → @lumen/ui, @lumen/patterns   (current reference implementation)
+   ├── Angular  → not yet built
+   ├── Vue      → not yet built
+   └── Web Components → not yet built
         ↓
 Product applications
 
-Tokens + UI + patterns → Storybook
+Tokens + framework packages → Storybook
 ```
+
+`@lumen/ui` and `@lumen/patterns` are Lumen's current — and only shipped — framework package, not the definition of a Lumen component. See [docs/component-architecture.md](docs/component-architecture.md) §0 for the full layer diagram and rationale, and [docs/roadmap.md](docs/roadmap.md) Phase 13 for the multi-framework expansion plan.
 
 The canonical design foundation is **Lumen DS 2027**, page **Design Tokens**. Source identifiers and the authority hierarchy are maintained in [docs/figma-source.md](docs/figma-source.md).
 
