@@ -1,5 +1,7 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Icon, type IconProps } from "./Icon";
+import { Input } from "./Input";
 import { iconRegistry } from "../icons/generated/registry";
 
 const meta = {
@@ -27,16 +29,46 @@ export const Playground: Story = {
   render: (args: IconProps) => <Icon {...args} className="size-6 text-[var(--color-text-title)]" />
 };
 
+const allIconNames = Object.keys(iconRegistry);
+
+function AllIconsGrid() {
+  const [query, setQuery] = useState("");
+  const filtered = query.trim()
+    ? allIconNames.filter((name) => name.includes(query.trim().toLowerCase()))
+    : allIconNames;
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between gap-4">
+        <Input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search icons by name…"
+          aria-label="Search icons by name"
+          className="max-w-xs"
+        />
+        <span className="text-label-sm text-[var(--color-text-muted)]">
+          {filtered.length} of {allIconNames.length} icons
+        </span>
+      </div>
+      {filtered.length === 0 ? (
+        <p className="text-body-md text-[var(--color-text-muted)]">No icons match “{query}”.</p>
+      ) : (
+        <div className="grid grid-cols-6 gap-4">
+          {filtered.map((name) => (
+            <div key={name} className="flex flex-col items-center gap-2 rounded-md border border-[var(--color-border-default)] p-3">
+              <Icon name={name} className="size-6 text-[var(--color-text-title)]" />
+              <span className="text-label-sm text-[var(--color-text-muted)]">{name}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export const AllIcons: Story = {
   parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="grid grid-cols-6 gap-4">
-      {Object.keys(iconRegistry).map((name) => (
-        <div key={name} className="flex flex-col items-center gap-2 rounded-md border border-[var(--color-border-default)] p-3">
-          <Icon name={name} className="size-6 text-[var(--color-text-title)]" />
-          <span className="text-label-sm text-[var(--color-text-muted)]">{name}</span>
-        </div>
-      ))}
-    </div>
-  )
+  render: () => <AllIconsGrid />
 };

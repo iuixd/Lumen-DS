@@ -25,6 +25,7 @@ export * from "./composite/Pagination";
 export * from "./composite/FormField";
 export * from "./composite/EmptyState";
 export * from "./composite/Toast";
+export * from "./composite/SplitButton";
 
 // Layout
 export * from "./layout/Container";

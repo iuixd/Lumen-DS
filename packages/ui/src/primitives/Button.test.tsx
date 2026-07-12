@@ -45,6 +45,19 @@ describe("Button", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
+  it("hides the label visually while loading but keeps it in the accessible name", () => {
+    // Previously only iconOnly buttons hid their label during loading — a regular
+    // button would show the spinner AND the label text side by side, and the
+    // fix for that (dropping the label from the DOM outright) would have made a
+    // loading "Save changes" button announce no accessible name at all. It must
+    // stay in the DOM as visually-hidden text, not disappear.
+    render(<Button isLoading>Save changes</Button>);
+    const button = screen.getByRole("button", { name: "Save changes" });
+    const label = screen.getByText("Save changes");
+    expect(button).toContainElement(label);
+    expect(label).toHaveClass("sr-only");
+  });
+
   it("warns in dev when an iconOnly button has no accessible name", () => {
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     render(<Button iconOnly>{"✕"}</Button>);
@@ -88,4 +101,39 @@ describe("Button", () => {
       expect(className).toMatch(/\btext-neutral-white\b/);
     }
   );
+
+  it("gives the raised variant an elevation shadow, distinguishing it from flat primary", () => {
+    render(<Button variant="raised">Save changes</Button>);
+    const className = screen.getByRole("button", { name: "Save changes" }).className;
+    // Must be the arbitrary-property form `[box-shadow:var(...)]`, not
+    // `shadow-[var(...)]` — Tailwind's `shadow-*` utility misreads a bare
+    // `var(...)` arbitrary value as a shadow *color*, not the full shadow,
+    // silently dropping the real shadow and falling back to Tailwind's
+    // generic default `.shadow` shape instead.
+    expect(className).toMatch(/\[box-shadow:var\(--shadow-button-default\)\]/);
+    expect(className).not.toMatch(/\bshadow-\[var\(--shadow-button-default\)\]/);
+  });
+
+  it("applies rounded-full for the pill modifier regardless of variant", () => {
+    render(<Button pill>Save changes</Button>);
+    const className = screen.getByRole("button", { name: "Save changes" }).className;
+    expect(className).toMatch(/\brounded-full\b/);
+  });
+
+  it("gives icon-only primary buttons a persistent border that regular primary buttons don't have", () => {
+    render(
+      <Button iconOnly aria-label="Search">
+        {"✕"}
+      </Button>
+    );
+    const iconOnlyClassName = screen.getByRole("button", { name: "Search" }).className;
+    render(<Button>Save changes</Button>);
+    const regularClassName = screen.getByRole("button", { name: "Save changes" }).className;
+    // Primary also carries `focus-visible:border-[var(--color-brand-border)]` (the
+    // border that appears only on focus) — match the unprefixed, always-on class
+    // specifically, not that conditional one, to actually distinguish the two.
+    const alwaysOnBorder = /(?<![-:\w])border-\[var\(--color-brand-border\)\]/;
+    expect(iconOnlyClassName).toMatch(alwaysOnBorder);
+    expect(regularClassName).not.toMatch(alwaysOnBorder);
+  });
 });
