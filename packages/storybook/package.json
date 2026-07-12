@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Interactive showcase for @lumen/ui and @lumen/patterns — live component rendering, variant controls, and auto-generated usage code for product teams building on Lumen.",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "type": "module",
   "scripts": {
     "storybook": "storybook dev -p 6006",

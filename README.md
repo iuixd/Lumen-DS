@@ -201,4 +201,4 @@ The `docs/` directory is the authoritative knowledge base. Key references includ
 
 ## License
 
-This repository is proprietary and confidential. External copying, distribution, or use requires prior written permission from Lumen. See [LICENSE](LICENSE) for the governing terms.
+Licensed under the [Apache License, Version 2.0](LICENSE). You may use, modify, and redistribute this repository's contents under the terms of that license, including its NOTICE and attribution requirements.
