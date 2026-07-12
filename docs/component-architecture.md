@@ -44,7 +44,7 @@ Component Specifications   (docs/component-specifications.md — anatomy, varian
 Framework Packages
     ├── React            (@lumen/ui, @lumen/patterns — reference implementation)
     ├── Web Components     (@lumen/web-components — proof of concept, Button only)
-    ├── Angular           (not yet built)
+    ├── Angular           (@lumen/angular — proof of concept, Button only, Angular 20 LTS)
     └── Vue                (not yet built)
 ```
 
@@ -433,7 +433,7 @@ packages/
 ├── patterns/            # React composed enterprise patterns (current)
 │
 ├── web-components/       # Lit — proof of concept (Button only)
-├── angular/                # future — implements the same component specs
+├── angular/                # standalone components, Angular 20 LTS — proof of concept (Button only)
 ├── vue/                     # future — implements the same component specs
 │
 └── storybook/
@@ -521,7 +521,7 @@ Each framework package maps that canonical name to its own idiom:
 
 ```text
 React               PascalCase component      Button
-Angular              PascalCase class,          ButtonComponent, selector lumen-button
+Angular              PascalCase class,          LumenButtonComponent, selector lumen-button
                        kebab-case selector
 Vue                   PascalCase component      Button (LumenButton if globally registered)
 Web Components         kebab-case custom element  <lumen-button>
@@ -996,7 +996,7 @@ Recommended mapping record — one row per framework package that ships the comp
 
 Use Figma Code Connect for approved production mappings.
 
-Example — two framework packages now ship Button, so it gets two rows, not one replaced by the other:
+Example — three framework packages now ship Button, so it gets three rows, not one replaced by the others:
 
 ```text
 Figma: Button
@@ -1010,9 +1010,15 @@ Framework: Web Components
 Code: lumen-button (custom element)
 Source: packages/web-components/src/button/lumen-button.ts
 Storybook: not covered — see packages/web-components/README.md
+
+Figma: Button
+Framework: Angular
+Code: LumenButtonComponent (selector: lumen-button)
+Source: packages/angular/src/button/lumen-button.ts
+Storybook: not covered — see packages/angular/README.md
 ```
 
-Figma and code variant names should match unless a documented platform constraint requires an explicit mapping. Note: as of 2026-07-12 the React and Web Components rows above both match each other and the real shipped behavior, but do **not** match `docs/component-specifications.md` §5's written variant list — see `docs/roadmap.md` Phase 13 Findings for the discrepancy and why it wasn't fixed here.
+Figma and code variant names should match unless a documented platform constraint requires an explicit mapping. All three rows above match each other, the real shipped behavior, and `docs/component-specifications.md` §5 — that spec was reconciled against the real implementation on 2026-07-12, see `docs/roadmap.md` Phase 13 Findings for the history.
 
 ---
 

@@ -21,7 +21,7 @@ confirm vs. implement directly) — read it rather than re-deriving it here.
 The single source of truth for Lumen's design tokens, UI components, layout
 primitives, and enterprise patterns. Tokens are derived from the
 `Lumen-DS-2027` Figma file (page "Design Tokens"); see `docs/figma-sync.md`
-for exactly which nodes and what's still provisional. Published as four
+for exactly which nodes and what's still provisional. Published as six
 packages:
 
 - `@lumen/tokens` — color, typography, spacing, radius. No shadow/elevation
@@ -29,25 +29,32 @@ packages:
   `packages/tokens/src/*.json` via `packages/tokens/scripts/build.mjs`.
 - `@lumen/ui` — React + TypeScript + Tailwind primitives, composite
   components, and layout primitives, all built on `@lumen/tokens`. This is
-  Lumen's current framework package — see `docs/component-architecture.md`
+  Lumen's React framework package — see `docs/component-architecture.md`
   §0: the design tokens, framework-agnostic foundations, and component
   specifications above it are the actual source of truth for the component
-  contract, not this package. Future framework packages (Angular, Vue, Web
-  Components) implement the same contract; adding one does not make
-  `@lumen/ui` any less canonical for React consumers.
+  contract, not this package. `@lumen/web-components` and `@lumen/angular`
+  implement the same contract for their frameworks; adding them does not
+  make `@lumen/ui` any less canonical for React consumers. Vue is the only
+  planned framework package not yet built.
 - `@lumen/patterns` — composed enterprise-SaaS screen patterns (CRUD list,
   settings, auth, dashboard) built entirely from `@lumen/ui`.
 - `@lumen/web-components` — framework-agnostic custom elements built with
   Lit, implementing the same component specifications as `@lumen/ui`.
   Proof-of-concept package, currently Button only — see
-  `packages/web-components/README.md`, including a known discrepancy
-  between the real `Button.tsx` and `docs/component-specifications.md` §5
-  that this package's existence surfaced but did not fix.
+  `packages/web-components/README.md`.
+- `@lumen/angular` — Angular standalone components targeting Angular 20 LTS
+  (not the latest major — see the package README for the TypeScript-version
+  reason), implementing the same component specifications. Proof-of-concept
+  package, currently Button only — see `packages/angular/README.md`,
+  including a documented Vitest/JIT testing constraint that shaped an
+  implementation choice (classic `@Input()` decorators, not signal
+  `input()`) worth reading before adding more components to this package.
 
 `packages/storybook` is the live showcase of `@lumen/tokens`, `@lumen/ui`,
 and `@lumen/patterns` — one page per component with controls and
 auto-generated usage code, plus MDX pages for the patterns.
-`@lumen/web-components` is not yet covered (see `docs/roadmap.md` Phase 13).
+`@lumen/web-components` and `@lumen/angular` are not yet covered (see
+`docs/roadmap.md` Phase 13).
 Run it with `pnpm storybook`. See "Component checklist" below.
 
 ## Documentation system
@@ -134,10 +141,12 @@ before closing any of them.
 ## Repo map
 
 ```
-packages/tokens/    design tokens (source of truth: src/*.json)
-packages/ui/        components (primitives, composite, layout) + colocated *.stories.tsx
-packages/patterns/  composed enterprise screen patterns + colocated *.stories.tsx / *.mdx
-packages/storybook/ the showcase app — Storybook config only, no component source
+packages/tokens/         design tokens (source of truth: src/*.json)
+packages/ui/             React components (primitives, composite, layout) + colocated *.stories.tsx
+packages/patterns/       composed enterprise screen patterns + colocated *.stories.tsx / *.mdx
+packages/web-components/ Lit custom elements — proof of concept, Button only
+packages/angular/        Angular standalone components — proof of concept, Button only
+packages/storybook/      the showcase app — Storybook config only, no component source, React only
 docs/               governance system: figma sync, tokens, components,
                     accessibility, Storybook, release process, doc style —
                     see "Documentation system" above for the full index

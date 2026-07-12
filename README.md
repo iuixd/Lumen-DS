@@ -44,7 +44,8 @@ Use Storybook to:
 | `@lumen/ui` | React, TypeScript, and Tailwind primitives, composite components, and layout primitives. Lumen's React framework package — see [Architecture](#architecture). | TypeScript source consumed from this repository |
 | `@lumen/patterns` | Composed enterprise screens built from `@lumen/ui`, including CRUD, settings, authentication, and dashboard patterns. | TypeScript source consumed from this repository |
 | `@lumen/web-components` | Framework-agnostic custom elements built with Lit. Proof of concept — Button only. | TypeScript source consumed from this repository |
-| `@lumen/storybook` | Interactive component and pattern documentation with controls, usage code, themes, and accessibility tooling. React components only — `@lumen/web-components` isn't covered yet. | Private; deployed as static documentation |
+| `@lumen/angular` | Angular standalone components, targeting Angular 20 LTS. Proof of concept — Button only. | TypeScript source consumed from this repository |
+| `@lumen/storybook` | Interactive component and pattern documentation with controls, usage code, themes, and accessibility tooling. React components only — `@lumen/web-components` and `@lumen/angular` aren't covered yet. | Private; deployed as static documentation |
 
 Lumen does not currently define an elevation or shadow token tier because it is not present in the approved Figma foundation source. See [Figma synchronization](docs/figma-sync.md) for verified sources and provisional areas.
 
@@ -63,15 +64,15 @@ Framework-agnostic foundations
 Framework packages
    ├── React           → @lumen/ui, @lumen/patterns      (reference implementation)
    ├── Web Components  → @lumen/web-components            (proof of concept, Button only)
-   ├── Angular         → not yet built
+   ├── Angular         → @lumen/angular                    (proof of concept, Button only, Angular 20 LTS)
    └── Vue             → not yet built
         ↓
 Product applications
 
-Tokens + framework packages → Storybook (React only; Web Components not yet covered)
+Tokens + framework packages → Storybook (React only; Web Components and Angular not yet covered)
 ```
 
-`@lumen/ui` and `@lumen/patterns` are Lumen's reference implementation, not the definition of a Lumen component — `docs/component-specifications.md` is. `@lumen/web-components` is an early proof of concept covering one component; building it surfaced that the written Button specification doesn't actually match what `@lumen/ui` ships, so treat both packages' real source as more current than the specification doc until that's reconciled (see [docs/roadmap.md](docs/roadmap.md) Phase 13 Findings). See [docs/component-architecture.md](docs/component-architecture.md) §0 for the full layer diagram and rationale.
+`@lumen/ui` and `@lumen/patterns` are Lumen's reference implementation, not the definition of a Lumen component — `docs/component-specifications.md` is. `@lumen/web-components` and `@lumen/angular` are early proofs of concept covering one component each; building the first of them surfaced that the written Button specification didn't actually match what `@lumen/ui` shipped, which has since been reconciled (see [docs/roadmap.md](docs/roadmap.md) Phase 13 Findings). See [docs/component-architecture.md](docs/component-architecture.md) §0 for the full layer diagram and rationale.
 
 The canonical design foundation is **Lumen DS 2027**, page **Design Tokens**. Source identifiers and the authority hierarchy are maintained in [docs/figma-source.md](docs/figma-source.md).
 

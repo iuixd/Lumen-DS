@@ -1218,9 +1218,11 @@ Support React, Angular, Vue, and future frameworks without treating any single f
 ## Status
 
 ```text
-In progress — Web Components proof of concept shipped (Button only) as of 2026-07-12.
-The docs/implementation discrepancy it surfaced was reconciled the same day
-(see Findings below). Angular/Vue framework packages not yet started.
+In progress — Web Components proof of concept shipped (Button only) 2026-07-12.
+Docs/implementation discrepancy reconciled the same day (see Findings below).
+Angular proof of concept (Button only) shipped 2026-07-12 as @lumen/angular,
+targeting Angular 20 LTS (not latest 22 — see package README for the
+TypeScript-version reason). Vue framework package not yet started.
 ```
 
 ## Sequencing
@@ -1234,7 +1236,7 @@ This phase depends on Phases 0–8 (governance, foundations, primitive/composite
 - [x] Attempt to validate that the Web Components package can implement the existing Button specification (§5 of `docs/component-specifications.md`) without requiring spec changes — **result: it could not**, because the spec itself doesn't match the real React implementation. See Findings below.
 - [ ] Decide Storybook strategy for multiple frameworks (separate Storybook instance per framework package vs. one canonical live-example framework with contract-only docs for the rest). Deliberately deferred — out of scope for a one-component proof of concept.
 - [ ] Update `docs/versioning-and-releases.md` so each framework package versions against a shared contract version rather than independently.
-- [ ] Build the Angular framework package.
+- [x] Build the Angular framework package (Button only, proof of concept). Shipped as `@lumen/angular`, standalone components, Angular 20 LTS. See `packages/angular/README.md` — including a documented JIT/Vitest testing constraint that shaped an implementation choice (classic `@Input()` decorators, not signal `input()`).
 - [ ] Build the Vue framework package.
 - [ ] Add a "Framework" column/section to every component specification's Code mapping once more than one framework package exists.
 - [x] Reconcile `docs/component-specifications.md` §5 (Button) and `docs/component-architecture.md` §7 against the real `Button.tsx`/`Button.stories.tsx`/`Button.test.tsx` — done 2026-07-12, see Findings.
@@ -1251,11 +1253,13 @@ Building the Web Components Button surfaced that `docs/component-specifications.
 
 `@lumen/web-components`'s Button was built to match the real React implementation, not the docs, since matching neither would have defeated the point of a cross-framework consistency check. `docs/component-specifications.md` §5 and `docs/component-architecture.md` §7 (which duplicated the same variant/property list) were then reconciled against `Button.tsx` directly — both now match the real, shipped, Figma-cited implementation.
 
+Building `@lumen/angular` surfaced a separate, tooling-level finding (not a spec discrepancy): Angular's JIT compiler cannot recognize signal-based `input()`/`output()` fields when components are transformed by plain esbuild (what Vitest uses) instead of a real Angular/TypeScript compiler pipeline — see `packages/angular/README.md` for the full explanation and `angular/angular#54013`. The fix (classic `@Input()` decorators instead of signal inputs) kept this package's tooling as light as `@lumen/ui` and `@lumen/web-components`, avoiding a dependency on `@angular/build`/`@analogjs/vite-plugin-angular`. Apply the same check before building the Vue package: verify Vue's Vitest/testing story doesn't have an equivalent gap before assuming the same lightweight approach works there too.
+
 ## Exit criteria
 
-- [x] at least one non-React framework package ships a component that conforms to an existing, unmodified component specification — met as of the reconciliation above; the Web Components package predates it and was validated retroactively against the corrected spec, not the other way around
+- [x] at least one non-React framework package ships a component that conforms to an existing, unmodified component specification — met; both `@lumen/web-components` and `@lumen/angular` now ship a Button matching the reconciled spec
 - [x] the component contract in `docs/component-specifications.md` requires no React-specific language to be understood or implemented by a new framework package, and its content matches the real shipped component
 - [ ] Storybook (or its documented equivalent) covers every shipped framework package — deferred, see Deliverables
 - [ ] release process versions framework packages against the shared contract without silent drift — not yet addressed
 
-Angular and Vue framework packages may now be started against an accurate Button specification. Apply the same real-source verification (Figma node + actual component/test/story files, not assumed prior docs) to each additional component before or as it's ported to a new framework — the Button discrepancy is exactly the failure mode this phase exists to catch early.
+The Vue framework package may now be started against an accurate Button specification. Apply the same real-source verification (Figma node + actual component/test/story files, not assumed prior docs) to each additional component before or as it's ported to a new framework — the Button discrepancy is exactly the failure mode this phase exists to catch early. Also check Vue's Vitest testing story for an equivalent JIT/compiler gap before assuming the Angular package's approach transfers directly.

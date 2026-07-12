@@ -1,0 +1,31 @@
+{
+  "name": "@lumen/angular",
+  "version": "0.1.0",
+  "description": "Lumen Angular — standalone Angular components implementing the same component specifications as @lumen/ui and @lumen/web-components. Proof-of-concept package; currently ships Button only. See docs/roadmap.md Phase 13.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "sideEffects": false,
+  "peerDependencies": {
+    "@angular/core": "^20.0.0",
+    "@angular/common": "^20.0.0"
+  },
+  "dependencies": {
+    "@lumen/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@angular/core": "^20.3.26",
+    "@angular/common": "^20.3.26",
+    "@angular/compiler": "^20.3.26",
+    "@angular/platform-browser": "^20.3.26",
+    "typescript": "^5.8.0",
+    "@types/node": "^20.14.15",
+    "vitest": "^2.0.5",
+    "jsdom": "^25.0.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  }
+}
