@@ -1,10 +1,316 @@
+/* Storybook-chrome-only typeface for the Docs page title (.sbdocs-title) —
+   not part of @lumen/tokens' Inter/Roboto Mono type scale, so it must load
+   separately rather than through the design system's own font stack. */
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
+/* Storybook-chrome-only typeface for the Docs page code blocks
+   (.docblock-source) — matches the "Tokyo Night" reference screenshot. */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
 @import "@lumen/tokens/css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --lumen-storybook-dark-background: #1e2021;
+}
+
 body {
   background: var(--color-background-default);
   color: var(--color-text-body);
+}
+
+/* Storybook-preview-only override of the light-mode page background —
+   does not touch @lumen/tokens' light.background.default (neutral.white),
+   which every product consuming @lumen/ui still gets.
+   `:not([data-theme="dark"])` (rather than `[data-theme="light"]`) because
+   the theme decorator only sets data-theme when an actual story renders —
+   prose-only docs pages (e.g. Introduction.mdx) never trigger it, leaving
+   the attribute absent entirely. This still resolves those pages to the
+   light override while leaving dark mode's own background untouched. */
+html:not([data-theme="dark"]) body {
+  background: none;
+}
+
+/* Storybook-preview-only override of the dark-mode page background —
+   does not touch @lumen/tokens' dark.background.default (neutral.800,
+   #262626), which every product consuming @lumen/ui still gets. This is
+   what fills the Canvas/Playground box's own iframe body when the toolbar
+   toggle is set to dark, so keep it in sync with `.sbdocs-preview`. */
+[data-theme="dark"] body {
+  background: var(--lumen-storybook-dark-background);
+}
+
+/* @storybook/blocks' DocsPage wraps content in `.sbdocs-wrapper` (a
+   stable, documented Storybook class, unlike the hashed `.css-xxxx`
+   Emotion classes) with its own opaque white background — painted on top
+   of `body` above, independent of it and of the theme decorator entirely.
+   `!important` because Storybook's own injected <style> tag can load
+   after this stylesheet, and both rules are single-class specificity. */
+.sbdocs-wrapper {
+  background: #edf0f1 !important;
+}
+
+/* Every H1 within a Docs page — the page title (`.sbdocs-title`) as well
+   as any H1 authored directly in an MDX page (e.g. Introduction.mdx) —
+   scoped to `.sbdocs-wrapper` so it doesn't reach into the separate
+   iframe documents that render actual component/pattern previews.
+   `!important` for the same reason as `.sbdocs-wrapper` above —
+   Storybook's own injected styles can load after this stylesheet. */
+.sbdocs-wrapper h1 {
+  font-family: "Lora", serif !important;
+  font-weight: 400 !important;
+  font-size: 38px !important;
+  color: rgb(46, 52, 56) !important;
+}
+
+/* MDX-authored body copy (e.g. Introduction.mdx, and every pattern's own
+   .mdx docs page — AuthForm.mdx, CrudListPage.mdx, etc.) renders through
+   @storybook/blocks' own default Docs-page typography (an auto-generated
+   Emotion class, ~14px), not through @lumen/tokens — none of it picks up
+   the `body-sm` token. Pull every plain-text content element onto the token
+   (list items, table cells — both raw markdown tables like AuthForm.mdx's
+   Props table and the generated `.docblock-argstable`, and blockquotes,
+   alongside paragraphs) so all Docs-page prose matches the rest of the
+   design system's body text and stays in sync with future changes to
+   `body-sm`. Scoped to `.sbdocs-wrapper` for the same reason as the h1 rule
+   above. Headings and code blocks keep their own distinct sizing set
+   elsewhere in this file. */
+.sbdocs-wrapper p,
+.sbdocs-wrapper li,
+.sbdocs-wrapper td,
+.sbdocs-wrapper th,
+.sbdocs-wrapper blockquote {
+  font-size: var(--text-body-sm-size) !important;
+  line-height: var(--text-body-sm-line-height) !important;
+}
+
+/* `.sbdocs-preview` is the Canvas doc block's own outer card (toolbar +
+   iframe + Show code bar) — the same stable class on every preview
+   section across every docs page, so these rules cover all of them.
+   `data-preview-theme` (set by PreviewThemeSync.tsx, not the theme
+   decorator) is required here because this element lives in the outer
+   Docs-page document, which the decorator never touches — see
+   PreviewThemeSync.tsx for why. Defaults to white when the toggle hasn't
+   fired yet (e.g. before the sync effect's first run). */
+.sbdocs-preview {
+  background-color: #ffffff !important;
+  border: 1px solid #cfd7dc !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+[data-preview-theme="dark"] .sbdocs-preview {
+  background-color: var(--lumen-storybook-dark-background) !important;
+  border-color: #3b4348 !important;
+}
+
+/* Match the Docs Canvas chrome to its dark preview surface. These selectors
+   are gated by the mirrored Storybook global, leaving light mode unchanged. */
+[data-preview-theme="dark"] .sbdocs-preview > div:first-child,
+[data-preview-theme="dark"] .sbdocs-preview .docs-story > div:last-child,
+[data-preview-theme="dark"] .sbdocs-preview .docblock-code-toggle {
+  background: var(--lumen-storybook-dark-background) !important;
+  border-color: #3b4348 !important;
+  color: #ffffff !important;
+}
+
+/* `.docblock-source` is the MDX-authored fenced-code-block card (e.g. the
+   "pnpm add ..." / import snippets on the Introduction page) — Storybook
+   gives it a default `box-shadow` + 4px radius; flatten it to match the
+   outlined, 16px-radius look used for `.sbdocs-preview`/`.docblock-argstable`
+   above. `!important` for the same reason as those — Storybook's own
+   injected <style> tag can load after this stylesheet. */
+.docblock-source {
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+/* Storybook otherwise supplies a separate near-black color for expanded
+   source blocks. Keep every dark Docs surface on the same standard color.
+   `color` here only reaches plain/unhighlighted text — Prism's own
+   `.token.*` spans (keyword/string/function/punctuation) carry their own,
+   more specific color rules that this doesn't override, and those were
+   tuned for a white background: `.token.function`/`.token.punctuation` in
+   particular are a near-black gray that goes illegible once the card
+   behind them turns dark. Fixed explicitly per token class below instead
+   of trying to flatten everything through inheritance.
+   `> div:last-child` is the Copy button's own wrapper div (a second,
+   unstyled hashed-class sibling next to the code's scroll-area div) — its
+   hardcoded white background was left showing through .docblock-source's
+   rounded corner as a stray white fleck once everything around it went
+   dark, hence targeting it structurally like `.docs-story > div:last-child`
+   above rather than by its unstable `.css-xxxx` class name. */
+[data-preview-theme="dark"] .docblock-source,
+[data-preview-theme="dark"] .docblock-source pre,
+[data-preview-theme="dark"] .docblock-source button,
+[data-preview-theme="dark"] .docblock-source > div:last-child {
+  background: var(--lumen-storybook-dark-background) !important;
+  color: #c0caf5 !important;
+}
+
+/* Code-block text only (not the card background/border above, which stays
+   as-is). Roboto Mono at normal weight with Chrome's forced grayscale
+   antialiasing reads as thin on Windows (it bypasses ClearType) — restoring
+   native font smoothing plus a heavier, ligature-font-style monospace stack
+   fixes legibility independent of the color choice. Font size/line-height
+   here override Storybook's own default docs theme (13px/19px, not a Lumen
+   token — this is Storybook chrome, like `.sbdocs-wrapper h1` above). */
+.docblock-source pre,
+.docblock-source code {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  -webkit-font-smoothing: auto !important;
+}
+
+/* VS Code "Light+" token colors (the default light theme). */
+.docblock-source .token.keyword {
+  color: #0000ff !important;
+}
+
+.docblock-source .token.string {
+  color: #a31515 !important;
+}
+
+.docblock-source .token.function {
+  color: #795e26 !important;
+}
+
+.docblock-source .token.imports.maybe-class-name {
+  color: #267f99 !important;
+}
+
+/* "Tokyo Night" token colors (the reference screenshot's theme) for dark
+   mode — light mode keeps the VS Code "Light+" colors above unchanged. */
+[data-preview-theme="dark"] .docblock-source .token.keyword {
+  color: #bb9af7 !important;
+}
+
+[data-preview-theme="dark"] .docblock-source .token.string {
+  color: #9ece6a !important;
+}
+
+[data-preview-theme="dark"] .docblock-source .token.function {
+  color: #7aa2f7 !important;
+}
+
+[data-preview-theme="dark"] .docblock-source .token.imports.maybe-class-name {
+  color: #c0caf5 !important;
+}
+
+[data-preview-theme="dark"] .docblock-source .token.punctuation {
+  color: #c0caf5 !important;
+}
+
+[data-preview-theme="dark"] .docblock-source .token.number {
+  color: #ff9e64 !important;
+}
+
+[data-preview-theme="dark"] .docblock-source .token.comment {
+  color: #565f89 !important;
+  font-style: italic;
+}
+
+[data-preview-theme="dark"] .sbdocs-preview > div:first-child button,
+[data-preview-theme="dark"] .sbdocs-preview > div:first-child svg {
+  color: #ffffff !important;
+}
+
+[data-preview-theme="dark"] .sbdocs-preview > div:first-child button:hover,
+[data-preview-theme="dark"] .sbdocs-preview .docblock-code-toggle:hover {
+  background: rgb(255 255 255 / 10%) !important;
+}
+
+/* Keep the Canvas controls flat as well. Storybook's action buttons can
+   inherit elevation from its internal theme; the preview card should rely
+   only on its outline and section dividers. */
+.sbdocs-preview button {
+  box-shadow: none !important;
+  color: #0096b7 !important;
+}
+
+.sbdocs-wrapper a {
+  color: #0096b7 !important;
+}
+
+/* Flatten the Docs Args/Controls table so it reads as an outlined section
+   instead of an elevated card. */
+.docblock-argstable,
+.docblock-argstable table {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.docblock-argstable {
+  --lumen-docs-table-border: #c8d1d4;
+
+  border: 1px solid var(--lumen-docs-table-border) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+/* The Type/Default columns render each value (e.g. "string") as a small
+   pill via a plain `<code>` tag — Storybook's default Docs typography
+   styles bare `<code>` with its own fixed, sub-body font-size independent
+   of the surrounding `<td>`, so it didn't inherit the body-sm bump above
+   even though the cell itself did. */
+.docblock-argstable code {
+  font-size: var(--text-body-sm-size) !important;
+  line-height: var(--text-body-sm-line-height) !important;
+}
+
+.docblock-argstable table,
+.docblock-argstable thead,
+.docblock-argstable tbody,
+.docblock-argstable tr,
+.docblock-argstable th,
+.docblock-argstable td {
+  background: transparent !important;
+  border-color: var(--lumen-docs-table-border) !important;
+}
+
+/* Storybook paints an opaque white overlay while a story or Docs page is
+   preparing. Let the active preview background show through behind its
+   spinner instead. */
+.sb-preparing-story {
+  background-color: transparent !important;
+}
+
+.sb-preparing-docs {
+  background-color: #edf0f1 !important;
+}
+
+.lumen-preview-reload {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #738694;
+  cursor: pointer;
+}
+
+.lumen-preview-reload:hover {
+  background: rgb(0 0 0 / 5%);
+}
+
+.lumen-preview-reload:focus-visible {
+  outline: 2px solid #029cfd;
+  outline-offset: 1px;
+}
+
+.lumen-preview-reload svg {
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
 }

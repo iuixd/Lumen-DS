@@ -1,0 +1,29 @@
+<script>
+  if (new URLSearchParams(window.location.search).get("viewMode") === "docs") {
+    document.documentElement.setAttribute("data-lumen-docs", "");
+  }
+</script>
+
+<style>
+  /* These rules run before the preview bundle, preventing a white first
+     paint and flattening Storybook's temporary Docs skeleton cards. */
+  html[data-lumen-docs],
+  html[data-lumen-docs] body,
+  html[data-lumen-docs] .sb-preparing-docs {
+    background-color: #edf0f1 !important;
+  }
+
+  html[data-lumen-docs] .sb-previewBlock,
+  html[data-lumen-docs] .sb-argstableBlock-body {
+    border: 1px solid #c8d1d4 !important;
+    border-radius: 16px !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  html[data-lumen-docs] .sb-previewBlock,
+  html[data-lumen-docs] .sb-argstableBlock-body tr,
+  html[data-lumen-docs] .sb-argstableBlock-body td {
+    background: transparent !important;
+  }
+</style>

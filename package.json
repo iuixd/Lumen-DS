@@ -7,6 +7,8 @@
   "packageManager": "pnpm@9.7.0",
   "scripts": {
     "build": "pnpm --filter @lumen/tokens build && pnpm -r --filter=!@lumen/tokens run build --if-present",
+    "dev": "pnpm --filter @lumen/storybook storybook",
+    "start": "pnpm --filter @lumen/storybook build-storybook && pnpm dlx serve packages/storybook/storybook-static",
     "typecheck": "pnpm -r --if-present run typecheck",
     "test": "pnpm -r --if-present run test",
     "storybook": "pnpm --filter @lumen/storybook storybook",

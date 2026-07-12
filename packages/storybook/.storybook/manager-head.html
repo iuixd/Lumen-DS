@@ -1,0 +1,55 @@
+<style>
+  /* Sidebar tree states use stable accessibility/data attributes rather than
+     Storybook's generated Emotion class names. */
+  #storybook-explorer-tree [aria-current="page"],
+  #storybook-explorer-tree [data-selected="true"],
+  #storybook-explorer-tree .lumen-sidebar-selected {
+    background-color: #ffffff !important;
+    color: #1e2021 !important;
+  }
+
+  #storybook-explorer-tree a:hover:not([aria-current="page"]),
+  #storybook-explorer-tree [data-item-id]:hover:not([data-selected="true"]):not(.lumen-sidebar-selected) {
+    background-color: #f3f5f6 !important;
+  }
+
+  #storybook-explorer-tree [aria-current="page"]:hover,
+  #storybook-explorer-tree [data-selected="true"]:hover,
+  #storybook-explorer-tree [data-item-id]:has([aria-current="page"]):hover,
+  #storybook-explorer-tree [data-item-id]:has([data-selected="true"]):hover {
+    background-color: #ffffff !important;
+  }
+
+  #storybook-explorer-tree a:focus-visible {
+    outline-color: #0096b7 !important;
+  }
+
+  /* Root-level headings (e.g. "PRIMITIVES", "COMPOSITE") render a
+     decorative expand/collapse chevron before the label. The button
+     itself still toggles on click without it, so hiding the icon is
+     purely visual and only affects data-nodetype="root" rows — nested
+     component/group/story/document rows are untouched. */
+  #storybook-explorer-tree [data-nodetype="root"] svg {
+    display: none;
+  }
+
+  /* Components/groups sitting directly under a root category (e.g.
+     "ButtonGroup" under "Primitives") render a colored type-indicator
+     icon (svg[type="component"|"group"]) in addition to the chevron.
+     Hide only that icon, and only for items whose parent is one of the
+     four top-level categories in the repo map (see CLAUDE.md) — a
+     component nested deeper inside a sub-group keeps its icon so the
+     tree stays legible past the first level. The tree is a flat list
+     (no DOM nesting), so depth has to be matched via data-parent-id
+     rather than a descendant selector. */
+  #storybook-explorer-tree [data-nodetype="component"][data-parent-id="primitives"] svg[type="component"],
+  #storybook-explorer-tree [data-nodetype="component"][data-parent-id="composite"] svg[type="component"],
+  #storybook-explorer-tree [data-nodetype="component"][data-parent-id="layout"] svg[type="component"],
+  #storybook-explorer-tree [data-nodetype="component"][data-parent-id="patterns"] svg[type="component"],
+  #storybook-explorer-tree [data-nodetype="group"][data-parent-id="primitives"] svg[type="group"],
+  #storybook-explorer-tree [data-nodetype="group"][data-parent-id="composite"] svg[type="group"],
+  #storybook-explorer-tree [data-nodetype="group"][data-parent-id="layout"] svg[type="group"],
+  #storybook-explorer-tree [data-nodetype="group"][data-parent-id="patterns"] svg[type="group"] {
+    display: none;
+  }
+</style>
