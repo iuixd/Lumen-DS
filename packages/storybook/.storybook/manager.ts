@@ -8,14 +8,14 @@ addons.setConfig({
   theme: create({
     base: "light",
     brandTitle: "Lumen Design System",
-    brandImage: "./lumen-ds-logo.svg",
+    brandImage: "./Lumen-anim-logo-96.png",
     brandUrl: "./",
     brandTarget: "_self",
     colorSecondary: "#0096B7",
     // Sidebar.tsx uses `theme.background.app` (this key) exclusively for
     // the left navigation panel's background — no other chrome region
     // reads it, so this only recolors the sidebar.
-    appBg: "#EDF0F1",
+    appBg: "#FFFFFF",
     // Layout.tsx's ContentContainer (the Docs/Story page area, to the
     // right of the sidebar) and the addon panel both read
     // `theme.background.content` (this key) — Storybook doesn't expose a

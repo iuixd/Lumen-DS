@@ -38,6 +38,15 @@ Use the following headings for every release:
 
 ### Added
 ### Changed
+
+- Updated the Storybook manager branding and browser metadata.
+  - Source: local Storybook manager; no Figma node is involved
+  - Previous: the sidebar used a combined SVG wordmark on the gray app background, and browser tabs used Storybook's dynamic title and default favicon
+  - Current: the sidebar uses a separate PNG brand mark with live `Lumen Design System` text on a white background; browser tabs use the Lumen title and PNG favicon
+  - Affects: `packages/storybook/.storybook/manager.ts`, `packages/storybook/.storybook/manager-head.html`, `packages/storybook/public/Lumen-anim-logo-96.png`, and `packages/storybook/public/lumen-favicon.png`
+  - Migration: none
+  - Validation: lint, typecheck, 42 tests, token build, and production Storybook build passed; deployed Storybook verification pending
+  - Changeset: none (`@lumen/storybook` is private and no published package API changed)
 ### Deprecated
 ### Removed
 ### Fixed

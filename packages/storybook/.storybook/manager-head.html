@@ -1,4 +1,45 @@
+<link rel="icon" type="image/png" href="./lumen-favicon.png" sizes="32x32" />
+
+<script>
+  const lumenTitle = "Lumen Design System";
+
+  const setLumenTitle = () => {
+    if (document.title !== lumenTitle) {
+      document.title = lumenTitle;
+    }
+  };
+
+  setLumenTitle();
+
+  new MutationObserver(setLumenTitle).observe(document.querySelector("title"), {
+    childList: true
+  });
+</script>
 <style>
+  a:has(img[src$="Lumen-anim-logo-96.png"]) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #1e2021;
+    text-decoration: none;
+  }
+
+  a:has(img[src$="Lumen-anim-logo-96.png"]) img[src$="Lumen-anim-logo-96.png"] {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  a:has(img[src$="Lumen-anim-logo-96.png"])::after {
+    content: "Lumen Design System";
+    color: #1E2021;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    white-space: nowrap;
+  }
+
   /* Sidebar tree states use stable accessibility/data attributes rather than
      Storybook's generated Emotion class names. */
   #storybook-explorer-tree [aria-current="page"],
