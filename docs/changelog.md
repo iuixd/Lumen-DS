@@ -85,6 +85,15 @@ Use the following headings for every release:
   - Migration: none
   - Validation: lint, typecheck, and production Storybook build passed; generated manager bundle uses `./lumen-ds-logo.svg`; deployed URL verification pending
   - Changeset: none (`@lumen/storybook` is private and no published package API changed)
+
+- Fixed the Button specification to match the real, shipped implementation — `docs/component-specifications.md` §5, `docs/component-architecture.md` §7, and `docs/development-guidelines.md` §8.1 all described a Button API that never existed in code.
+  - Source: `packages/ui/src/primitives/Button.tsx`, `Button.stories.tsx`, `Button.test.tsx` (Lumen-DS-2027 node `475:7210`, formerly `466:4365`), cross-checked against `docs/roadmap.md` Phase 13 Findings, which recorded the discrepancy when `@lumen/web-components`'s `<lumen-button>` surfaced it
+  - Previous: docs described variants `primary | secondary | tertiary | ghost | link | danger | ai` (none of `ghost`/`danger`/`ai` exist; `raised` was missing entirely), sizes `sm | md | lg` (missing `xs`), a `fullWidth` property that doesn't exist, icon props named `leadingIcon`/`trailingIcon` instead of the real `iconStart`/`iconEnd`, undocumented `iconOnly`/`pill` modifiers, and optional `Selected`/`Success`/`Error` states that aren't implemented or in the cited Figma source
+  - Current: all three documents now list variants `primary | raised | secondary | tertiary | link`, sizes `xs | sm | md | lg`, the real `iconStart`/`iconEnd`/`iconOnly`/`pill`/`isLoading` property names, and drop the invented `fullWidth` and unimplemented optional states; `docs/component-specifications.md` §5 gained an explicit "Modifiers" subsection for Icon Only/Pill (previously miscategorized as if they were variants) and a note on the `loading`/`isLoading` naming inconsistency between the spec's canonical name and React's actual prop name
+  - Affects: `docs/component-specifications.md`, `docs/component-architecture.md`, `docs/development-guidelines.md`, `docs/roadmap.md` (Phase 13 Findings/Deliverables/Exit criteria updated to reflect the fix), `packages/web-components/README.md` (discrepancy section reframed as resolved history)
+  - Migration: none — documentation-only; no component source changed, since the docs were wrong, not the code
+  - Validation: repository-wide search for the old variant names, `fullWidth`, and `leadingIcon`/`trailingIcon` confirms no remaining references outside this changelog's own history
+  - Changeset: none (documentation-only change)
 ### Migration
 ### Validation
 ```

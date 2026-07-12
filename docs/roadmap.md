@@ -1219,7 +1219,8 @@ Support React, Angular, Vue, and future frameworks without treating any single f
 
 ```text
 In progress — Web Components proof of concept shipped (Button only) as of 2026-07-12.
-Surfaced a real docs/implementation discrepancy in the process; see Findings below.
+The docs/implementation discrepancy it surfaced was reconciled the same day
+(see Findings below). Angular/Vue framework packages not yet started.
 ```
 
 ## Sequencing
@@ -1236,23 +1237,25 @@ This phase depends on Phases 0–8 (governance, foundations, primitive/composite
 - [ ] Build the Angular framework package.
 - [ ] Build the Vue framework package.
 - [ ] Add a "Framework" column/section to every component specification's Code mapping once more than one framework package exists.
-- [ ] Reconcile `docs/component-specifications.md` §5 (Button) against the real `Button.tsx`/`Button.stories.tsx`/`Button.test.tsx` — see Findings.
+- [x] Reconcile `docs/component-specifications.md` §5 (Button) and `docs/component-architecture.md` §7 against the real `Button.tsx`/`Button.stories.tsx`/`Button.test.tsx` — done 2026-07-12, see Findings.
 
 ## Findings
 
-Building the Web Components Button surfaced that `docs/component-specifications.md` §5 does not match what `@lumen/ui`'s `Button.tsx` actually ships:
+Building the Web Components Button surfaced that `docs/component-specifications.md` §5 did not match what `@lumen/ui`'s `Button.tsx` actually ships:
 
-- Docs list variants `primary | secondary | tertiary | ghost | link | danger | ai`. The real component ships `primary | raised | secondary | tertiary | link` — no `ghost`/`danger`/`ai`, and has `raised` instead.
-- Docs list a `fullWidth` property that the real component doesn't implement.
-- Docs name icon props `leadingIcon`/`trailingIcon`; the real component uses `iconStart`/`iconEnd`, plus undocumented `iconOnly` and `pill` modifiers.
+- Docs listed variants `primary | secondary | tertiary | ghost | link | danger | ai`. The real component ships `primary | raised | secondary | tertiary | link` — no `ghost`/`danger`/`ai`, and has `raised` instead.
+- Docs listed a `fullWidth` property that the real component doesn't implement.
+- Docs named icon props `leadingIcon`/`trailingIcon`; the real component uses `iconStart`/`iconEnd`, plus undocumented `iconOnly` and `pill` modifiers.
+- Docs listed sizes `sm | md | lg`; the real component also has `xs`.
+- Docs listed `Selected`/`Success`/`Error` as optional states; none are implemented or in the cited Figma source.
 
-`@lumen/web-components`'s Button was built to match the real React implementation, not the docs — matching neither would have defeated the point of a cross-framework consistency check. This means the Phase 13 exit criterion below ("without requiring spec changes") technically failed for the reason that matters: the spec was already wrong before this phase started, independent of multi-framework work. Reconciling `docs/component-specifications.md` against real component source is a separate, scoped documentation-accuracy task, not done as part of this phase.
+`@lumen/web-components`'s Button was built to match the real React implementation, not the docs, since matching neither would have defeated the point of a cross-framework consistency check. `docs/component-specifications.md` §5 and `docs/component-architecture.md` §7 (which duplicated the same variant/property list) were then reconciled against `Button.tsx` directly — both now match the real, shipped, Figma-cited implementation.
 
 ## Exit criteria
 
-- [x] at least one non-React framework package ships a component that conforms to the real, shipped component behavior — met, against `Button.tsx`, not against the (currently inaccurate) written specification
-- [ ] the component contract in `docs/component-specifications.md` requires no React-specific language to be understood or implemented by a new framework package — the *language* is framework-neutral (see the earlier decoupling pass), but the Button section's actual *content* is inaccurate; not fully met until the reconciliation above happens
+- [x] at least one non-React framework package ships a component that conforms to an existing, unmodified component specification — met as of the reconciliation above; the Web Components package predates it and was validated retroactively against the corrected spec, not the other way around
+- [x] the component contract in `docs/component-specifications.md` requires no React-specific language to be understood or implemented by a new framework package, and its content matches the real shipped component
 - [ ] Storybook (or its documented equivalent) covers every shipped framework package — deferred, see Deliverables
 - [ ] release process versions framework packages against the shared contract without silent drift — not yet addressed
 
-Do not begin building the Angular or Vue framework packages until the `docs/component-specifications.md` reconciliation above is done — building against a spec that's already known to be wrong for one component risks repeating the same discrepancy across every component two more times.
+Angular and Vue framework packages may now be started against an accurate Button specification. Apply the same real-source verification (Figma node + actual component/test/story files, not assumed prior docs) to each additional component before or as it's ported to a new framework — the Button discrepancy is exactly the failure mode this phase exists to catch early.

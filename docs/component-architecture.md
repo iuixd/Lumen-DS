@@ -662,24 +662,31 @@ Not every component needs every state. Unsupported combinations must not be expo
 
 # 7. Button architecture
 
-Button is a foundational primitive and must remain tightly governed.
+Button is a foundational primitive and must remain tightly governed. This
+section is kept in sync with the full specification in
+`docs/component-specifications.md` §5 — that document is authoritative for
+behavior, content, accessibility, and Storybook detail; this section covers
+architecture-level contract shape only. Reconciled against the shipped
+implementation (`packages/ui/src/primitives/Button.tsx`, Lumen-DS-2027 node
+`475:7210`) on 2026-07-12 — see `docs/roadmap.md` Phase 13 Findings.
 
 ## 7.1 Supported variants
 
 ```text
 Primary
+Raised
 Secondary
 Tertiary
-Ghost
 Link
-Danger
-AI
-Icon
 ```
+
+Icon only and Pill are independent modifiers, not variants — see
+`docs/component-specifications.md` §5 "Modifiers".
 
 ## 7.2 Supported sizes
 
 ```text
+Xs
 Sm
 Md
 Lg
@@ -690,11 +697,12 @@ Lg
 ```text
 variant
 size
+iconOnly
+pill
 disabled
 loading
-fullWidth
-leadingIcon
-trailingIcon
+iconStart
+iconEnd
 children
 type
 ```
@@ -716,14 +724,14 @@ Button
 
 ## 7.5 Suggested API
 
-The properties listed in §7.3 form the framework-neutral contract. Below is the current React reference implementation of that contract; a future Angular, Vue, or Web Components package exposes the same properties through its own idiom.
+The properties listed in §7.3 form the framework-neutral contract. Below is the current React reference implementation of that contract; a future Angular, Vue, or Web Components package exposes the same properties through its own idiom. React names the `loading` contract property `isLoading` (see `docs/component-specifications.md` §5 for why that's an inconsistency, not the canonical name).
 
 ```tsx
 <Button
   variant="primary"
   size="md"
-  leadingIcon={<PlusIcon />}
-  loading={false}
+  iconStart={<PlusIcon />}
+  isLoading={false}
   disabled={false}
 >
   Create project
@@ -737,8 +745,7 @@ The properties listed in §7.3 form the framework-neutral contract. Below is the
 - Loading must preserve button width.
 - Icon-only buttons must provide `aria-label`.
 - Link buttons must behave like links when navigation is intended.
-- Danger buttons require clear destructive intent.
-- AI buttons must communicate that the action is AI-assisted and preserve user control.
+- Destructive or irreversible actions require clear intent and, when consequences are significant, confirmation — regardless of which variant presents them.
 
 ---
 

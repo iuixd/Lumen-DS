@@ -314,11 +314,14 @@ All public components must be fully typed.
 ```tsx
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "tertiary" | "ghost" | "danger" | "ai";
-  size?: "sm" | "md" | "lg";
-  loading?: boolean;
+  variant?: "primary" | "raised" | "secondary" | "tertiary" | "link";
+  size?: "xs" | "sm" | "md" | "lg";
+  isLoading?: boolean;
 }
 ```
+
+(Matches the real `Button.tsx` — see `docs/component-specifications.md` §5
+for the full property contract.)
 
 Avoid:
 

@@ -62,27 +62,21 @@ reaching listeners, matching `@lumen/ui`'s `Button` — native `disabled` is
 intentionally not used, for the same keyboard-reachability reason documented
 on the React component.
 
-## Known discrepancy with `docs/component-specifications.md`
+## History: the spec discrepancy this package surfaced
 
-Building this surfaced that §5 (Button) of `docs/component-specifications.md`
-— including the "Property contract" section added when the docs were
-decoupled from React — does not match what `@lumen/ui`'s `Button.tsx` (the
-actual shipped, Figma-sourced implementation) does:
+Building this package originally surfaced that §5 (Button) of
+`docs/component-specifications.md` — including the "Property contract"
+section added when the docs were decoupled from React — didn't match what
+`@lumen/ui`'s `Button.tsx` (the actual shipped, Figma-sourced
+implementation) does: wrong variant names (`ghost`/`danger`/`ai` instead of
+`raised`), an invented `fullWidth` property, and `leadingIcon`/`trailingIcon`
+instead of the real `iconStart`/`iconEnd`. This package was built to match
+the real React implementation, not the inaccurate docs.
 
-- Docs list variants `primary | secondary | tertiary | ghost | link | danger | ai`.
-  The real component ships `primary | raised | secondary | tertiary | link`
-  (no `ghost`, `danger`, or `ai`; has `raised` instead).
-- Docs list a `fullWidth` property. The real component has no such prop.
-- Docs name icon props `leadingIcon`/`trailingIcon`. The real component names
-  them `iconStart`/`iconEnd`, and also has undocumented `iconOnly` and `pill`
-  modifiers.
-
-This package matches the **real React implementation**, not the docs, since
-a Web Components Button that matched neither would defeat the point of a
-cross-framework consistency check. The docs need a separate reconciliation
-pass against `Button.tsx`, `Button.stories.tsx`, and `Button.test.tsx` — not
-done here, since that's a documentation-accuracy fix independent of adding
-Angular/Vue/Web Components support and deserves its own scoped change.
+That discrepancy has since been reconciled — `docs/component-specifications.md`
+§5 and `docs/component-architecture.md` §7 now match `Button.tsx`, and by
+extension match this package too. See `docs/roadmap.md` Phase 13 Findings
+for the full record. Kept here as history, not a live issue.
 
 ## Testing
 

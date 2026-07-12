@@ -313,7 +313,10 @@ Exact color values, aliases, modes, font families, font weights, letter spacing,
 
 ## Status
 
-Baseline specification. Component-specific Figma node verification required.
+Baseline specification, reconciled against the shipped implementation
+(`packages/ui/src/primitives/Button.tsx`, Lumen-DS-2027 node `475:7210`,
+formerly `466:4365`) on 2026-07-12 — see `docs/roadmap.md` Phase 13
+Findings for what was wrong before this reconciliation and why.
 
 ## Purpose
 
@@ -358,18 +361,19 @@ Button
 
 ```text
 Primary
+Raised
 Secondary
 Tertiary
-Ghost
 Link
-Danger
-AI
-Icon
 ```
 
 ### Primary
 
-Use for the highest-priority action in a logical region.
+Use for the highest-priority action in a logical region. Flat fill, no elevation.
+
+### Raised
+
+Same priority and coloring as Primary, with an elevation shadow that increases on hover and settles on press — use when a button needs to visually lift off a busy or low-contrast background.
 
 ### Secondary
 
@@ -379,29 +383,26 @@ Use for important supporting actions.
 
 Use for lower-emphasis actions that still require a visible control boundary or text action treatment.
 
-### Ghost
-
-Use for contextual and low-emphasis actions where a persistent background is unnecessary.
-
 ### Link
 
 Use when the interaction visually resembles a text action. Use a semantic link element when the action navigates.
 
-### Danger
+## Modifiers
 
-Use for destructive or irreversible actions.
+Independent of variant and size:
 
-### AI
+### Icon only
 
-Use for explicit AI-assisted actions such as Summarize, Draft, Explain, Generate, or Extract.
+Renders a square, label-less button sized to just its icon. Figma documents this as its own "Type" (always Primary-styled, always bordered) rather than a variant; in code it's the `{ variant: "primary", iconOnly: true }` compound, and `iconOnly` also works as a general square-shape modifier on other variants. An accessible name (`aria-label` or `aria-labelledby`) is mandatory.
 
-### Icon
+### Pill
 
-Use for compact, recognizable actions. An accessible name is mandatory.
+Fully rounded corners instead of the default radius, independent of variant or size.
 
 ## Sizes
 
 ```text
+Xs
 Sm
 Md
 Lg
@@ -432,62 +433,67 @@ Disabled
 Loading
 ```
 
-Optional states when applicable:
-
-```text
-Selected
-Success
-Error
-```
+No other states are currently implemented. A prior version of this section
+listed Selected/Success/Error as "optional states when applicable" — these
+aren't in the Figma source cited above or the shipped component; if a real
+need for them shows up, add them through the normal Figma-sync flow rather
+than restoring them here speculatively.
 
 ## Properties
 
-Recommended Figma properties:
+Figma properties (per the Button/Icon Button/Pill Button instances on the
+Figma node cited in Status above):
 
 ```text
 Variant
 Size
 State
 Label
+Icon only
+Pill
 Show leading icon
 Leading icon
 Show trailing icon
 Trailing icon
-Full width
 ```
+
+A prior version of this list also included "Full width" — no such property
+exists on the Figma component or the shipped implementation; removed.
 
 Property contract (framework-neutral — every framework package exposes these, named and typed identically in spirit):
 
 ```text
-variant     enum: primary | secondary | tertiary | ghost | link | danger | ai
-size        enum: sm | md | lg
-loading     boolean
-disabled    boolean
-fullWidth   boolean
-leadingIcon renderable content (icon)
-trailingIcon renderable content (icon)
+variant   enum: primary | raised | secondary | tertiary | link
+size      enum: xs | sm | md | lg
+iconOnly  boolean
+pill      boolean
+loading   boolean
+disabled  boolean
+iconStart renderable content (icon)
+iconEnd   renderable content (icon)
 ```
 
-Reference implementation — React (`@lumen/ui`, the only shipped framework package today):
+Reference implementation — React (`@lumen/ui`, `packages/ui/src/primitives/Button.tsx`):
 
 ```ts
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?:
-    | "primary"
-    | "secondary"
-    | "tertiary"
-    | "ghost"
-    | "link"
-    | "danger"
-    | "ai";
-  size?: "sm" | "md" | "lg";
-  loading?: boolean;
-  fullWidth?: boolean;
-  leadingIcon?: React.ReactNode;
-  trailingIcon?: React.ReactNode;
+  variant?: "primary" | "raised" | "secondary" | "tertiary" | "link";
+  size?: "xs" | "sm" | "md" | "lg";
+  iconStart?: React.ReactNode;
+  iconEnd?: React.ReactNode;
+  isLoading?: boolean;
+  iconOnly?: boolean;
+  pill?: boolean;
 }
 ```
+
+React names the `loading` contract property `isLoading` — an inconsistency
+with this document's own naming guidance (`docs/component-architecture.md`
+§5.1: avoid unnecessary `is-` prefixes) that predates the multi-framework
+work and hasn't been fixed in `Button.tsx` itself. `@lumen/web-components`'s
+`<lumen-button>` uses the canonical `loading` name instead — see
+`packages/web-components/README.md`.
 
 ## Behavior
 
@@ -497,8 +503,9 @@ export interface ButtonProps
 - Disabled buttons do not receive interaction.
 - Focus-visible treatment appears for keyboard navigation.
 - Link-styled buttons must use semantic anchors for navigation.
-- Danger actions should use confirmation when consequences are significant.
-- AI actions should clearly indicate generation or processing status.
+- Icon-only buttons resize to a single square per size, replacing the size's normal min-width/padding box model.
+- Pill applies fully-rounded corners regardless of variant or size.
+- Destructive or irreversible actions should use confirmation when consequences are significant, regardless of which variant is used to present them — there is no dedicated "danger" variant today (see Variants above).
 
 ## Content
 
@@ -538,7 +545,7 @@ Button/Focus/Ring/Color
 - Use `<a>` for navigation.
 - Icon-only buttons require `aria-label`.
 - Loading status should be announced when meaningful.
-- Do not rely on color alone for danger or disabled states.
+- Do not rely on color alone for disabled states.
 - Focus must remain visible.
 - Touch target should meet the approved minimum target size.
 - Spinner animation must respect reduced-motion preferences.
@@ -549,21 +556,24 @@ Required stories:
 
 ```text
 Overview
-Variants
+Variants (including Pill)
 Sizes
 States
-Leading Icon
-Trailing Icon
+With Icons
 Icon Only
 Loading
 Disabled
-Full Width
 Long Labels
 Dark Mode
 Keyboard Focus
-AI Actions
 Accessibility
 ```
+
+The current React Storybook (`packages/ui/src/primitives/Button.stories.tsx`)
+covers Playground, All Variants, Pill, Sizes, Icon Only, With Icons (by
+default size and by every size), Loading, and Disabled — Long Labels,
+explicit Dark Mode, and Keyboard Focus stories are still gaps against this
+requirement, not yet false claims corrected by this reconciliation.
 
 ## Testing
 
