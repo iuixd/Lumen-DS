@@ -81,6 +81,15 @@ Use the following headings for every release:
   - Migration: none — no code, package, or public API changed; `@lumen/ui` remains Lumen's only shipped framework package
   - Validation: repository-wide search confirms no remaining React-as-authority language in any touched document; existing component contract content (anatomy, variants, states, tokens, accessibility) left unchanged, only reframed
   - Changeset: none (documentation-only change)
+
+- Themed Storybook's built-in Docs code-block copy button, which previously had no hover/focus affordance in either theme.
+  - Source: user-reported gap against a reference screenshot (interaction pattern only — its colors were explicitly not to be used); no Figma node is involved
+  - Previous: `.docblock-source`'s native copy-to-clipboard button (Storybook's own, not custom-built — click-to-copy and the icon-to-checkmark swap on success are unchanged) had only a base-color fix for dark mode (avoiding a stray white box); no hover or focus-visible state in either theme, so the button gave no interactive feedback until clicked
+  - Current: added a subtle hover/focus surface using Lumen's own `--color-neutral-50` token in light mode and a translucent version of the existing Tokyo Night dark-mode code color in dark mode — idle state still blends into the card (unchanged), matching GitHub's own rendered-code-block copy button behavior (visible by default, subtle highlight on hover, no color/behavior change to the click-to-copy or success-checkmark logic itself, both of which are Storybook's, not this repo's)
+  - Affects: `packages/storybook/.storybook/tailwind.css`
+  - Migration: none
+  - Validation: lint passed; production Storybook build succeeded and the new selectors are present in the built CSS output; not visually verified in a live browser in this session (no browser available in this environment) — recommend a quick visual check via `pnpm storybook` in both themes before considering this fully confirmed
+  - Changeset: none (`@lumen/storybook` is private and no published package API changed)
 ### Deprecated
 ### Removed
 ### Fixed

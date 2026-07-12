@@ -151,6 +151,35 @@ html:not([data-theme="dark"]) body {
   color: #c0caf5 !important;
 }
 
+/* Storybook's built-in copy-to-clipboard button (the same "Copy button's
+   own wrapper div" referenced above) ships with no hover/focus affordance
+   at all — the block above only fixes its base color so it blends into the
+   dark card instead of showing a stray white fleck. Add the missing
+   interactive surface here, GitHub-style (idle state blends into the card;
+   hover/focus reveals a subtle surface — GitHub's own copy button in
+   rendered code blocks behaves the same way), using Lumen's own neutral
+   token in light mode and the same Tokyo Night text color already used for
+   dark-mode code (translucent, tying the hover surface to the established
+   dark palette instead of introducing an unrelated color). Storybook's own
+   click-to-copy handling and its icon swap to a checkmark on success are
+   unchanged — only the idle/hover/focus colors are themed here. */
+.docblock-source > div:last-child button {
+  border-radius: 6px !important;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease !important;
+}
+
+.docblock-source > div:last-child button:hover,
+.docblock-source > div:last-child button:focus-visible {
+  background: var(--color-neutral-50) !important;
+}
+
+[data-preview-theme="dark"] .docblock-source > div:last-child button:hover,
+[data-preview-theme="dark"] .docblock-source > div:last-child button:focus-visible {
+  background: rgba(192, 202, 245, 0.12) !important;
+}
+
 /* Code-block text only (not the card background/border above, which stays
    as-is). Roboto Mono at normal weight with Chrome's forced grayscale
    antialiasing reads as thin on Windows (it bypasses ClearType) — restoring
