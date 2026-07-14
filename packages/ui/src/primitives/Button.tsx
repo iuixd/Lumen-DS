@@ -22,6 +22,19 @@ import { cn } from "../lib/cn";
  * scales with Button `size` (14/16/18/18px for xs/sm/md/lg, the `--spacing-
  * 14`/`--spacing-18` tokens) independently of the `button-*` text scale, see
  * `Button.stories.tsx`'s `WithIcons` story for the sizing per size.
+ *
+ * `status` ("success" | "warning" | "error") is a later addition sourced from
+ * the same component-set's State property, which now includes Success/Error/
+ * Warning alongside the interaction states above (Figma confirmed via
+ * `get_design_context` on the Success/Error/Warning instances for Primary and
+ * Secondary at every size). It's modeled as an independent modifier, not a
+ * `variant` value, because Figma treats it that way: the tinted
+ * surface/text/border replace a variant's own colors while everything else
+ * (border presence, shape) still follows the base `variant`. Only Primary and
+ * Secondary instances were sourced; the override is applied to every variant
+ * on the assumption the same tint is variant-agnostic, consistent with what
+ * Primary vs. Secondary already showed (identical surface/text, border only
+ * where the variant normally has one).
  */
 export const buttonVariants = cva(
   "inline-flex items-center justify-center gap-[var(--spacing-6)] whitespace-nowrap rounded-md border-[1.5px] border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-[var(--color-border-focus)] aria-disabled:pointer-events-none aria-disabled:opacity-60",
@@ -59,6 +72,22 @@ export const buttonVariants = cva(
       /** Figma's "Pill Button" modifier — fully rounded corners, independent of variant/size. */
       pill: {
         true: "rounded-full"
+      },
+      /**
+       * Figma's Success/Error/Warning "State" values — a tinted status override,
+       * independent of `variant`. Figma models State as one mutually-exclusive
+       * enum (a button is never simultaneously Disabled and Success), so there's
+       * no spec for a disabled+status combination; deliberately no `aria-disabled`
+       * override here, so the variant's own disabled (greyed-out) styling applies
+       * unconflicted when both are set.
+       */
+      status: {
+        success:
+          "border-transparent bg-[var(--color-status-success-subtle)] text-[var(--color-status-success-text)] hover:bg-[var(--color-status-success-subtle)] hover:text-[var(--color-status-success-text)] active:bg-[var(--color-status-success-subtle)] active:text-[var(--color-status-success-text)] active:[box-shadow:none] focus-visible:border-transparent",
+        warning:
+          "border-transparent bg-[var(--color-status-warning-subtle)] text-[var(--color-status-warning-text)] hover:bg-[var(--color-status-warning-subtle)] hover:text-[var(--color-status-warning-text)] active:bg-[var(--color-status-warning-subtle)] active:text-[var(--color-status-warning-text)] active:[box-shadow:none] focus-visible:border-transparent",
+        error:
+          "border-transparent bg-[var(--color-status-error-subtle)] text-[var(--color-status-error-text)] hover:bg-[var(--color-status-error-subtle)] hover:text-[var(--color-status-error-text)] active:bg-[var(--color-status-error-subtle)] active:text-[var(--color-status-error-text)] active:[box-shadow:none] focus-visible:border-transparent"
       }
     },
     compoundVariants: [
@@ -72,7 +101,18 @@ export const buttonVariants = cva(
         variant: "primary",
         iconOnly: true,
         class: "border-[var(--color-brand-border)] hover:border-[var(--color-brand-default)] active:border-[var(--color-brand-default)] aria-disabled:border-transparent"
-      }
+      },
+      // Only Secondary (the sole bordered variant Figma actually specced a
+      // Success/Error/Warning instance for) gets a status-tinted border —
+      // Figma's Primary/Success instance has no border at all, matching
+      // Primary's own borderless default look.
+      ...(["secondary"] as const).flatMap((variant) =>
+        (["success", "warning", "error"] as const).map((status) => ({
+          variant,
+          status,
+          class: `border-[var(--color-status-${status}-border)] hover:border-[var(--color-status-${status}-border)] active:border-[var(--color-status-${status}-border)]`
+        }))
+      )
     ],
     defaultVariants: { variant: "primary", size: "md" }
   }
@@ -102,6 +142,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       variant,
       size,
+      status,
       iconStart,
       iconEnd,
       isLoading,
@@ -137,7 +178,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type="button"
         {...props}
-        className={cn(buttonVariants({ variant, size, iconOnly, pill }), className)}
+        className={cn(buttonVariants({ variant, size, iconOnly, pill, status }), className)}
         aria-disabled={isDisabled || undefined}
         aria-busy={isLoading || undefined}
         aria-label={isLoading && iconOnly && !props["aria-label"] ? "Loading" : props["aria-label"]}

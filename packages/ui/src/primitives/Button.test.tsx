@@ -136,4 +136,39 @@ describe("Button", () => {
     expect(iconOnlyClassName).toMatch(alwaysOnBorder);
     expect(regularClassName).not.toMatch(alwaysOnBorder);
   });
+
+  it.each(["success", "warning", "error"] as const)(
+    "applies the %s status tint on top of the primary variant with no border",
+    (status) => {
+      render(<Button status={status}>Save changes</Button>);
+      const className = screen.getByRole("button", { name: "Save changes" }).className;
+      expect(className).toMatch(new RegExp(`\\bbg-\\[var\\(--color-status-${status}-subtle\\)\\]`));
+      expect(className).toMatch(new RegExp(`\\btext-\\[var\\(--color-status-${status}-text\\)\\]`));
+      expect(className).toMatch(/\bborder-transparent\b/);
+    }
+  );
+
+  it.each(["success", "warning", "error"] as const)(
+    "adds a status-colored border for the secondary variant, unlike primary",
+    (status) => {
+      render(
+        <Button variant="secondary" status={status}>
+          Save changes
+        </Button>
+      );
+      const className = screen.getByRole("button", { name: "Save changes" }).className;
+      expect(className).toMatch(new RegExp(`\\bborder-\\[var\\(--color-status-${status}-border\\)\\]`));
+    }
+  );
+
+  it("lets disabled styling win over a status tint when both are set", () => {
+    render(
+      <Button status="success" disabled>
+        Save changes
+      </Button>
+    );
+    const className = screen.getByRole("button", { name: "Save changes" }).className;
+    expect(className).toMatch(/\baria-disabled:bg-neutral-50\b/);
+    expect(className).toMatch(/\baria-disabled:text-neutral-400\b/);
+  });
 });

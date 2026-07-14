@@ -22,7 +22,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Sourced from the Figma 'Buttons' page (Lumen-DS-2027, node 475:7210): Primary, Secondary, Tertiary, Link, Raised (Primary with elevation), each in xs/sm/md/lg, plus the Pill Button shape modifier. The page's Left/Right icon-position instances map to the `iconStart`/`iconEnd` props rather than their own variant — see the WithIcons story. Extend with a new variant/prop instead of creating a new button component — see CONTRIBUTING.md."
+          "Sourced from the Figma 'Buttons' page (Lumen-DS-2027, node 475:7210): Primary, Secondary, Tertiary, Link, Raised (Primary with elevation), each in xs/sm/md/lg, plus the Pill Button shape modifier. The page's Left/Right icon-position instances map to the `iconStart`/`iconEnd` props rather than their own variant — see the WithIcons story. `status` (success/warning/error) is a tinted status override sourced from the same component-set's State property — see the StatusStates story. Extend with a new variant/prop instead of creating a new button component — see CONTRIBUTING.md."
       }
     }
   },
@@ -32,6 +32,7 @@ const meta = {
       options: ["primary", "secondary", "tertiary", "link", "raised"]
     },
     size: { control: "select", options: ["xs", "sm", "md", "lg"] },
+    status: { control: "select", options: [undefined, "success", "warning", "error"] },
     isLoading: { control: "boolean" },
     disabled: { control: "boolean" },
     pill: { control: "boolean" }
@@ -197,6 +198,36 @@ export const Loading: Story = {
       <Button isLoading iconOnly aria-label="Search">
         <SearchIcon className="size-5" />
       </Button>
+    </div>
+  )
+};
+
+export const StatusStates: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-3">
+        <Button variant="primary" status="success">
+          Success
+        </Button>
+        <Button variant="primary" status="warning">
+          Warning
+        </Button>
+        <Button variant="primary" status="error">
+          Error
+        </Button>
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button variant="secondary" status="success">
+          Success
+        </Button>
+        <Button variant="secondary" status="warning">
+          Warning
+        </Button>
+        <Button variant="secondary" status="error">
+          Error
+        </Button>
+      </div>
     </div>
   )
 };

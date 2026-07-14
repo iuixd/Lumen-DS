@@ -85,4 +85,44 @@ describe("SplitButton", () => {
     const container = screen.getByRole("button", { name: "Save changes" }).closest("div");
     expect(container?.className).toMatch(/\brounded-full\b/);
   });
+
+  it.each(["sm", "md", "lg"] as const)("applies the %s size height and text scale", (size) => {
+    render(
+      <SplitButton size={size} dropdownLabel="More save options">
+        Save changes
+      </SplitButton>
+    );
+    const container = screen.getByRole("button", { name: "Save changes" }).closest("div");
+    const heights = { sm: "36", md: "40", lg: "48" };
+    expect(container?.className).toMatch(new RegExp(`\\bh-\\[var\\(--spacing-${heights[size]}\\)\\]`));
+    expect(container?.className).toMatch(new RegExp(`\\btext-button-${size}\\b`));
+  });
+
+  it("defaults to size lg when no size is passed, matching the original single-size behavior", () => {
+    render(<SplitButton dropdownLabel="More save options">Save changes</SplitButton>);
+    const container = screen.getByRole("button", { name: "Save changes" }).closest("div");
+    expect(container?.className).toMatch(/\bh-\[var\(--spacing-48\)\]/);
+  });
+
+  it("gives the outline variant a visible border at rest, using the secondary-scoped tokens", () => {
+    render(
+      <SplitButton variant="outline" dropdownLabel="More save options">
+        Save changes
+      </SplitButton>
+    );
+    const container = screen.getByRole("button", { name: "Save changes" }).closest("div");
+    expect(container?.className).toMatch(/\bborder-\[var\(--color-brand-border-strong\)\]/);
+  });
+
+  it("renders an optional leading icon before the label in the main button", () => {
+    render(
+      <SplitButton dropdownLabel="More save options" iconStart={<span data-testid="icon" />}>
+        Save changes
+      </SplitButton>
+    );
+    const main = screen.getByRole("button", { name: "Save changes" });
+    const icon = screen.getByTestId("icon");
+    expect(main).toContainElement(icon);
+    expect(main.firstElementChild).toBe(icon);
+  });
 });

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { SplitButton } from "./SplitButton";
+import { PlusIcon } from "../icons/generated";
 
 const meta = {
   title: "Composite/SplitButton",
@@ -9,15 +10,16 @@ const meta = {
     docs: {
       description: {
         component:
-          "Sourced from the Figma 'Buttons' page (Lumen-DS-2027, node 555:300): a primary action joined to a dropdown-toggle by a divider. Only Primary, Raised, and Secondary are specced (no Tertiary/Link), and only the `lg` size — there's no `size` prop until Figma specs other sizes."
+          "Sourced from the Figma 'Buttons' page (Lumen-DS-2027, node 555:300): a primary action joined to a dropdown-toggle by a divider. Primary, Raised, Secondary, and Outline are specced (no Tertiary/Link), in sm/md/lg sizes, with an optional leading icon."
       }
     }
   },
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "raised", "secondary"]
+      options: ["primary", "raised", "secondary", "outline"]
     },
+    size: { control: "select", options: ["sm", "md", "lg"] },
     pill: { control: "boolean" },
     isLoading: { control: "boolean" },
     disabled: { control: "boolean" }
@@ -25,6 +27,7 @@ const meta = {
   args: {
     children: "Save changes",
     variant: "primary",
+    size: "lg",
     pill: false,
     isLoading: false,
     disabled: false,
@@ -50,6 +53,26 @@ export const AllVariants: Story = {
       <SplitButton variant="secondary" dropdownLabel="More save options">
         Secondary
       </SplitButton>
+      <SplitButton variant="outline" dropdownLabel="More save options">
+        Outline
+      </SplitButton>
+    </div>
+  )
+};
+
+export const Sizes: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex flex-wrap items-center gap-3">
+      <SplitButton size="sm" dropdownLabel="More save options">
+        Small
+      </SplitButton>
+      <SplitButton size="md" dropdownLabel="More save options">
+        Medium
+      </SplitButton>
+      <SplitButton size="lg" dropdownLabel="More save options">
+        Large
+      </SplitButton>
     </div>
   )
 };
@@ -66,6 +89,27 @@ export const Pill: Story = {
       </SplitButton>
       <SplitButton pill variant="secondary" dropdownLabel="More save options">
         Secondary
+      </SplitButton>
+      <SplitButton pill variant="outline" dropdownLabel="More save options">
+        Outline
+      </SplitButton>
+    </div>
+  )
+};
+
+export const WithIcon: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex flex-wrap items-center gap-3">
+      <SplitButton iconStart={<PlusIcon className="size-4" />} dropdownLabel="More create options">
+        Create
+      </SplitButton>
+      <SplitButton
+        variant="secondary"
+        iconStart={<PlusIcon className="size-4" />}
+        dropdownLabel="More create options"
+      >
+        Create
       </SplitButton>
     </div>
   )
@@ -84,6 +128,9 @@ export const Loading: Story = {
       <SplitButton isLoading variant="secondary" dropdownLabel="More save options">
         Saving
       </SplitButton>
+      <SplitButton isLoading variant="outline" dropdownLabel="More save options">
+        Saving
+      </SplitButton>
     </div>
   )
 };
@@ -99,6 +146,9 @@ export const Disabled: Story = {
         Save changes
       </SplitButton>
       <SplitButton disabled variant="secondary" dropdownLabel="More save options">
+        Save changes
+      </SplitButton>
+      <SplitButton disabled variant="outline" dropdownLabel="More save options">
         Save changes
       </SplitButton>
     </div>

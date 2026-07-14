@@ -1,8 +1,11 @@
 // Primitives
 export * from "./primitives/Button";
+export * from "./primitives/AIButton";
 export * from "./primitives/ButtonGroup";
 export * from "./primitives/TextLink";
 export * from "./primitives/Badge";
+export * from "./primitives/FilterChip";
+export * from "./primitives/ChoiceChip";
 export * from "./primitives/Avatar";
 export * from "./primitives/Input";
 export * from "./primitives/Checkbox";

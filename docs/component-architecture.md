@@ -9,7 +9,7 @@
 - **Dev Mode node:** `426:4395`
 - **Reference:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
 - **Related specification:** `docs/design-tokens.md`
-- **Last reviewed:** 2026-07-12
+- **Last reviewed:** 2026-07-14
 
 ## Purpose
 
@@ -697,6 +697,7 @@ Lg
 ```text
 variant
 size
+status
 iconOnly
 pill
 disabled

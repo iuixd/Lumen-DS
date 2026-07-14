@@ -152,6 +152,115 @@ Example:
 
 ### Added
 
+- Added the `status` (Success/Warning/Error) property to `Button`.
+  - Figma source: Buttons page, node `475:7210` — the component-set's State
+    property now includes Success/Error/Warning instances for Primary and
+    Secondary at every size (confirmed via `get_design_context`); a prior
+    reconciliation on 2026-07-12 had recorded these as not existing in the
+    cited Figma source, which was accurate at the time and is now stale.
+  - Previous: Button supported only Default/Hover/Pressed/Focus/Disabled/
+    Loading; `docs/component-specifications.md` §5 explicitly said no other
+    states were implemented.
+  - Current: `status?: "success" | "warning" | "error"` renders a tinted
+    surface/text override (variant-agnostic) with a status-colored border
+    only on the Secondary variant (the only bordered variant Figma actually
+    specced a status instance for). Added semantic tokens `status.{success,
+    warning,error}-text` and `-border` (surfaces reuse the existing
+    `-subtle` tokens); their dark-mode values use the same index-mirroring
+    rule already documented for `status.success`/`-subtle`.
+  - Affects: `packages/tokens/src/semantic/color.json`, `packages/ui/src/primitives/Button.tsx`, `Button.test.tsx`, `Button.stories.tsx`, `docs/component-specifications.md` §5, `docs/component-architecture.md` §7.3
+  - Migration: none — additive optional prop
+  - Validation: `pnpm --filter @lumen/tokens build` passed; `tsc --noEmit` passed for `@lumen/ui`; 8 new Button tests passed alongside the existing 18
+  - Changeset: `.changeset/button-status-states.md` (`@lumen/tokens` minor, `@lumen/ui` minor)
+
+- Expanded `SplitButton` with `size` (sm/md/lg) and a new `outline` variant, plus an optional leading icon.
+  - Figma source: Buttons page, node `555:300` — the Split Button component
+    set now specs 3 sizes and a 4th type (Outline) in addition to the
+    originally-sourced `lg`-only Primary/Raised/Secondary.
+  - Previous: `SplitButton` had no `size` prop (`lg` only, hardcoded) and
+    only `primary | raised | secondary` variants.
+  - Current: `size?: "sm" | "md" | "lg"` (default `lg`, preserving prior
+    behavior), a fourth `outline` variant (reuses Secondary's text/divider
+    tokens with the border always visible, via the new `brand.border-strong`
+    semantic token), and an optional `iconStart` slot rendered before the
+    label.
+  - Known limitation: Figma's `sm` dropdown-toggle segment is a non-square
+    30px width, which isn't on the approved spacing scale
+    (`docs/design-tokens.md` §4) — shipped as a square 36px segment instead
+    of inventing a new token for one edge case.
+  - Affects: `packages/tokens/src/semantic/color.json` (new `brand.border-strong`), `packages/ui/src/composite/SplitButton.tsx`, `SplitButton.test.tsx`, `SplitButton.stories.tsx`, `docs/component-specifications.md` §43 (new)
+  - Migration: none — `size` defaults to the prior single size; `outline` and `iconStart` are additive
+  - Validation: `pnpm --filter @lumen/tokens build` passed; `tsc --noEmit` passed; 15 SplitButton tests passed (6 new)
+  - Changeset: `.changeset/split-button-expansion.md` (`@lumen/tokens` minor, `@lumen/ui` minor)
+
+- Added `FilterChip` and `ChoiceChip`, two new Selection primitives.
+  - Figma source: Buttons page, nodes `581:409` (Filter Chip) and `581:485`
+    (Choice Chip) — neither existed in `@lumen/ui`, `@lumen/patterns`, or
+    `docs/roadmap.md` before this sync.
+  - Current: both are toggleable pills (`selected`/`disabled` props,
+    `aria-pressed`/`aria-disabled`, `lg` size only — no other size is
+    specced). `FilterChip` shows a leading plus icon that's retained even
+    when selected (confirmed via `get_screenshot`, since that reads as
+    unusual) plus a trailing remove icon once selected. `ChoiceChip` shows
+    no icon by default and a leading check icon once selected. Both reuse
+    existing semantic tokens (`brand.border-strong`, `brand.subtle`,
+    `brand.hover`) with no new tokens required.
+  - Affects: `packages/ui/src/primitives/{FilterChip,ChoiceChip}.tsx` (new), their `.test.tsx`/`.stories.tsx`, `packages/ui/src/index.ts`, `docs/component-specifications.md` §§44–45 (new)
+  - Migration: none — new components
+  - Validation: `tsc --noEmit` passed; 12 new tests passed (7 FilterChip + 5 ChoiceChip)
+  - Changeset: `.changeset/filter-choice-chips.md` (`@lumen/ui` minor)
+
+- Added `AIButton`, a new primitive implementing the Figma "AI Communication Component Library".
+  - Figma source: Buttons page, node `760:1965` — an entirely new section
+    not on `docs/roadmap.md` or referenced by any prior changelog entry.
+    Specs Primary/Secondary/Tertiary/Outline AI, Icon-Only AI (3 variants ×
+    3 sizes), Loading AI, Destructive AI, Split Button AI, and a Capability
+    Catalog pattern (4 categories × example action labels).
+  - Current: `AIButton` (`variant: primary | secondary | tertiary | outline`,
+    `size: xs | sm | md | lg`, `icon`, `isLoading`, `iconOnly`, `destructive`)
+    — a standalone component, not a `Button` variant, because Secondary AI's
+    filled-tint look and Outline AI don't reuse Button's own Secondary/
+    (nonexistent) Outline colors. Every instance carries a mandatory leading
+    sparkle icon (overridable via `icon`). `destructive` is documented as
+    behavioral only — Figma's Destructive AI instance is pixel-identical to
+    Secondary AI, so no distinct color was invented; callers must add their
+    own confirmation step. The Capability Catalog is shown as a Storybook
+    story, not shipped as a `packages/patterns` composition (see Known
+    limitations in `docs/component-specifications.md` §46).
+  - Reconciles `docs/component-specifications.md` §30 ("AI Action Button"),
+    which predated any AI-specific Figma component: its old variant list
+    (`Primary AI | Secondary AI | Ghost AI | Icon AI`) and AI-process state
+    list (`Idle | Generating | Streaming | ...`) didn't match what Figma
+    actually ships. §30 now points to §46 as the reconciled spec and keeps
+    its purpose/examples/requirements prose as still-relevant intent.
+  - Known limitations: the `status` (Success/Warning/Error) tint verified on
+    Button was not re-verified against AI-Button-specific Figma instances,
+    so it's not implemented here; Figma's `xs` AI Button is 28px tall vs.
+    Button's 32px `xs` and wasn't matched exactly; Split Button AI (a
+    dropdown-toggle pairing) is not implemented.
+  - Affects: `packages/ui/src/primitives/AIButton.tsx` (new), `AIButton.test.tsx`, `AIButton.stories.tsx`, `packages/ui/src/index.ts`, `docs/component-specifications.md` §§30, 46
+  - Migration: none — new component
+  - Validation: `tsc --noEmit` passed; 12 new tests passed
+  - Changeset: `.changeset/ai-button.md` (`@lumen/ui` minor)
+
+**Unresolved Figma-to-code differences found during this sync, not implemented — reported per `docs/figma-sync.md` §11 rather than silently applied or ignored:**
+
+- The core `Button` component-set (node `475:7210`) now has a 6th type,
+  "Outline", visible in the Buttons page's own States matrix — distinct
+  from `secondary` (uses the new `brand.border-strong` border at rest
+  instead of `brand.border`, matching the treatment already implemented
+  for `SplitButton`'s new `outline` variant). Not added to `Button.tsx` in
+  this pass; the `brand.border-strong` token it would need already exists.
+- The same States matrix suggests `Secondary`'s Active/Pressed fill may
+  have changed to a solid `primary.800` background with white text (the
+  value bound to `--button/surface/secondary/active`, reused identically
+  by the new Outline type's Active instance) rather than the light
+  `primary.100` subtle-pressed fill `Button.tsx` currently applies on
+  `active:`. Only observed indirectly via the Outline type reusing a
+  `secondary`-scoped token — not independently confirmed against a direct
+  `Type=Secondary, State=Active` instance, so not changed pending that
+  verification.
+
 - Added the initial `design-tokens.md` specification for Lumen.
 - Added the initial `component-architecture.md` specification.
 - Added changelog governance for incremental Figma-to-code synchronization.

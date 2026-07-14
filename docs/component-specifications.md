@@ -10,7 +10,7 @@ This document defines the required specification structure, behavior contract, t
 - **File key:** `GJBYRm6ySR7XIECFcHMgy2`
 - **Design Tokens node:** `426:4395`
 - **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
-- **Last reviewed:** 2026-07-12
+- **Last reviewed:** 2026-07-14
 
 ## Related documents
 
@@ -316,7 +316,9 @@ Exact color values, aliases, modes, font families, font weights, letter spacing,
 Baseline specification, reconciled against the shipped implementation
 (`packages/ui/src/primitives/Button.tsx`, Lumen-DS-2027 node `475:7210`,
 formerly `466:4365`) on 2026-07-12 — see `docs/roadmap.md` Phase 13
-Findings for what was wrong before this reconciliation and why.
+Findings for what was wrong before this reconciliation and why. Updated
+2026-07-14 to add the `status` (Success/Warning/Error) property — see
+`docs/changelog.md` `[Unreleased]`.
 
 ## Purpose
 
@@ -433,11 +435,27 @@ Disabled
 Loading
 ```
 
-No other states are currently implemented. A prior version of this section
-listed Selected/Success/Error as "optional states when applicable" — these
-aren't in the Figma source cited above or the shipped component; if a real
-need for them shows up, add them through the normal Figma-sync flow rather
-than restoring them here speculatively.
+## Status (independent of State)
+
+```text
+Success
+Warning
+Error
+```
+
+Added 2026-07-14, sourced from the Button component-set's own State property
+on node `475:7210` (Success/Error/Warning instances now exist for Primary and
+Secondary at every size, confirmed via `get_design_context`). Figma models
+these as three more mutually-exclusive values of the same "State" enum as
+Default/Hover/.../Loading; the shipped implementation instead exposes them as
+an independent `status` modifier (see Properties below) because it composes
+better with the live interaction pseudo-classes (`:hover`, `:active`) code
+already needs — a button can be both "showing success" and momentarily
+hovered, a combination Figma's model has no instance for but code must still
+render sensibly. `Selected` is still not implemented or in the Figma
+source — a prior version of this section speculatively listed it alongside
+Success/Error and was corrected on 2026-07-12; it stays out until Figma
+specs it.
 
 ## Properties
 
@@ -457,6 +475,8 @@ Show trailing icon
 Trailing icon
 ```
 
+Figma's "State" property also carries the three Status values (Success/Warning/Error) described above — the framework-neutral contract below splits them into a separate `status` property rather than folding them into `variant` or a single combined `state` enum.
+
 A prior version of this list also included "Full width" — no such property
 exists on the Figma component or the shipped implementation; removed.
 
@@ -465,6 +485,7 @@ Property contract (framework-neutral — every framework package exposes these, 
 ```text
 variant   enum: primary | raised | secondary | tertiary | link
 size      enum: xs | sm | md | lg
+status    enum: success | warning | error (optional — no value means no status tint)
 iconOnly  boolean
 pill      boolean
 loading   boolean
@@ -480,6 +501,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "raised" | "secondary" | "tertiary" | "link";
   size?: "xs" | "sm" | "md" | "lg";
+  status?: "success" | "warning" | "error";
   iconStart?: React.ReactNode;
   iconEnd?: React.ReactNode;
   isLoading?: boolean;
@@ -539,6 +561,20 @@ Button/Focus/Ring/Offset
 Button/Focus/Ring/Color
 ```
 
+Status tint tokens (variant-agnostic, applied via `status` rather than `variant`):
+
+```text
+Color/Status/Success/Subtle   → --color-status-success-subtle
+Color/Status/Success/Text     → --color-status-success-text
+Color/Status/Success/Border   → --color-status-success-border
+Color/Status/Warning/Subtle   → --color-status-warning-subtle
+Color/Status/Warning/Text     → --color-status-warning-text
+Color/Status/Warning/Border   → --color-status-warning-border
+Color/Status/Error/Subtle     → --color-status-error-subtle
+Color/Status/Error/Text       → --color-status-error-text
+Color/Status/Error/Border     → --color-status-error-border
+```
+
 ## Accessibility
 
 - Use `<button>` for actions.
@@ -571,9 +607,9 @@ Accessibility
 
 The current React Storybook (`packages/ui/src/primitives/Button.stories.tsx`)
 covers Playground, All Variants, Pill, Sizes, Icon Only, With Icons (by
-default size and by every size), Loading, and Disabled — Long Labels,
-explicit Dark Mode, and Keyboard Focus stories are still gaps against this
-requirement, not yet false claims corrected by this reconciliation.
+default size and by every size), Status States, Loading, and Disabled — Long
+Labels, explicit Dark Mode, and Keyboard Focus stories are still gaps against
+this requirement, not yet false claims corrected by this reconciliation.
 
 ## Testing
 
@@ -1292,6 +1328,30 @@ Stepped
 
 # 30. AI Action Button
 
+## Status
+
+This section predates any AI-specific Figma component and was aspirational
+when written. On 2026-07-14, Figma published a real "AI Communication
+Component Library" (node `760:1965`) and it was implemented as `AIButton`
+(`packages/ui/src/primitives/AIButton.tsx`) — see §46 for the reconciled,
+Figma-sourced specification. The Variants and States below do not match the
+real component and are kept only as a historical record of the pre-Figma
+design intent:
+
+- Variants: Figma ships `Primary AI | Secondary AI | Tertiary AI | Outline
+  AI`, not `Primary AI | Secondary AI | Ghost AI | Icon AI` — there is no
+  "Ghost AI"; "Icon AI" is an `iconOnly` modifier in the real component
+  (mirroring how Button's own Icon Only isn't a `variant`), not a variant.
+- States: Figma's real AI Button models only the same interaction states
+  as Button (Default/Hover/Active/Focus/Disabled/Loading, plus the same
+  Success/Error/Warning status tint — see §5's Status subsection) — not an
+  AI-process state machine (Idle/Generating/Streaming/Complete/Needs
+  Review/Cancelled/Unavailable). Those AI-process states may still be the
+  right model for a future AI *response* surface (see
+  `docs/component-architecture.md` §8's `AIResponse`/`AIStatus` primitives,
+  still unbuilt) — they just aren't what the Button-shaped trigger control
+  implements.
+
 ## Purpose
 
 AI Action Button initiates an explicit AI-assisted action while keeping the user in control.
@@ -1310,28 +1370,6 @@ Auto-Triage
 Next Best Action
 ```
 
-## Variants
-
-```text
-Primary AI
-Secondary AI
-Ghost AI
-Icon AI
-```
-
-## States
-
-```text
-Idle
-Generating
-Streaming
-Complete
-Needs Review
-Error
-Cancelled
-Unavailable
-```
-
 ## Requirements
 
 - Clearly communicate that the action is AI-assisted.
@@ -1341,6 +1379,10 @@ Unavailable
 - Provide edit, accept, reject, regenerate, and undo where applicable.
 - Avoid implying certainty when output is probabilistic.
 - Use the AI visual treatment consistently and sparingly.
+
+These requirements remain aspirational guidance for a future AI response
+surface; §46 documents which of them the shipped `AIButton` trigger control
+actually satisfies today.
 
 ---
 
@@ -1738,3 +1780,561 @@ Not yet verified:
 - complete Light and Dark mode behavior
 
 A component-specific Figma Dev Mode URL is required before Claude Code should implement or materially update that component.
+
+---
+
+# 43. Split Button — 2026-07-14 expansion
+
+`packages/ui/src/composite/SplitButton.tsx` (not previously given its own
+numbered section in this document) grew past its original `lg`-only,
+Primary/Raised/Secondary scope. Sourced from node `555:300` via
+`get_design_context` on the sm/md size instances and the Outline type
+instances.
+
+## Sizes
+
+```text
+Sm (36px)
+Md (40px)
+Lg (48px, previous default, preserved as the component default)
+```
+
+## Variants
+
+```text
+Primary
+Raised
+Secondary
+Outline   (new — reuses Secondary's border/text/divider tokens but shows
+           the border at rest, using the new brand.border-strong token)
+```
+
+## Properties added
+
+```text
+size        enum: sm | md | lg (default lg)
+iconStart   renderable content (icon), rendered before the label
+```
+
+## Known limitation
+
+Figma's `sm` dropdown-toggle segment is a non-square 30px width against a
+36px-tall container; 30px isn't on the approved spacing scale
+(`docs/design-tokens.md` §4), so the shipped `sm` dropdown segment is
+squared off to 36px (`--spacing-36`) instead of inventing a new token for
+one edge case. Flagged for design-system review rather than silently
+matched pixel-for-pixel.
+
+## Change history
+
+- 2026-07-14: added `size` (sm/md/lg) and the `outline` variant; added an
+  optional `iconStart` slot. Source: Lumen-DS-2027 node `555:300`.
+
+---
+
+# 44. Filter Chip
+
+## Status
+
+Baseline specification, added 2026-07-14.
+
+## Figma source
+
+- Node: `581:409` ("Filter Chip", Buttons page)
+- Component set: Filter Chip
+- Last synchronized: 2026-07-14
+
+## Purpose
+
+A toggleable pill representing a filter that can be added to or removed
+from an active filter set.
+
+## When to use
+
+- Faceted search and filtering UIs where a user builds up a set of active
+  filters.
+
+## When not to use
+
+- A single, mutually-exclusive choice — use Choice Chip instead.
+- A persistent on/off setting unrelated to filtering — use Switch.
+
+## Anatomy
+
+```text
+Filter Chip
+├── Leading icon (plus, unselected; retained when selected per Figma)
+├── Label
+├── Trailing icon (remove/X, selected only)
+└── Focus ring
+```
+
+## Variants
+
+None — Filter Chip has no `variant` property, only the `selected` state
+below.
+
+## Sizes
+
+```text
+Lg (36px) — the only size Figma specs.
+```
+
+## States
+
+```text
+Default
+Hover
+Selected
+Hover+Selected
+Focus
+Disabled
+```
+
+`Pressed`/`Active` was not found as a distinct instance in the sourced
+node; not implemented.
+
+## Properties
+
+Figma properties: `Label`, `State` (Default/Selected/Hover/Hover+Selected/
+Focus/Disabled), `Size` (Lg only), `chipAddIcon` (instance swap),
+`chipDeleteIcon` (instance swap, Selected only).
+
+Property contract (framework-neutral):
+
+```text
+selected    boolean
+disabled    boolean
+icon        renderable content (icon), leading — defaults to the Figma-specced plus glyph
+removeIcon  renderable content (icon), trailing, shown only when selected — defaults to an X glyph
+```
+
+## Reference implementation (React)
+
+```ts
+export interface FilterChipProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "disabled"> {
+  selected?: boolean;
+  disabled?: boolean;
+  icon?: React.ReactNode;
+  removeIcon?: React.ReactNode;
+}
+```
+
+Source: `packages/ui/src/primitives/FilterChip.tsx`.
+
+## Behavior
+
+- Clicking toggles the caller's `selected` state via `onClick` — the
+  component is presentation-only and does not manage selection state
+  itself (consistent with `onClick`-driven components elsewhere in this
+  package, e.g. `SplitButton`).
+- Disabled chips do not receive interaction.
+
+## Content
+
+Use short, scannable filter-category labels (e.g. "Status", "Owner").
+
+## Tokens
+
+```text
+Color/Brand/Border-Strong  (new, primary.200 — unselected border)
+Color/Brand/Default        (selected fill/border)
+Color/Brand/Subtle         (unselected hover fill/border)
+Color/Brand/Hover          (selected hover fill/border)
+Radius/Full
+Spacing/36 (height), Spacing/12, Spacing/16, Spacing/6 (gap)
+```
+
+## Accessibility
+
+- Renders a native `<button>` with `aria-pressed` reflecting `selected`.
+- Uses `aria-disabled` rather than the native `disabled` attribute,
+  matching the Buttons page's "02 Accessibility & WCAG 2.1" guidance
+  already followed by Button and SplitButton, so a disabled chip stays
+  keyboard-reachable.
+- Icons are `aria-hidden`; the accessible name comes from the label text.
+
+## Storybook
+
+`Primitives/FilterChip`: Playground, States (Default/Selected/Disabled),
+Interactive (stateful toggle demo).
+
+## Testing
+
+`packages/ui/src/primitives/FilterChip.test.tsx`: default render, selected
+aria-pressed, unselected aria-pressed, icon count by selection state,
+onClick, disabled behavior, padding by selection state.
+
+## Code mapping
+
+| Framework | Export | Source |
+|---|---|---|
+| React | `FilterChip` | `packages/ui/src/primitives/FilterChip.tsx` |
+
+## Known limitations
+
+- Only the `lg` size is implemented — no other size is specced in Figma.
+- `Pressed`/`Active` interaction state not found in the sourced Figma
+  instances.
+
+## Change history
+
+- 2026-07-14: added, sourced from node `581:409`.
+
+---
+
+# 45. Choice Chip
+
+## Status
+
+Baseline specification, added 2026-07-14.
+
+## Figma source
+
+- Node: `581:485` ("Choice Chip", Buttons page)
+- Component set: Choice Chip
+- Last synchronized: 2026-07-14
+
+## Purpose
+
+A toggleable pill representing one value in a single-choice set (visually
+similar to Filter Chip, semantically a selection rather than a filter
+add/remove action).
+
+## When to use
+
+- A small set of mutually-exclusive options presented as pills rather than
+  a Radio Group (e.g. size pickers, quick filters with a single active
+  value).
+
+## When not to use
+
+- A multi-select, addable/removable filter — use Filter Chip.
+- A large option set better served by Select or Radio Group.
+
+## Anatomy
+
+```text
+Choice Chip
+├── Leading icon (check, selected only)
+├── Label
+└── Focus ring
+```
+
+## Variants
+
+None — no `variant` property, only the `selected` state below.
+
+## Sizes
+
+```text
+Lg (36px) — the only size Figma specs.
+```
+
+## States
+
+```text
+Default
+Selected
+```
+
+Hover/Focus/Disabled were not independently sourced for Choice Chip but
+reuse the identical semantic tokens Filter Chip's corresponding states use
+(`--button/border/secondary/default`, `--button/surface`, `--button/
+surface/disabled`, etc. — confirmed identical token names across both
+components' Default/Selected instances), so the same treatment is applied
+in code. Flagged as inferred-by-consistency, not independently verified
+per-state.
+
+## Properties
+
+Figma properties: `Label`, `State` (Default/Selected), `Size` (Lg only).
+
+Property contract (framework-neutral):
+
+```text
+selected  boolean
+disabled  boolean
+```
+
+## Reference implementation (React)
+
+```ts
+export interface ChoiceChipProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "disabled"> {
+  selected?: boolean;
+  disabled?: boolean;
+}
+```
+
+Source: `packages/ui/src/primitives/ChoiceChip.tsx`.
+
+## Behavior
+
+- Clicking toggles the caller's `selected` state via `onClick` — same
+  presentation-only pattern as Filter Chip.
+- Disabled chips do not receive interaction.
+
+## Content
+
+Use short option labels (e.g. "Small", "Medium", "Large").
+
+## Tokens
+
+Same token set as Filter Chip (see §44) — Choice Chip's Default/Selected
+instances bind identical variable names.
+
+## Accessibility
+
+Same pattern as Filter Chip: native `<button>` with `aria-pressed`,
+`aria-disabled` instead of the native `disabled` attribute.
+
+## Storybook
+
+`Primitives/ChoiceChip`: Playground, States (Default/Selected/Disabled),
+SingleChoiceGroup (stateful single-selection demo).
+
+## Testing
+
+`packages/ui/src/primitives/ChoiceChip.test.tsx`: default render (no
+icon), selected render (check icon), aria-pressed, onClick, disabled
+behavior.
+
+## Code mapping
+
+| Framework | Export | Source |
+|---|---|---|
+| React | `ChoiceChip` | `packages/ui/src/primitives/ChoiceChip.tsx` |
+
+## Known limitations
+
+- Only the `lg` size is implemented.
+- Hover/Focus/Disabled states are inferred from Filter Chip's identical
+  token usage, not independently sourced from Choice-Chip-specific Figma
+  instances for every state.
+
+## Change history
+
+- 2026-07-14: added, sourced from node `581:485`.
+
+---
+
+# 46. AI Button
+
+## Status
+
+Baseline specification, added 2026-07-14. Supersedes the variant/state
+lists in §30 "AI Action Button" (see that section's Status note) — §30's
+purpose/examples/requirements prose remains the intent this component
+serves; only its old, pre-Figma variant and state lists were wrong.
+
+## Figma source
+
+- Node: `760:1965` ("AI Communication Component Library", Buttons page)
+- Component set: AI Button (Primary/Secondary/Tertiary/Outline AI, plus
+  Icon-Only and Split Button AI sub-sections)
+- Last synchronized: 2026-07-14
+
+## Purpose
+
+Initiates an explicit AI-assisted action while keeping the user in
+control — see §30 for the full purpose/examples/requirements narrative
+this component implements.
+
+## When to use
+
+- A single, explicit, user-initiated AI action (e.g. "Summarize", "Draft
+  reply") — see the Capability Catalog story for the full set of example
+  actions Figma documents, grouped by category.
+
+## When not to use
+
+- An implicit or automatic AI action the user didn't request.
+- Presenting AI-generated output itself — use a future `AIResponsePanel`
+  (still unbuilt, see `docs/component-architecture.md` §8).
+
+## Anatomy
+
+```text
+AI Button
+├── Leading icon (sparkle by default, swappable per capability — mandatory,
+│   every Figma instance has one)
+├── Label
+├── Loading indicator (replaces the leading icon)
+└── Focus ring
+```
+
+## Variants
+
+```text
+Primary
+Secondary  (filled-tint look: brand-subtle fill + brand-border-strong
+            border — NOT the same treatment as Button's own `secondary`)
+Tertiary   (identical colors to Button's `tertiary`)
+Outline    (brand-border-strong border, transparent fill — Button has no
+            matching variant yet, see `docs/changelog.md` `[Unreleased]`)
+```
+
+## Modifiers
+
+### Icon only
+
+Square, label-less button showing just the leading icon. Documented in
+Figma as its own "Icon Only" sub-section (Primary/Secondary/Outline, 3
+sizes each) rather than a variant — modeled here as `iconOnly`, matching
+Button's own Icon Only modifier pattern.
+
+### Destructive
+
+Behavioral only. Figma's "Destructive AI" instance uses the exact same
+surface/border/text tokens as Secondary AI — there is no dedicated color.
+Callers must add their own confirmation step before invoking `onClick`
+when `destructive` is set; the prop documents intent for calling code and
+sets `data-destructive` for hook-in, but changes no styling itself.
+
+## Sizes
+
+```text
+Xs
+Sm
+Md
+Lg
+```
+
+Reuses Button's sm/md/lg padding and text scale exactly. Figma's `xs` AI
+Button is 28px tall — 4px shorter than Button's own 32px `xs` — not
+matched exactly, to avoid introducing a second `xs` height scale for one
+component; flagged as a known limitation.
+
+## States
+
+```text
+Default
+Hover
+Pressed
+Focus
+Disabled
+Loading
+```
+
+Plus the same Success/Warning/Error status tint documented in §5 — Figma's
+State property lists Success/Error/Warning for the general Button
+component-set, and the AI Button's own States sub-section under node
+`760:1965` mirrors that same list on Primary Raised/Primary/Secondary/
+Tertiary/Outline/Link columns. Not implemented on `AIButton` in this pass
+— `status` was verified and shipped on Button (§5) but not re-verified
+against AI-Button-specific instances; flagged as an open item rather than
+assumed identical.
+
+## Properties
+
+Figma properties (per the AI Button instances on node `760:1965`):
+`Type` (Primary/Secondary/Tertiary/Outline), `Size` (Xs/Sm/Md/Lg), `State`,
+`Label`, an instance-swappable leading icon.
+
+Property contract (framework-neutral):
+
+```text
+variant     enum: primary | secondary | tertiary | outline
+size        enum: xs | sm | md | lg
+icon        renderable content (icon) — always rendered; defaults to a sparkle glyph
+iconOnly    boolean
+loading     boolean
+disabled    boolean
+destructive boolean (behavioral only — no visual change)
+```
+
+## Reference implementation (React)
+
+```ts
+export interface AIButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "secondary" | "tertiary" | "outline";
+  size?: "xs" | "sm" | "md" | "lg";
+  icon?: React.ReactNode;
+  isLoading?: boolean;
+  iconOnly?: boolean;
+  destructive?: boolean;
+}
+```
+
+Source: `packages/ui/src/primitives/AIButton.tsx`. Not a variant of
+`Button` — implemented as a standalone component because two of its four
+`variant` values don't reuse Button's existing colors (see Variants
+above).
+
+## Behavior
+
+- Same activation/loading/disabled behavior as Button (§5): pointer click,
+  Enter, or Space; `aria-disabled` (not the native `disabled` attribute)
+  so a disabled AI Button stays keyboard-reachable; loading preserves
+  width and prevents duplicate activation.
+- Loading swaps the leading icon for a spinner and is expected to pair
+  with a label change (e.g. "Generating…") — confirmed via the Loading AI
+  Figma instance, otherwise identical to Primary AI.
+- Destructive AI actions require confirmation before running, same rule
+  Button.tsx already documents for its own destructive actions (§5
+  Behavior) — `destructive` only marks intent, the caller owns the
+  confirmation UI.
+
+## Content
+
+Same content guidance as Button (§5) — concise, action-oriented labels,
+verb-first where practical.
+
+## Tokens
+
+```text
+Color/Brand/Default, Hover, Pressed          (primary variant)
+Color/Brand/Subtle, Subtle-Pressed           (secondary/tertiary/outline fills)
+Color/Brand/Border-Strong                    (secondary/outline border, new — see Split Button §43)
+Radius/Md
+Spacing/32,36,40,48 (heights), /8 (icon gap), /10,12,16,20 (padding)
+```
+
+No new tokens were required beyond `brand.border-strong`, already added
+for Split Button's Outline type (§43).
+
+## Accessibility
+
+Same accessibility contract as Button (§5): native `<button>`,
+`aria-disabled`, `aria-busy` while loading, mandatory `aria-label` for
+icon-only instances (dev-mode console warning if omitted).
+
+## Storybook
+
+`Primitives/AIButton`: Playground, All Variants, Sizes, Icon Only, Custom
+Icon, Loading, Destructive, Disabled, and a Capability Catalog composition
+story (the category → example-action mapping from node `860:9109`, shown
+as a story rather than a new `packages/patterns` pattern — see Known
+limitations).
+
+## Testing
+
+`packages/ui/src/primitives/AIButton.test.tsx`: label + default icon
+render, onClick, disabled behavior, loading aria-disabled/aria-busy,
+loading blocks onClick, icon-only accessible-name warning, all four
+variants render, destructive data-attribute, custom icon override.
+
+## Code mapping
+
+| Framework | Export | Source |
+|---|---|---|
+| React | `AIButton` | `packages/ui/src/primitives/AIButton.tsx` |
+
+## Known limitations
+
+- `status` (Success/Warning/Error) not implemented — see States above.
+- `xs` size is 32px tall in code vs. Figma's 28px — see Sizes above.
+- Split Button AI (a dropdown-toggle pairing analogous to `SplitButton`,
+  documented under node `760:1965`) is not implemented — no shipped
+  component composes `AIButton` with a dropdown segment yet.
+- The Capability Catalog is shown only as a Storybook story, not shipped
+  as a `packages/patterns` composition — it has no interaction behavior
+  beyond the individual `AIButton`s themselves, so promoting it to a real
+  pattern was deferred pending a concrete consumer need.
+
+## Change history
+
+- 2026-07-14: added, sourced from node `760:1965`.
