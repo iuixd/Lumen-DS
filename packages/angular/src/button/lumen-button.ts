@@ -36,7 +36,7 @@ import {
  * `<lumen-button><span iconStart>…</span>Save</lumen-button>`.
  *
  * `status` ("success" | "warning" | "error") mirrors Button.tsx's later
- * addition (2026-07-14, Lumen-DS-2027 node 475:7210's State property) and
+ * addition (2026-07-14, Lumen-AI-Design-System node 475:7210's State property) and
  * the Web Components package's own `status` — see
  * packages/web-components/src/button/lumen-button.ts for the shared
  * sourcing rationale (tinted surface/text override independent of

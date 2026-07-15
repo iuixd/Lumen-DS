@@ -4,7 +4,7 @@ import { cn } from "../lib/cn";
 
 /**
  * Button
- * Sourced from the Figma "Buttons" page (Lumen-DS-2027, node 475:7210, formerly
+ * Sourced from the Figma "Buttons" page (Lumen-AI-Design-System, node 475:7210, formerly
  * 466:4365): variant taxonomy (Primary/Secondary/Tertiary/Link/Raised), sizes
  * (xs/sm/md/lg), per-size text (the dedicated `button-*` type scale), per-state
  * colors, the Pill Button shape modifier, and the focus-ring/elevation treatment

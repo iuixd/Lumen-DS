@@ -1,6 +1,6 @@
 # @lumen/tokens
 
-Design tokens generated from the Lumen-DS-2027 Figma file — the single
+Design tokens generated from the Lumen-AI-Design-System Figma file — the single
 source of truth for color, typography, spacing, and radius. There is no
 elevation/shadow tier; see `docs/figma-sync.md` for why.
 

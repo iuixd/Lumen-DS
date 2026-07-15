@@ -1,15 +1,15 @@
 # Lumen Design Review
 
-> Structured design-review framework for the **Lumen Design System**, covering Figma foundations, design tokens, components, accessibility, Storybook, code parity, release readiness, and incremental change control.
+> Structured design-review framework for the **Lumen AI Design System**, covering Figma foundations, design tokens, components, accessibility, Storybook, code parity, release readiness, and incremental change control.
 
 ## Source
 
-- **Figma file:** Lumen DS 2027
+- **Figma file:** Lumen AI Design System
 - **File key:** `GJBYRm6ySR7XIECFcHMgy2`
 - **Design Tokens node:** `426:4395`
-- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
+- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-AI-Design-System?node-id=426-4395&m=dev
 - **Local Storybook:** http://localhost:6006/?path=/docs/introduction--docs
-- **Last reviewed:** 2026-07-12
+- **Last reviewed:** 2026-07-15
 
 ## Related documents
 

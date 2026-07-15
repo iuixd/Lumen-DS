@@ -6,7 +6,7 @@ Primary Storybook URL
 
 http://localhost:6006/?path=/docs/introduction--docs
 
-This local Storybook is the implementation reference for the Lumen Design System.
+This local Storybook is the implementation reference for the Lumen AI Design System.
 
 It should always reflect the latest state of:
 

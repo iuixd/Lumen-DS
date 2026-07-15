@@ -1,17 +1,17 @@
 # Lumen Figma Source
 
-> Source-of-truth and synchronization contract for the **Lumen Design System**.
+> Source-of-truth and synchronization contract for the **Lumen AI Design System**.
 
 This document tells Claude Code, designers, and developers how to interpret the Lumen Figma library, which Figma artifacts are authoritative, how changes must be synchronized, and how to avoid unnecessary regeneration of the design system.
 
 ## Canonical source
 
-- **Figma file:** Lumen DS 2027
+- **Figma file:** Lumen AI Design System
 - **File key:** `GJBYRm6ySR7XIECFcHMgy2`
 - **Design Tokens node:** `426:4395`
-- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
+- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-AI-Design-System?node-id=426-4395&m=dev
 - **Node name:** Design Tokens
-- **Last reviewed:** 2026-07-12
+- **Last reviewed:** 2026-07-15
 
 ## Related repository documents
 

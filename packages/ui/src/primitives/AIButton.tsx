@@ -6,7 +6,7 @@ import { LmAisymbolIcon } from "../icons/generated";
 /**
  * AIButton
  * Sourced from the new "AI Communication Component Library" section of the
- * Figma "Buttons" page (Lumen-DS-2027, node 760:1965), added 2026-07-14 —
+ * Figma "Buttons" page (Lumen-AI-Design-System, node 760:1965), added 2026-07-14 —
  * confirmed via `get_design_context` on the Primary/Secondary/Tertiary/
  * Outline AI instances, the Icon-Only AI instances, Loading AI, and
  * Destructive AI. This is a distinct component from `Button`, not a variant

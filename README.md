@@ -1,9 +1,9 @@
-# Lumen Design System
+# Lumen AI Design System
 
 Lumen is the shared design language and implementation system for Lumen products. It provides design tokens, framework-agnostic component specifications, layout primitives, and reusable enterprise application patterns. React is Lumen's current framework package — see [Architecture](#architecture) below — with Angular, Vue, and Web Components planned as peers, not replacements.
 
-[![CI](https://github.com/iuixd/Lumen-DS/actions/workflows/ci.yml/badge.svg)](https://github.com/iuixd/Lumen-DS/actions/workflows/ci.yml)
-[![Storybook deployment](https://github.com/iuixd/Lumen-DS/actions/workflows/deploy-storybook.yml/badge.svg)](https://github.com/iuixd/Lumen-DS/actions/workflows/deploy-storybook.yml)
+[![CI](https://github.com/iuixd/Lumen-AI-DS/actions/workflows/ci.yml/badge.svg)](https://github.com/iuixd/Lumen-AI-DS/actions/workflows/ci.yml)
+[![Storybook deployment](https://github.com/iuixd/Lumen-AI-DS/actions/workflows/deploy-storybook.yml/badge.svg)](https://github.com/iuixd/Lumen-AI-DS/actions/workflows/deploy-storybook.yml)
 
 [View Storybook](http://srikumar.design/Lumen-DS/) · [Usage guide](docs/usage-guidelines.md) · [Figma synchronization](docs/figma-sync.md) · [Contributing](CONTRIBUTING.md) · [Changelog](docs/changelog.md)
 
@@ -74,7 +74,7 @@ Tokens + framework packages → Storybook (React only; Web Components and Angula
 
 `@lumen/ui` and `@lumen/patterns` are Lumen's reference implementation, not the definition of a Lumen component — `docs/component-specifications.md` is. `@lumen/web-components` and `@lumen/angular` are early proofs of concept covering one component each; building the first of them surfaced that the written Button specification didn't actually match what `@lumen/ui` shipped, which has since been reconciled (see [docs/roadmap.md](docs/roadmap.md) Phase 13 Findings). See [docs/component-architecture.md](docs/component-architecture.md) §0 for the full layer diagram and rationale.
 
-The canonical design foundation is **Lumen DS 2027**, page **Design Tokens**. Source identifiers and the authority hierarchy are maintained in [docs/figma-source.md](docs/figma-source.md).
+The canonical design foundation is **Lumen AI Design System**, page **Design Tokens**. Source identifiers and the authority hierarchy are maintained in [docs/figma-source.md](docs/figma-source.md).
 
 ## Prerequisites
 
@@ -124,9 +124,9 @@ Packages are currently consumed as Git dependencies rather than published to a p
 // product-app/package.json
 {
   "dependencies": {
-    "@lumen/tokens": "github:iuixd/Lumen-DS#<tag-or-commit>&path:packages/tokens",
-    "@lumen/ui": "github:iuixd/Lumen-DS#<tag-or-commit>&path:packages/ui",
-    "@lumen/patterns": "github:iuixd/Lumen-DS#<tag-or-commit>&path:packages/patterns"
+    "@lumen/tokens": "github:iuixd/Lumen-AI-DS#<tag-or-commit>&path:packages/tokens",
+    "@lumen/ui": "github:iuixd/Lumen-AI-DS#<tag-or-commit>&path:packages/ui",
+    "@lumen/patterns": "github:iuixd/Lumen-AI-DS#<tag-or-commit>&path:packages/patterns"
   }
 }
 ```
@@ -205,7 +205,7 @@ The `docs/` directory is the authoritative knowledge base. Key references includ
 
 ## Support and ownership
 
-- Report implementation defects through [GitHub Issues](https://github.com/iuixd/Lumen-DS/issues).
+- Report implementation defects through [GitHub Issues](https://github.com/iuixd/Lumen-AI-DS/issues).
 - Report design-to-code drift with the `figma-sync` label and include the exact Figma node.
 - Use a pull request for reviewed code changes and follow the repository contribution checklist.
 - Do not disclose credentials, private product information, or security-sensitive findings in public issues.

@@ -1,15 +1,15 @@
 # Lumen Design Tokens
 
-> Canonical design-token specification for the **Lumen Design System**.  
+> Canonical design-token specification for the **Lumen AI Design System**.  
 > Figma is the design source of truth. Code, Storybook, documentation, and published packages must mirror the approved Figma variables and styles.
 
 ## Source
 
-- **Figma file:** Lumen DS 2027
+- **Figma file:** Lumen AI Design System
 - **Dev Mode node:** `426:4395`
-- **Reference:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
+- **Reference:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-AI-Design-System?node-id=426-4395&m=dev
 - **Repository role:** This document defines token architecture, naming, usage, synchronization rules, and the currently documented token scales.
-- **Last reviewed:** 2026-07-12
+- **Last reviewed:** 2026-07-15
 
 ## Authority and synchronization rules
 
@@ -803,7 +803,7 @@ Exact color variable names, aliases, mode values, font families, font weights, l
 
 Lumen Design Tokens are derived from published Figma Variables.
 
-Figma Variables define the canonical design language for the Lumen Design System and serve as the single source of truth for all design tokens used throughout the design, development, and documentation workflow.
+Figma Variables define the canonical design language for the Lumen AI Design System and serve as the single source of truth for all design tokens used throughout the design, development, and documentation workflow.
 
 All token implementations should remain synchronized with approved Figma Variables through controlled, incremental updates.
 

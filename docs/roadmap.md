@@ -1,16 +1,16 @@
-# Lumen Design System Roadmap
+# Lumen AI Design System Roadmap
 
-> Strategic delivery roadmap for the **Lumen Design System**, covering design tokens, components, accessibility, Storybook, code integration, governance, release maturity, and AI-first enterprise capabilities.
+> Strategic delivery roadmap for the **Lumen AI Design System**, covering design tokens, components, accessibility, Storybook, code integration, governance, release maturity, and AI-first enterprise capabilities.
 
 ## Source
 
-- **Figma file:** Lumen DS 2027
+- **Figma file:** Lumen AI Design System
 - **File key:** `GJBYRm6ySR7XIECFcHMgy2`
 - **Design Tokens node:** `426:4395`
-- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
+- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-AI-Design-System?node-id=426-4395&m=dev
 - **Local Storybook:** http://localhost:6006/?path=/docs/introduction--docs
 - **Roadmap horizon:** 2026–2027
-- **Last reviewed:** 2026-07-12
+- **Last reviewed:** 2026-07-15
 
 ## Related documents
 

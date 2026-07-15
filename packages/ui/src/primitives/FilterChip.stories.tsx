@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Sourced from the Figma 'Buttons' page (Lumen-DS-2027, node 581:409): a toggleable pill for adding/removing a filter. Unselected shows a leading plus icon; selected fills solid brand and keeps the leading icon while adding a trailing remove icon. Only the `lg` size (36px) is specced."
+          "Sourced from the Figma 'Buttons' page (Lumen-AI-Design-System, node 581:409): a toggleable pill for adding/removing a filter. Unselected shows a leading plus icon; selected fills solid brand and keeps the leading icon while adding a trailing remove icon. Only the `lg` size (36px) is specced."
       }
     }
   },

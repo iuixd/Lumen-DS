@@ -10,7 +10,7 @@ import { NgTemplateOutlet } from "@angular/common";
 /**
  * `<lumen-filter-chip>` — Angular standalone implementation of `FilterChip`
  * (packages/ui/src/primitives/FilterChip.tsx), sourced from the Figma
- * Buttons page (Lumen-DS-2027, node 581:409). Mirrors the Web Components
+ * Buttons page (Lumen-AI-Design-System, node 581:409). Mirrors the Web Components
  * package's `<lumen-filter-chip>` — see its doc comment for why the leading
  * icon is kept even when selected. Only the `lg` size (36px) is specced.
  * Uses `aria-disabled` rather than the native `disabled` attribute,

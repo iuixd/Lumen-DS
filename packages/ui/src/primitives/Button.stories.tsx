@@ -22,7 +22,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Sourced from the Figma 'Buttons' page (Lumen-DS-2027, node 475:7210): Primary, Secondary, Tertiary, Link, Raised (Primary with elevation), each in xs/sm/md/lg, plus the Pill Button shape modifier. The page's Left/Right icon-position instances map to the `iconStart`/`iconEnd` props rather than their own variant — see the WithIcons story. `status` (success/warning/error) is a tinted status override sourced from the same component-set's State property — see the StatusStates story. Extend with a new variant/prop instead of creating a new button component — see CONTRIBUTING.md."
+          "Sourced from the Figma 'Buttons' page (Lumen-AI-Design-System, node 475:7210): Primary, Secondary, Tertiary, Link, Raised (Primary with elevation), each in xs/sm/md/lg, plus the Pill Button shape modifier. The page's Left/Right icon-position instances map to the `iconStart`/`iconEnd` props rather than their own variant — see the WithIcons story. `status` (success/warning/error) is a tinted status override sourced from the same component-set's State property — see the StatusStates story. Extend with a new variant/prop instead of creating a new button component — see CONTRIBUTING.md."
       }
     }
   },

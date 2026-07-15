@@ -1,16 +1,16 @@
 # Lumen Component Specifications
 
-> Canonical specification framework for components in the **Lumen Design System**.
+> Canonical specification framework for components in the **Lumen AI Design System**.
 
 This document defines the required specification structure, behavior contract, token usage, accessibility requirements, Storybook coverage, and Figma-to-code synchronization rules for every Lumen component.
 
 ## Source
 
-- **Figma file:** Lumen DS 2027
+- **Figma file:** Lumen AI Design System
 - **File key:** `GJBYRm6ySR7XIECFcHMgy2`
 - **Design Tokens node:** `426:4395`
-- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
-- **Last reviewed:** 2026-07-14
+- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-AI-Design-System?node-id=426-4395&m=dev
+- **Last reviewed:** 2026-07-15
 
 ## Related documents
 
@@ -314,7 +314,7 @@ Exact color values, aliases, modes, font families, font weights, letter spacing,
 ## Status
 
 Baseline specification, reconciled against the shipped implementation
-(`packages/ui/src/primitives/Button.tsx`, Lumen-DS-2027 node `475:7210`,
+(`packages/ui/src/primitives/Button.tsx`, Lumen-AI-Design-System node `475:7210`,
 formerly `466:4365`) on 2026-07-12 — see `docs/roadmap.md` Phase 13
 Findings for what was wrong before this reconciliation and why. Updated
 2026-07-14 to add the `status` (Success/Warning/Error) property — see
@@ -1828,7 +1828,7 @@ matched pixel-for-pixel.
 ## Change history
 
 - 2026-07-14: added `size` (sm/md/lg) and the `outline` variant; added an
-  optional `iconStart` slot. Source: Lumen-DS-2027 node `555:300`.
+  optional `iconStart` slot. Source: Lumen-AI-Design-System node `555:300`.
 
 ---
 
