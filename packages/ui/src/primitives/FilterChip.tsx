@@ -5,7 +5,7 @@ import { PlusIcon, XIcon } from "../icons/generated";
 
 /**
  * FilterChip
- * Sourced from the Figma "Buttons" page (Lumen-DS-2027, node 581:409): a
+ * Sourced from the Figma "Buttons" page (Lumen-AI-Design-System, node 581:409): a
  * toggleable pill that represents an addable/removable filter. Unselected,
  * it's outlined with a leading plus icon (an "add this filter" affordance);
  * selected, it fills solid brand and gains a trailing remove (X) icon —

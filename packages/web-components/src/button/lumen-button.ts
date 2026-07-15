@@ -19,7 +19,7 @@ import { customElement, property } from "lit/decorators.js";
  * node props: `<lumen-button><span slot="icon-start">…</span>Save</lumen-button>`.
  *
  * `status` ("success" | "warning" | "error") mirrors Button.tsx's later
- * addition (2026-07-14, Lumen-DS-2027 node 475:7210's State property) — a
+ * addition (2026-07-14, Lumen-AI-Design-System node 475:7210's State property) — a
  * tinted surface/text override independent of `variant`, with a
  * status-colored border only on the `secondary` variant (the only bordered
  * variant Figma specced a status instance for).

@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Sourced from the Figma 'Buttons' page (Lumen-DS-2027, node 581:485): a toggleable pill for a single-value choice. Unselected shows plain text; selected fills solid brand and gains a leading check icon. Only the `lg` size (36px) is specced."
+          "Sourced from the Figma 'Buttons' page (Lumen-AI-Design-System, node 581:485): a toggleable pill for a single-value choice. Unselected shows plain text; selected fills solid brand and gains a leading check icon. Only the `lg` size (36px) is specced."
       }
     }
   },

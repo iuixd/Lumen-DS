@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Sourced from the Figma 'Buttons' page (Lumen-DS-2027, node 555:300): a primary action joined to a dropdown-toggle by a divider. Primary, Raised, Secondary, and Outline are specced (no Tertiary/Link), in sm/md/lg sizes, with an optional leading icon."
+          "Sourced from the Figma 'Buttons' page (Lumen-AI-Design-System, node 555:300): a primary action joined to a dropdown-toggle by a divider. Primary, Raised, Secondary, and Outline are specced (no Tertiary/Link), in sm/md/lg sizes, with an optional leading icon."
       }
     }
   },

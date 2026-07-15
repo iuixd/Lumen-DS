@@ -4,7 +4,7 @@ import { customElement, property } from "lit/decorators.js";
 /**
  * `<lumen-choice-chip>` — Web Components implementation of `ChoiceChip`
  * (`packages/ui/src/primitives/ChoiceChip.tsx`), sourced from the Figma
- * Buttons page (Lumen-DS-2027, node 581:485). A toggleable pill for a
+ * Buttons page (Lumen-AI-Design-System, node 581:485). A toggleable pill for a
  * single-value choice: unselected shows plain text, selected fills solid
  * brand and gains a leading check icon. Only the `lg` size (36px) is
  * specced. Uses `aria-disabled` rather than the native `disabled`

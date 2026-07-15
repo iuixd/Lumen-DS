@@ -1,4 +1,4 @@
-# AGENTS.md — Lumen Design System
+# AGENTS.md — Lumen AI Design System
 
 This file governs how AI coding agents should work **inside this
 repository**. See `CLAUDE.md` for the full set of hard rules (tokens,

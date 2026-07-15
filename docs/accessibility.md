@@ -1,14 +1,14 @@
 # Lumen Accessibility
 
-> Accessibility requirements for the **Lumen Design System** and its design tokens, components, Storybook documentation, and implementation workflow.
+> Accessibility requirements for the **Lumen AI Design System** and its design tokens, components, Storybook documentation, and implementation workflow.
 
 ## Source
 
-- **Figma file:** Lumen DS 2027
+- **Figma file:** Lumen AI Design System
 - **File key:** `GJBYRm6ySR7XIECFcHMgy2`
 - **Design Tokens node:** `426:4395`
-- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
-- **Last reviewed:** 2026-07-12
+- **Dev Mode URL:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-AI-Design-System?node-id=426-4395&m=dev
+- **Last reviewed:** 2026-07-15
 
 ## Related documents
 

@@ -7,7 +7,7 @@ import { create } from "@storybook/theming";
 addons.setConfig({
   theme: create({
     base: "light",
-    brandTitle: "Lumen Design System",
+    brandTitle: "Lumen AI Design System",
     brandImage: "./Lumen-anim-logo-96.png",
     brandUrl: "./",
     brandTarget: "_self",

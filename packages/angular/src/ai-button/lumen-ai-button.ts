@@ -13,7 +13,7 @@ import { NgTemplateOutlet } from "@angular/common";
 /**
  * `<lumen-ai-button>` — Angular standalone implementation of `AIButton`
  * (packages/ui/src/primitives/AIButton.tsx), sourced from the Figma "AI
- * Communication Component Library" (Lumen-DS-2027, node 760:1965). See the
+ * Communication Component Library" (Lumen-AI-Design-System, node 760:1965). See the
  * React component's doc comment for the full sourcing rationale (why this
  * is a standalone component rather than a `Button` variant, why
  * `destructive` changes no styling, and the known xs-height/status-tint/

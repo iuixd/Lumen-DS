@@ -6,9 +6,9 @@ This changelog follows the principles of [Keep a Changelog](https://keepachangel
 
 ## Source
 
-- **Figma file:** Lumen DS 2027
+- **Figma file:** Lumen AI Design System
 - **Dev Mode node:** `426:4395`
-- **Reference:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
+- **Reference:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-AI-Design-System?node-id=426-4395&m=dev
 - **Related documents:**
   - `docs/figma-source.md`
   - `docs/design-tokens.md`
@@ -24,7 +24,7 @@ Claude Code must:
 2. Apply only the changes explicitly listed there.
 3. Update only affected tokens, components, Storybook stories, tests, documentation, and generated files.
 4. Preserve all unrelated design-system files.
-5. Never regenerate the entire Lumen Design System for an incremental update.
+5. Never regenerate the entire Lumen AI Design System for an incremental update.
 6. Report unresolved Figma-to-code differences instead of inventing values.
 
 ---
@@ -39,7 +39,7 @@ Use the following headings for every release:
 ### Added
 
 - Added `@lumen/web-components`, a new framework package shipping `<lumen-button>` — a Web Components (Lit) implementation of Button, Lumen's first non-React framework package.
-  - Source: `docs/roadmap.md` Phase 13 (Multi-framework expansion); no new Figma node — implements the same design already sourced from Lumen-DS-2027 node 475:7210 for `@lumen/ui`'s `Button.tsx`
+  - Source: `docs/roadmap.md` Phase 13 (Multi-framework expansion); no new Figma node — implements the same design already sourced from Lumen-AI-Design-System node 475:7210 for `@lumen/ui`'s `Button.tsx`
   - Previous: no non-React framework package existed; `docs/roadmap.md` Phase 13 listed this as a not-yet-started deliverable
   - Current: `packages/web-components/src/button/lumen-button.ts` implements Button's real, shipped behavior — variants `primary | raised | secondary | tertiary | link`, sizes `xs | sm | md | lg`, `icon-only`/`pill`/`loading`/`disabled` states, `icon-start`/`icon-end` slots, `aria-disabled`/`aria-busy` handling, and the icon-only accessible-name dev warning — matching `Button.tsx` prop-for-prop with framework-idiomatic naming (`loading` not `isLoading`, slots not node props). Styled entirely through `@lumen/tokens`' CSS custom properties (`:host([variant="…"])`/`:host([size="…"])` selectors), no Tailwind. 14 Vitest/jsdom tests cover DOM structure, attribute reflection, and accessibility behavior. Building it surfaced that `docs/component-specifications.md` §5's variant list, `fullWidth` property, and `leadingIcon`/`trailingIcon` naming don't match what `Button.tsx` actually ships — this package matches the real implementation, not the inaccurate doc; see `docs/roadmap.md` Phase 13 Findings and `packages/web-components/README.md` for the full discrepancy and why it wasn't silently fixed here. No Storybook coverage yet (explicitly deferred, see Phase 13). No Changeset — new package starting at its own initial `0.1.0`, nothing to version-bump from.
   - Affects: `packages/web-components/**` (new package), `docs/roadmap.md`, `docs/component-architecture.md`, `README.md`, `CLAUDE.md`
@@ -47,7 +47,7 @@ Use the following headings for every release:
   - Validation: lint, typecheck, and test passed repo-wide (56 tests: 39 `@lumen/ui` + 3 `@lumen/patterns` + 14 `@lumen/web-components`); tokens build and production Storybook build unaffected
 
 - Added `@lumen/angular`, a new framework package shipping `LumenButtonComponent` (`<lumen-button>`) — an Angular standalone-component implementation of Button, Lumen's second non-React framework package.
-  - Source: `docs/roadmap.md` Phase 13 (Multi-framework expansion); no new Figma node — implements the same design already sourced from Lumen-DS-2027 node 475:7210 for `@lumen/ui`'s `Button.tsx`, matching `@lumen/web-components`'s already-reconciled Button contract
+  - Source: `docs/roadmap.md` Phase 13 (Multi-framework expansion); no new Figma node — implements the same design already sourced from Lumen-AI-Design-System node 475:7210 for `@lumen/ui`'s `Button.tsx`, matching `@lumen/web-components`'s already-reconciled Button contract
   - Previous: only one non-React framework package existed (`@lumen/web-components`); `docs/roadmap.md` Phase 13 listed Angular as a not-yet-started deliverable
   - Current: `packages/angular/src/button/lumen-button.ts` implements Button's real, shipped behavior — variants `primary | raised | secondary | tertiary | link`, sizes `xs | sm | md | lg`, `iconOnly`/`pill`/`loading`/`disabled` properties, `[iconStart]`/`[iconEnd]` content-projection selectors, `aria-disabled`/`aria-busy` handling, and the icon-only accessible-name dev warning — matching `Button.tsx` and `<lumen-button>` (Web Components) prop-for-prop. Styled through `@lumen/tokens`' CSS custom properties using the same `:host([variant="…"])`/`:host([size="…"])` selectors as the Web Components version (Angular's emulated view encapsulation supports the same `:host()` syntax). Targets Angular 20 LTS, not the latest major (22) — Angular 22's compiler-cli requires TypeScript `>=6.0`, incompatible with this repo's TypeScript `^5.5.4`/resolved `5.9.3`; Angular 20 requires `>=5.8 <6.0`, which the existing resolved version already satisfies. Uses classic `@Input()` decorators rather than signal-based `input()` — Angular's JIT compiler (what `TestBed` uses under plain Vitest/esbuild, without `@angular/build` or `@analogjs/vite-plugin-angular`) can't recognize signal inputs without a compiler AST transform that only runs inside a real Angular/TypeScript compiler pipeline (`angular/angular#54013`); decorator-based inputs need no such transform, keeping this package's tooling as light as `@lumen/ui`/`@lumen/web-components`. Built and tested against `provideZonelessChangeDetection()`, no `zone.js` dependency. 15 Vitest/jsdom/`TestBed` tests cover DOM structure, attribute/content-projection reflection, and accessibility behavior. No Storybook coverage yet (same deferred decision as Web Components, see Phase 13). No Changeset — new package starting at its own initial `0.1.0`, nothing to version-bump from.
   - Affects: `packages/angular/**` (new package), `docs/roadmap.md`, `docs/component-architecture.md`, `README.md`, `CLAUDE.md`
@@ -67,7 +67,7 @@ Use the following headings for every release:
 - Updated the Storybook manager branding and browser metadata.
   - Source: local Storybook manager; no Figma node is involved
   - Previous: the sidebar used a combined SVG wordmark on the gray app background, and browser tabs used Storybook's dynamic title and default favicon
-  - Current: the sidebar uses a separate PNG brand mark with live `Lumen Design System` text on a white background; browser tabs use the Lumen title and PNG favicon
+  - Current: the sidebar uses a separate PNG brand mark with live `Lumen AI Design System` text on a white background; browser tabs use the Lumen title and PNG favicon
   - Affects: `packages/storybook/.storybook/manager.ts`, `packages/storybook/.storybook/manager-head.html`, `packages/storybook/public/Lumen-anim-logo-96.png`, and `packages/storybook/public/lumen-favicon.png`
   - Migration: none
   - Validation: lint, typecheck, 42 tests, token build, and production Storybook build passed; deployed Storybook verification pending
@@ -104,7 +104,7 @@ Use the following headings for every release:
   - Changeset: none (`@lumen/storybook` is private and no published package API changed)
 
 - Fixed the Button specification to match the real, shipped implementation — `docs/component-specifications.md` §5, `docs/component-architecture.md` §7, and `docs/development-guidelines.md` §8.1 all described a Button API that never existed in code.
-  - Source: `packages/ui/src/primitives/Button.tsx`, `Button.stories.tsx`, `Button.test.tsx` (Lumen-DS-2027 node `475:7210`, formerly `466:4365`), cross-checked against `docs/roadmap.md` Phase 13 Findings, which recorded the discrepancy when `@lumen/web-components`'s `<lumen-button>` surfaced it
+  - Source: `packages/ui/src/primitives/Button.tsx`, `Button.stories.tsx`, `Button.test.tsx` (Lumen-AI-Design-System node `475:7210`, formerly `466:4365`), cross-checked against `docs/roadmap.md` Phase 13 Findings, which recorded the discrepancy when `@lumen/web-components`'s `<lumen-button>` surfaced it
   - Previous: docs described variants `primary | secondary | tertiary | ghost | link | danger | ai` (none of `ghost`/`danger`/`ai` exist; `raised` was missing entirely), sizes `sm | md | lg` (missing `xs`), a `fullWidth` property that doesn't exist, icon props named `leadingIcon`/`trailingIcon` instead of the real `iconStart`/`iconEnd`, undocumented `iconOnly`/`pill` modifiers, and optional `Selected`/`Success`/`Error` states that aren't implemented or in the cited Figma source
   - Current: all three documents now list variants `primary | raised | secondary | tertiary | link`, sizes `xs | sm | md | lg`, the real `iconStart`/`iconEnd`/`iconOnly`/`pill`/`isLoading` property names, and drop the invented `fullWidth` and unimplemented optional states; `docs/component-specifications.md` §5 gained an explicit "Modifiers" subsection for Icon Only/Pill (previously miscategorized as if they were variants) and a note on the `loading`/`isLoading` naming inconsistency between the spec's canonical name and React's actual prop name
   - Affects: `docs/component-specifications.md`, `docs/component-architecture.md`, `docs/development-guidelines.md`, `docs/roadmap.md` (Phase 13 Findings/Deliverables/Exit criteria updated to reflect the fix), `packages/web-components/README.md` (discrepancy section reframed as resolved history)
@@ -153,7 +153,7 @@ Example:
 ### Added
 
 - Brought `@lumen/web-components` and `@lumen/angular` to parity with the 2026-07-14 `@lumen/ui` Figma sync below (Button `status`, `SplitButton` expansion, `FilterChip`, `ChoiceChip`, `AIButton`).
-  - Source: no new Figma nodes — implements the same design already sourced from Lumen-DS-2027 for `@lumen/ui`'s corresponding components (see each entry below for its own node).
+  - Source: no new Figma nodes — implements the same design already sourced from Lumen-AI-Design-System for `@lumen/ui`'s corresponding components (see each entry below for its own node).
   - Previous: both framework packages shipped Button only, and that Button lacked `status`; neither package had `SplitButton`, `FilterChip`, `ChoiceChip`, or `AIButton` equivalents.
   - Current: `@lumen/web-components` ships `<lumen-button status="...">`, `<lumen-split-button>`, `<lumen-filter-chip>`, `<lumen-choice-chip>`, and `<lumen-ai-button>`; `@lumen/angular` ships the matching `LumenButtonComponent` (`status` input), `LumenSplitButtonComponent`, `LumenFilterChipComponent`, `LumenChoiceChipComponent`, and `LumenAIButtonComponent`. Both use the same `--color-*`/`--spacing-*` CSS custom properties as `@lumen/ui` — no token duplication. `SplitButton`'s two-real-buttons structure required per-framework event handling: `@lumen/web-components` dispatches `lumen-main-click`/`lumen-dropdown-click` `CustomEvent`s (a plain `click` retargeted at the host can't distinguish which inner button fired); `@lumen/angular` exposes `(mainClick)`/`(dropdownClick)` `EventEmitter` outputs instead, matching that framework's own idiom. `FilterChip`'s and `AIButton`'s default-icon-unless-overridden behavior — trivial with a native `<slot>`'s fallback-content mechanism in Web Components — has no `<ng-content>` equivalent in Angular, so the Angular versions use `TemplateRef` inputs (`[icon]`/`[removeIcon]`) instead of content projection for those specific slots.
   - Known limitations carried over unchanged from the React components: SplitButton's `sm` dropdown segment is a square 36px vs. Figma's non-square 30px (not an approved spacing-scale value); AIButton's `status` tint and `xs` exact height (28px in Figma vs. 32px shipped) are not implemented; Split Button AI is not implemented in any framework package.
@@ -365,6 +365,15 @@ Example:
   - Migration: repository administrators must select GitHub Actions as the Pages publishing source if it is not already enabled
   - Validation: local production Storybook build passed; remote deployment remains pending the first workflow run
   - Changeset: none (`@lumen/storybook` is private and no published package API changed)
+
+- Renamed the product from "Lumen Design System" to "Lumen AI Design System", matching the Figma source file's own rename.
+  - Source: the canonical Figma file (fileKey `GJBYRm6ySR7XIECFcHMgy2`) was renamed from "Lumen DS 2027" to "Lumen AI Design System" — confirmed via `get_metadata`, which still lists the same single top-level page (`426:4395`, "Design Tokens") under the new file name, so no node IDs changed, only the file's display name and URL slug (`Lumen-DS-2027` → `Lumen-AI-Design-System`)
+  - Previous: "Lumen Design System" / "Lumen DS 2027" / `Lumen-DS-2027` appeared across governance docs, README, `CLAUDE.md`/`AGENTS.md`, `package.json`, the Storybook manager brand title and browser tab title, token source `_comment` fields, and Figma-source doc comments throughout `packages/ui`, `packages/web-components`, and `packages/angular`
+  - Current: all three replaced with "Lumen AI Design System" / `Lumen-AI-Design-System` everywhere they appeared (root `package.json` `name` also updated to `lumen-ai-design-system` for consistency, since nothing else referenced the old string); every governance doc's "Source" block `Last reviewed` date bumped to 2026-07-15 to reflect this verification pass; `@lumen/tokens`' generated `dist/` output regenerated from the updated source JSON rather than hand-edited. Also updated `README.md`'s GitHub links (CI/Storybook-deployment badges, git-dependency install snippet, Issues link) from `github.com/iuixd/Lumen-DS` to `github.com/iuixd/Lumen-AI-DS`, matching the "This repository moved" notice GitHub returned on push during the prior sync — the `origin` git remote itself was left untouched since GitHub's redirect already resolves it.
+  - Affects: `CLAUDE.md`, `AGENTS.md`, `README.md`, `package.json`, all `docs/*.md`, `packages/storybook/.storybook/{manager.ts,manager-head.html}`, `packages/tokens/{README.md,src/*.json}`, Figma-source doc comments in `packages/ui/src/{primitives,composite}/*.{ts,tsx}`, `packages/web-components/src/**/*.ts`, `packages/angular/src/**/*.ts`, and prior `.changeset/*.md` entries still pending release
+  - Migration: none — no package API, token value, or component behavior changed; purely a display-name and citation update
+  - Validation: `eslint .` passed repo-wide; `tsc --noEmit` passed for `@lumen/ui`, `@lumen/web-components`, and `@lumen/angular`; full test suite passed (184 tests); `pnpm --filter @lumen/tokens build` passed and `dist/index.ts` confirmed regenerated with the new name; production Storybook build passed with the updated brand title
+  - Changeset: `.changeset/rename-lumen-ai-design-system.md` (`@lumen/tokens` patch — only `dist/` output text changed, no token values)
 
 ### Deprecated
 

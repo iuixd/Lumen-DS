@@ -1,7 +1,7 @@
 # Using this Design System with Claude Code in a product repo
 
 This page is for **product teams** building a SaaS application on top of the
-Lumen Design System with Claude Code. Copy the block below into your
+Lumen AI Design System with Claude Code. Copy the block below into your
 product repo's own `CLAUDE.md` (create one if it doesn't exist). This is
 what makes Claude Code reuse Lumen components/tokens automatically instead
 of generating new ones for every screen.
@@ -38,7 +38,7 @@ import "@lumen/tokens/css";
 ```md
 ## Design system
 
-This product is built on the Lumen Design System (`@lumen/tokens`,
+This product is built on the Lumen AI Design System (`@lumen/tokens`,
 `@lumen/ui`, `@lumen/patterns`). When generating or editing any UI:
 
 1. Do not create a new button, input, card, modal, table, badge, avatar,

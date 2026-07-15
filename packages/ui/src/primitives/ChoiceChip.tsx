@@ -5,7 +5,7 @@ import { CheckIcon } from "../icons/generated";
 
 /**
  * ChoiceChip
- * Sourced from the Figma "Buttons" page (Lumen-DS-2027, node 581:485): a
+ * Sourced from the Figma "Buttons" page (Lumen-AI-Design-System, node 581:485): a
  * toggleable pill for single-value choices — visually identical to
  * FilterChip's outlined/filled treatment but with no leading icon while
  * unselected and a leading check icon (not a remove affordance) once

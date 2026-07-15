@@ -5,7 +5,7 @@ import { ChevronDownIcon } from "../icons/generated";
 
 /**
  * SplitButton
- * Sourced from the Figma "Buttons" page (Lumen-DS-2027, node 555:300): a primary
+ * Sourced from the Figma "Buttons" page (Lumen-AI-Design-System, node 555:300): a primary
  * action button joined to a dropdown-toggle button by a thin divider, sharing one
  * rounded/pill silhouette.
  *

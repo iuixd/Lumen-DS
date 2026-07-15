@@ -1,15 +1,15 @@
 # Lumen Component Architecture
 
-> Canonical component architecture for the **Lumen Design System**.  
+> Canonical component architecture for the **Lumen AI Design System**.  
 > Figma is the design source of truth. The component contract defined in this document and in `docs/component-specifications.md` — not any single framework package — is what every framework implementation, Storybook story, test, and published package must mirror. React is Lumen's current reference implementation of that contract, not the contract itself; see "0. Architecture layers" below.
 
 ## Source
 
-- **Figma file:** Lumen DS 2027
+- **Figma file:** Lumen AI Design System
 - **Dev Mode node:** `426:4395`
-- **Reference:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-DS-2027?node-id=426-4395&m=dev
+- **Reference:** https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-AI-Design-System?node-id=426-4395&m=dev
 - **Related specification:** `docs/design-tokens.md`
-- **Last reviewed:** 2026-07-14
+- **Last reviewed:** 2026-07-15
 
 ## Purpose
 
@@ -667,7 +667,7 @@ section is kept in sync with the full specification in
 `docs/component-specifications.md` §5 — that document is authoritative for
 behavior, content, accessibility, and Storybook detail; this section covers
 architecture-level contract shape only. Reconciled against the shipped
-implementation (`packages/ui/src/primitives/Button.tsx`, Lumen-DS-2027 node
+implementation (`packages/ui/src/primitives/Button.tsx`, Lumen-AI-Design-System node
 `475:7210`) on 2026-07-12 — see `docs/roadmap.md` Phase 13 Findings.
 
 ## 7.1 Supported variants

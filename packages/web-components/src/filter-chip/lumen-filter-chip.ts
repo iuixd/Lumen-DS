@@ -4,7 +4,7 @@ import { customElement, property } from "lit/decorators.js";
 /**
  * `<lumen-filter-chip>` — Web Components implementation of `FilterChip`
  * (`packages/ui/src/primitives/FilterChip.tsx`), sourced from the Figma
- * Buttons page (Lumen-DS-2027, node 581:409). A toggleable pill for
+ * Buttons page (Lumen-AI-Design-System, node 581:409). A toggleable pill for
  * adding/removing a filter: unselected shows a leading plus icon (default
  * slot content, overridable), selected fills solid brand and keeps the
  * leading icon while adding a trailing remove icon — see the React

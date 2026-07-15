@@ -1,4 +1,4 @@
-# CLAUDE.md — Lumen Design System
+# CLAUDE.md — Lumen AI Design System
 
 This file governs how Claude Code (or any AI coding agent) should work
 **inside this repository**. If you are building a product on top of this
@@ -20,7 +20,7 @@ confirm vs. implement directly) — read it rather than re-deriving it here.
 
 The single source of truth for Lumen's design tokens, UI components, layout
 primitives, and enterprise patterns. Tokens are derived from the
-`Lumen-DS-2027` Figma file (page "Design Tokens"); see `docs/figma-sync.md`
+`Lumen-AI-Design-System` Figma file (page "Design Tokens"); see `docs/figma-sync.md`
 for exactly which nodes and what's still provisional. Published as six
 packages:
 
