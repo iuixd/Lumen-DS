@@ -394,6 +394,15 @@ Example:
   - Validation: `eslint .` passed repo-wide; `tsc --noEmit` passed for all three packages; 184 tests passed (76 `@lumen/ui` incl. the renamed AIButton default-icon test, 55 `@lumen/web-components` incl. AIButton, 53 `@lumen/angular` incl. AIButton); `pnpm --filter @lumen/tokens build` passed; production Storybook build passed (`AIButton.stories` and `Icon.stories` chunks built clean, capability-icon chunks like `WandSparklesIcon` unaffected)
   - Changeset: `.changeset/ai-button-lm-aisymbol-icon.md` (`@lumen/ui` patch, `@lumen/web-components` patch, `@lumen/angular` patch)
 
+- Fixed three dead `README.md` links to the deployed Storybook, reported as a production 404.
+  - Source: user report — `https://srikumar.design/Lumen-DS/` returned HTTP 404; confirmed via direct fetch, and confirmed `https://srikumar.design/Lumen-AI-DS/` loads the live Storybook
+  - Previous: the GitHub repository backing this project was renamed from `Lumen-DS` to `Lumen-AI-DS` (surfaced earlier as a "This repository moved" notice on `git push`), which moved the GitHub Pages project-site path; `README.md`'s three Storybook links (top nav, table, and footer) still pointed at the old `/Lumen-DS/` path, which GitHub Pages no longer serves — GitHub does not redirect Pages paths on a repo rename, only the git remote itself
+  - Current: all three links updated to `http://srikumar.design/Lumen-AI-DS/`; the earlier `github.com/iuixd/Lumen-DS` → `github.com/iuixd/Lumen-AI-DS` link fix (CI badges, git-dependency snippet, Issues link) in this same rename already covered the GitHub-hosted links, this covers the separately-domained deployed-Storybook links that were missed in that pass
+  - Affects: `README.md` only
+  - Migration: none
+  - Validation: fetched both URLs directly — old path returns 404, new path returns the live Storybook (`@storybook/core - Storybook` title)
+  - Changeset: none (documentation-only change, no package affected)
+
 ### Migration
 
 - None required for the initial documentation baseline.

@@ -5,7 +5,7 @@ Lumen is the shared design language and implementation system for Lumen products
 [![CI](https://github.com/iuixd/Lumen-AI-DS/actions/workflows/ci.yml/badge.svg)](https://github.com/iuixd/Lumen-AI-DS/actions/workflows/ci.yml)
 [![Storybook deployment](https://github.com/iuixd/Lumen-AI-DS/actions/workflows/deploy-storybook.yml/badge.svg)](https://github.com/iuixd/Lumen-AI-DS/actions/workflows/deploy-storybook.yml)
 
-[View Storybook](http://srikumar.design/Lumen-DS/) · [Usage guide](docs/usage-guidelines.md) · [Figma synchronization](docs/figma-sync.md) · [Contributing](CONTRIBUTING.md) · [Changelog](docs/changelog.md)
+[View Storybook](http://srikumar.design/Lumen-AI-DS/) · [Usage guide](docs/usage-guidelines.md) · [Figma synchronization](docs/figma-sync.md) · [Contributing](CONTRIBUTING.md) · [Changelog](docs/changelog.md)
 
 > **Status:** Early development (`0.1.x`). APIs and the Git-based consumption model may change before packages reach Stable status.
 
@@ -13,7 +13,7 @@ Lumen is the shared design language and implementation system for Lumen products
 
 | Audience | Recommended starting point |
 |---|---|
-| Product and delivery | [Storybook](http://srikumar.design/Lumen-DS/) and the [roadmap](docs/roadmap.md) |
+| Product and delivery | [Storybook](http://srikumar.design/Lumen-AI-DS/) and the [roadmap](docs/roadmap.md) |
 | Designers | [Figma source](docs/figma-source.md), [design tokens](docs/design-tokens.md), and [design review](docs/design-review.md) |
 | Engineers | [Usage guide](docs/usage-guidelines.md), Storybook Docs, and the integration example below |
 | Architects | [Component architecture](docs/component-architecture.md), [project governance](docs/project-governance.md), and [versioning](docs/versioning-and-releases.md) |
@@ -25,7 +25,7 @@ Lumen is the shared design language and implementation system for Lumen products
 
 The deployed Storybook is the fastest way to inspect what Lumen provides and decide whether an existing component or pattern meets a product need.
 
-[Open Lumen Storybook →](http://srikumar.design/Lumen-DS/)
+[Open Lumen Storybook →](http://srikumar.design/Lumen-AI-DS/)
 
 Use Storybook to:
 
