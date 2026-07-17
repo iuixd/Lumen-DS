@@ -15,3 +15,4 @@ apps/*
 # Built CLI output for the scaffolder — rebuilt via `pnpm --filter @lumen/create-app build`,
 # unlike packages/tokens/dist (which IS committed; tokens has no build-before-use requirement).
 packages/create-app/dist/
+.claude/
