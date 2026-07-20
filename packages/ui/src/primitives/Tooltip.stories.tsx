@@ -28,7 +28,7 @@ export const Playground: Story = {
   render: (args: ComponentProps<typeof Tooltip>) => (
     <div className="p-8">
       <Tooltip {...args}>
-        <Button variant="tertiary">Hover me</Button>
+        <Button variant="ghost">Hover me</Button>
       </Tooltip>
     </div>
   )

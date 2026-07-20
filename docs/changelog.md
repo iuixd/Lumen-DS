@@ -56,6 +56,16 @@ Use the following headings for every release:
 
 ### Changed
 
+- Replaced every standard Button implementation and Storybook collection with the final light/dark variant collection.
+  - Affected token group/component: `color.button` semantic roles and Button in React, Web Components, Angular, Storybook, AppShell, and AIPanel
+  - Figma source: Lumen-AI-Design-System node `1027:3733` (`Button` collection frame `1174:1349`), verified with `get_design_context`, `get_metadata`, and per-instance `get_variable_defs`
+  - Previous: variants `primary | raised | secondary | tertiary | outline | link | accent`; four sizes, pressed/loading/status treatments, pill and icon-only modifiers, and older brand/AppShell color roles. AIPanel also introduced a provisional 28px `AIPanelAction` wrapper.
+  - Current: variants `primary | accent | secondary | outline | ghost | link | destructive`; one 34px height with 14px inline padding, 7px block padding, 8px gap/radius, 14px icons, 14/20 medium label typography, and exact theme-aware Default/Hover/Focused/Disabled colors. The standard collection defines no pressed, loading, status, pill, icon-only, or size variants. AIPanel/AppShell actions now use the same standard Button directly.
+  - Affects: `packages/tokens/src/{primitives,semantic}/color.json`, generated token output, `packages/ui/src/primitives/Button.*`, Button consumers/stories, `packages/web-components/src/button/*`, `packages/angular/src/button/*`, package API exports/readmes, `README.md`, and the Button/API/token guidance in `docs/{component-architecture,component-specifications,design-tokens,development-guidelines,documentation-style,figma-source,figma-sync,release-process,roadmap}.md`
+  - Migration: breaking — replace `raised` with `primary` or `accent`, replace `tertiary` with `ghost`, use `destructive` for dangerous actions, remove `size`/`status`/`pill`/`iconOnly`/`isLoading` (`loading` outside React), and compose separate loading or icon-only controls when required. `AIPanelAction` is removed; use `Button variant="secondary"`.
+  - Validation: token build, repository-wide typecheck, lint, all framework/UI tests (React 120, Web Components 68, Angular 64, create-app 27, patterns 6), and production Storybook build (2,125 modules) passed. Browser-backed visual comparison was unavailable because no in-app browser session was present; source-level geometry/token parity was rechecked against the Figma extraction.
+  - Changeset: `final-button-collection.md`
+
 - Made the repository Quick Start self-contained for first-time installation.
   - Source: user-reported onboarding failure while following the repository Quick Start; no Figma node is involved
   - Previous: the Quick Start began with `corepack pnpm install --frozen-lockfile` and assumed the repository had already been cloned and selected as the current directory; running the subsequent shorthand `corepack pnpm lint` command from a product project without a `lint` script caused pnpm to attempt an unavailable `lint` executable

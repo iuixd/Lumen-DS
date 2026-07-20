@@ -154,15 +154,15 @@ Small updates must affect only relevant tokens, components, stories, tests, and 
 
 Use the following maturity levels.
 
-| Level | Name | Definition |
-|---:|---|---|
-| 0 | Unstructured | Values and components are inconsistent or undocumented |
-| 1 | Documented | Foundations and standards are recorded |
-| 2 | Tokenized | Shared values are represented as managed tokens |
-| 3 | Componentized | Stable reusable components exist in Figma and code |
-| 4 | Governed | Review, testing, release, and deprecation processes operate consistently |
-| 5 | Automated | Token generation, validation, parity checks, and release workflows are automated |
-| 6 | Optimized | Adoption, quality, performance, and AI-assisted delivery are measured and improved |
+| Level | Name          | Definition                                                                         |
+| ----: | ------------- | ---------------------------------------------------------------------------------- |
+|     0 | Unstructured  | Values and components are inconsistent or undocumented                             |
+|     1 | Documented    | Foundations and standards are recorded                                             |
+|     2 | Tokenized     | Shared values are represented as managed tokens                                    |
+|     3 | Componentized | Stable reusable components exist in Figma and code                                 |
+|     4 | Governed      | Review, testing, release, and deprecation processes operate consistently           |
+|     5 | Automated     | Token generation, validation, parity checks, and release workflows are automated   |
+|     6 | Optimized     | Adoption, quality, performance, and AI-assisted delivery are measured and improved |
 
 Current estimated state:
 
@@ -896,22 +896,22 @@ Angular and Vue framework packages
 
 # 20. Priority matrix
 
-| Initiative | Impact | Effort | Priority |
-|---|---|---|---|
-| Complete semantic color tokens | High | Medium | P0 |
-| Validate Light and Dark modes | High | Medium | P0 |
-| Build token export pipeline | High | Medium | P0 |
-| Stabilize Button and form controls | High | Medium | P0 |
-| Accessibility baseline | High | Medium | P0 |
-| Storybook foundation pages | High | Low | P0 |
-| Primitive component library | High | High | P1 |
-| Visual-regression workflow | High | Medium | P1 |
-| Code Connect pilot | Medium | Medium | P1 |
-| AI action components | High | Medium | P1 |
-| Composite enterprise components | High | High | P2 |
-| Page templates | Medium | High | P2 |
-| Automated stable release | Medium | High | P2 |
-| Adoption analytics | Medium | Medium | P3 |
+| Initiative                         | Impact | Effort | Priority |
+| ---------------------------------- | ------ | ------ | -------- |
+| Complete semantic color tokens     | High   | Medium | P0       |
+| Validate Light and Dark modes      | High   | Medium | P0       |
+| Build token export pipeline        | High   | Medium | P0       |
+| Stabilize Button and form controls | High   | Medium | P0       |
+| Accessibility baseline             | High   | Medium | P0       |
+| Storybook foundation pages         | High   | Low    | P0       |
+| Primitive component library        | High   | High   | P1       |
+| Visual-regression workflow         | High   | Medium | P1       |
+| Code Connect pilot                 | Medium | Medium | P1       |
+| AI action components               | High   | Medium | P1       |
+| Composite enterprise components    | High   | High   | P2       |
+| Page templates                     | Medium | High   | P2       |
+| Automated stable release           | Medium | High   | P2       |
+| Adoption analytics                 | Medium | Medium | P3       |
 
 ---
 
@@ -1160,6 +1160,7 @@ Read:
 Plan only the requested Lumen roadmap initiative.
 
 First report:
+
 1. current maturity
 2. prerequisites
 3. affected tokens
@@ -1223,6 +1224,8 @@ Docs/implementation discrepancy reconciled the same day (see Findings below).
 Angular proof of concept (Button only) shipped 2026-07-12 as @lumen/angular,
 targeting Angular 20 LTS (not latest 22 — see package README for the
 TypeScript-version reason). Vue framework package not yet started.
+The standard Button contract was replaced across React, Web Components, and
+Angular by the final Figma collection at node 1027:3733 on 2026-07-20.
 ```
 
 ## Sequencing
@@ -1252,6 +1255,11 @@ Building the Web Components Button surfaced that `docs/component-specifications.
 - Docs listed `Selected`/`Success`/`Error` as optional states; none are implemented or in the cited Figma source.
 
 `@lumen/web-components`'s Button was built to match the real React implementation, not the docs, since matching neither would have defeated the point of a cross-framework consistency check. `docs/component-specifications.md` §5 and `docs/component-architecture.md` §7 (which duplicated the same variant/property list) were then reconciled against `Button.tsx` directly — both now match the real, shipped, Figma-cited implementation.
+
+This finding is historical. On 2026-07-20, final Figma node `1027:3733`
+superseded the older node `475:7210` Button collection. All three framework
+implementations and the authoritative specification now use the final seven
+variants, one 34px size, and Default/Hover/Focused/Disabled states.
 
 Building `@lumen/angular` surfaced a separate, tooling-level finding (not a spec discrepancy): Angular's JIT compiler cannot recognize signal-based `input()`/`output()` fields when components are transformed by plain esbuild (what Vitest uses) instead of a real Angular/TypeScript compiler pipeline — see `packages/angular/README.md` for the full explanation and `angular/angular#54013`. The fix (classic `@Input()` decorators instead of signal inputs) kept this package's tooling as light as `@lumen/ui` and `@lumen/web-components`, avoiding a dependency on `@angular/build`/`@analogjs/vite-plugin-angular`. Apply the same check before building the Vue package: verify Vue's Vitest/testing story doesn't have an equivalent gap before assuming the same lightweight approach works there too.
 

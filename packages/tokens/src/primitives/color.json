@@ -1,6 +1,7 @@
 {
   "_comment": "Sourced from Figma 'Lumen-AI-Design-System' file, page 'Design Tokens' > '01 Colors' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 426:4396). Every family uses a 9-step ramp: 50/100/200/300/400/500/600/700/800, where 500 is the Figma 'Default' step. Read swatch fill colors, not the printed hex labels — several 'Default' rows in the source file have mislabeled caption text (a copy/paste artifact) though the swatches themselves render correctly. 'cobalt', 'japonica', 'deep-purple', and 'forest' were added from a later Figma Variables publish (get_variable_defs on node 426:4396) alongside the originally-documented 14 families — verified via the Variables export rather than canvas swatches, each a full 50-800 ramp matching this same step convention. That same publish also exposed 'Gray'/'Foundation' variable collections that duplicate 'neutral' step-for-step and a 'Lumen Crimson' collection duplicating 'primary' step-for-step — those are unresolved naming collisions (not value conflicts) pending a canonical-name decision, not reflected here.",
   "neutral": {
+    "transparent": { "value": "#00000000" },
     "white": { "value": "#FFFFFF" },
     "black": { "value": "#000000" },
     "50": { "value": "#EFEFEF" },
@@ -205,6 +206,17 @@
   "sky": {
     "_comment": "Added 2026-07-20, sourced from the canonical 'AppShell' page (node 1007:3700, Breakpoint=Desktop/Theme=Light instance 1127:4196) via get_variable_defs: the `text/link` variable (#2563EB) used for breadcrumb and footer inline links in that context. Only this one step is evidenced — no full 50-800 ramp was found for this family, unlike every other family in this file. Do not assume or invent the missing steps.",
     "500": { "value": "#2563EB" }
+  },
+  "button": {
+    "_comment": "Exact component-only colors from the final Button variant collection (Lumen-AI-Design-System node 1027:3733). Added only where no existing primitive is an exact value match.",
+    "light": {
+      "link-hover-bg": { "value": "#EAF0FD" }
+    },
+    "dark": {
+      "disabled-on-action": { "value": "#7B777C" },
+      "secondary-hover-bg": { "value": "#2D1A26" },
+      "link-hover-bg": { "value": "#002121" }
+    }
   },
   "app-shell": {
     "_comment": "Exact AppShell-only primitives sourced from Lumen-AI-Design-System node 1007:3700 and its six Breakpoint/Theme instances (1127:4196, 1127:4197, 1175:2521, 1175:2522, 1175:2588, 1175:2589). These values intentionally remain distinct where they are only near-matches for an existing ramp step; AppShell parity must not round them.",

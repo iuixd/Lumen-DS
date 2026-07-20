@@ -1,17 +1,29 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "./Button";
-import { ArrowLeftIcon, ArrowRightIcon, SearchIcon } from "../icons/generated";
+import { CheckIcon } from "../icons/generated";
+import { Button, type ButtonProps } from "./Button";
 
-/**
- * The Buttons page's `Left`/`Right` icon-position instances (node 475:7210)
- * share one Button size with the icon glyph — 14/16/18/18px for xs/sm/md/lg,
- * the `--spacing-14`/`--spacing-16`/`--spacing-18` tokens.
- */
-const iconSizeBySize: Record<"xs" | "sm" | "md" | "lg", string> = {
-  xs: "size-[var(--spacing-14)]",
-  sm: "size-[var(--spacing-16)]",
-  md: "size-[var(--spacing-18)]",
-  lg: "size-[var(--spacing-18)]"
+const variants = [
+  "primary",
+  "accent",
+  "secondary",
+  "outline",
+  "ghost",
+  "link",
+  "destructive"
+] as const;
+
+const hoverClasses: Record<(typeof variants)[number], string> = {
+  primary:
+    "bg-[var(--color-button-primary-hover-bg)] text-[var(--color-button-primary-hover-on-action)]",
+  accent:
+    "bg-[var(--color-button-accent-hover-bg)] text-[var(--color-button-accent-hover-on-action)]",
+  secondary:
+    "border-[var(--color-button-secondary-hover-border)] bg-[var(--color-button-secondary-hover-bg)] text-[var(--color-button-secondary-hover-on-action)]",
+  outline:
+    "border-[var(--color-button-outline-hover-border)] bg-[var(--color-button-outline-hover-bg)] text-[var(--color-button-outline-hover-on-action)]",
+  ghost: "bg-[var(--color-button-ghost-hover-bg)]",
+  link: "bg-[var(--color-button-link-hover-bg)] text-[var(--color-button-link-hover-on-action)]",
+  destructive: "bg-[var(--color-button-destructive-hover-bg)]"
 };
 
 const meta = {
@@ -22,29 +34,15 @@ const meta = {
     docs: {
       description: {
         component:
-          "Sourced from the Figma 'Buttons' page (Lumen-AI-Design-System, node 475:7210): Primary, Secondary, Tertiary, Link, Raised (Primary with elevation), Outline (transparent-until-hover, same border/text colors as Secondary), each in xs/sm/md/lg, plus the Pill Button shape modifier. The page's Left/Right icon-position instances map to the `iconStart`/`iconEnd` props rather than their own variant — see the WithIcons story. `status` (success/warning/error) is a tinted status override sourced from the same component-set's State property — see the StatusStates story (verified for Primary/Secondary only, not yet re-verified for Outline)."
+          "The final standard Button collection from Figma node 1027:3733. Seven variants share one 34px geometry and four states across light and dark themes: Default, Hover, Focused, and Disabled."
       }
     }
   },
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["primary", "secondary", "tertiary", "link", "raised", "outline", "accent"]
-    },
-    size: { control: "select", options: ["xs", "sm", "md", "lg"] },
-    status: { control: "select", options: [undefined, "success", "warning", "error"] },
-    isLoading: { control: "boolean" },
-    disabled: { control: "boolean" },
-    pill: { control: "boolean" }
+    variant: { control: "select", options: variants },
+    disabled: { control: "boolean" }
   },
-  args: {
-    children: "Save changes",
-    variant: "primary",
-    size: "md",
-    isLoading: false,
-    disabled: false,
-    pill: false
-  }
+  args: { children: "Primary", variant: "primary", disabled: false }
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -52,252 +50,77 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
-export const AllVariants: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button variant="primary">Primary</Button>
-      <Button variant="raised">Raised</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="tertiary">Tertiary</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="link">Link</Button>
-      <Button variant="accent">Accent</Button>
-    </div>
-  )
-};
+function StateButton({
+  variant,
+  state
+}: {
+  variant: NonNullable<ButtonProps["variant"]>;
+  state: "Default" | "Hover" | "Focused" | "Disabled";
+}) {
+  return (
+    <Button
+      variant={variant}
+      disabled={state === "Disabled"}
+      iconStart={<CheckIcon aria-hidden />}
+      className={
+        state === "Hover"
+          ? hoverClasses[variant]
+          : state === "Focused"
+            ? `ring-2 ring-[var(--color-button-focus-ring)] ring-offset-2 ring-offset-[var(--color-background-default)] ${variant === "outline" ? "border-[var(--color-button-outline-focus-border)]" : ""}`
+            : undefined
+      }
+    >
+      {variant[0].toUpperCase() + variant.slice(1)}
+    </Button>
+  );
+}
 
-export const Pill: Story = {
-  parameters: { controls: { disable: true } },
+export const FinalVariantCollection: Story = {
+  parameters: { controls: { disable: true }, layout: "fullscreen" },
   render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button pill variant="primary">
-        Primary
-      </Button>
-      <Button pill variant="raised">
-        Raised
-      </Button>
-      <Button pill variant="secondary">
-        Secondary
-      </Button>
-      <Button pill variant="tertiary">
-        Tertiary
-      </Button>
-      <Button pill variant="outline">
-        Outline
-      </Button>
-    </div>
-  )
-};
-
-export const Sizes: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button size="xs">Extra small</Button>
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
-    </div>
-  )
-};
-
-export const IconOnly: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button iconOnly size="xs" aria-label="Search">
-        <SearchIcon className="size-3" />
-      </Button>
-      <Button iconOnly size="sm" aria-label="Search">
-        <SearchIcon className="size-4" />
-      </Button>
-      <Button iconOnly size="md" aria-label="Search">
-        <SearchIcon className="size-5" />
-      </Button>
-      <Button iconOnly size="lg" aria-label="Search">
-        <SearchIcon className="size-5" />
-      </Button>
-    </div>
-  )
-};
-
-export const WithIcons: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="primary" iconStart={<ArrowLeftIcon className={iconSizeBySize.md} />}>
-          Primary
-        </Button>
-        <Button variant="raised" iconStart={<ArrowLeftIcon className={iconSizeBySize.md} />}>
-          Raised
-        </Button>
-        <Button variant="secondary" iconStart={<ArrowLeftIcon className={iconSizeBySize.md} />}>
-          Secondary
-        </Button>
-        <Button variant="tertiary" iconStart={<ArrowLeftIcon className={iconSizeBySize.md} />}>
-          Tertiary
-        </Button>
-        <Button variant="outline" iconStart={<ArrowLeftIcon className={iconSizeBySize.md} />}>
-          Outline
-        </Button>
-        <Button variant="link" iconStart={<ArrowLeftIcon className={iconSizeBySize.md} />}>
-          Link
-        </Button>
-      </div>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="primary" iconEnd={<ArrowRightIcon className={iconSizeBySize.md} />}>
-          Primary
-        </Button>
-        <Button variant="raised" iconEnd={<ArrowRightIcon className={iconSizeBySize.md} />}>
-          Raised
-        </Button>
-        <Button variant="secondary" iconEnd={<ArrowRightIcon className={iconSizeBySize.md} />}>
-          Secondary
-        </Button>
-        <Button variant="tertiary" iconEnd={<ArrowRightIcon className={iconSizeBySize.md} />}>
-          Tertiary
-        </Button>
-        <Button variant="outline" iconEnd={<ArrowRightIcon className={iconSizeBySize.md} />}>
-          Outline
-        </Button>
-        <Button variant="link" iconEnd={<ArrowRightIcon className={iconSizeBySize.md} />}>
-          Link
-        </Button>
-      </div>
-    </div>
-  )
-};
-
-export const WithIconsBySize: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button size="xs" iconStart={<ArrowLeftIcon className={iconSizeBySize.xs} />}>
-        Extra small
-      </Button>
-      <Button size="sm" iconStart={<ArrowLeftIcon className={iconSizeBySize.sm} />}>
-        Small
-      </Button>
-      <Button size="md" iconStart={<ArrowLeftIcon className={iconSizeBySize.md} />}>
-        Medium
-      </Button>
-      <Button size="lg" iconStart={<ArrowLeftIcon className={iconSizeBySize.lg} />}>
-        Large
-      </Button>
-    </div>
-  )
-};
-
-export const Loading: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button isLoading variant="primary">
-        Saving
-      </Button>
-      <Button isLoading variant="secondary">
-        Saving
-      </Button>
-      <Button isLoading variant="tertiary">
-        Saving
-      </Button>
-      <Button isLoading pill variant="primary">
-        Saving
-      </Button>
-      <Button isLoading iconOnly aria-label="Search">
-        <SearchIcon className="size-5" />
-      </Button>
-    </div>
-  )
-};
-
-export const StatusStates: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="primary" status="success">
-          Success
-        </Button>
-        <Button variant="primary" status="warning">
-          Warning
-        </Button>
-        <Button variant="primary" status="error">
-          Error
-        </Button>
-      </div>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="secondary" status="success">
-          Success
-        </Button>
-        <Button variant="secondary" status="warning">
-          Warning
-        </Button>
-        <Button variant="secondary" status="error">
-          Error
-        </Button>
-      </div>
-    </div>
-  )
-};
-
-export const Disabled: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button disabled variant="primary">
-        Save changes
-      </Button>
-      <Button disabled variant="secondary">
-        Save changes
-      </Button>
-      <Button disabled variant="tertiary">
-        Save changes
-      </Button>
-      <Button disabled variant="outline">
-        Save changes
-      </Button>
-      <Button disabled pill variant="primary">
-        Save changes
-      </Button>
-      <Button disabled iconOnly aria-label="Search">
-        <SearchIcon className="size-5" />
-      </Button>
-    </div>
-  )
-};
-
-export const DisabledThemes: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid gap-6 bg-[var(--color-background-subtle)] p-6">
       {(["light", "dark"] as const).map((theme) => (
         <section
           key={theme}
           data-theme={theme}
-          className="rounded-lg bg-[var(--color-background-default)] p-4"
+          className="overflow-x-auto rounded-lg bg-[var(--color-background-default)] p-6"
         >
-          <p className="mb-3 text-label-md capitalize text-[var(--color-text-body)]">
-            {theme} theme
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button disabled variant="primary">
-              Primary
-            </Button>
-            <Button disabled variant="secondary">
-              Secondary
-            </Button>
-            <Button disabled variant="outline">
-              Outline
-            </Button>
-            <Button disabled variant="tertiary">
-              Tertiary
-            </Button>
+          <h2 className="mb-5 font-interface text-heading-sm capitalize text-[var(--color-text-heading)]">
+            {theme}
+          </h2>
+          <div className="grid min-w-[900px] grid-cols-[80px_repeat(7,minmax(110px,1fr))] items-center gap-x-4 gap-y-4">
+            <span />
+            {variants.map((variant) => (
+              <span
+                key={variant}
+                className="text-label-sm capitalize text-[var(--color-text-muted)]"
+              >
+                {variant}
+              </span>
+            ))}
+            {(["Default", "Hover", "Focused", "Disabled"] as const).map((state) => (
+              <div className="contents" key={state}>
+                <span className="text-label-sm text-[var(--color-text-muted)]">{state}</span>
+                {variants.map((variant) => (
+                  <StateButton key={variant} variant={variant} state={state} />
+                ))}
+              </div>
+            ))}
           </div>
         </section>
       ))}
+    </div>
+  )
+};
+
+export const IconPositions: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex gap-3">
+      <Button iconStart={<CheckIcon aria-hidden />}>Leading icon</Button>
+      <Button iconEnd={<CheckIcon aria-hidden />} variant="secondary">
+        Trailing icon
+      </Button>
     </div>
   )
 };

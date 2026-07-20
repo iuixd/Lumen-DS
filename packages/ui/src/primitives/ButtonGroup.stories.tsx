@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Maps to Figma \"Button Groups\" — a connected row of buttons sharing borders, used for segmented actions (view toggles, bulk actions)."
+          'Maps to Figma "Button Groups" — a connected row of buttons sharing borders, used for segmented actions (view toggles, bulk actions).'
       }
     },
     controls: { disable: true }
@@ -24,9 +24,9 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {
   render: () => (
     <ButtonGroup>
-      <Button variant="tertiary">List</Button>
-      <Button variant="tertiary">Board</Button>
-      <Button variant="tertiary">Calendar</Button>
+      <Button variant="ghost">List</Button>
+      <Button variant="ghost">Board</Button>
+      <Button variant="ghost">Calendar</Button>
     </ButtonGroup>
   )
 };

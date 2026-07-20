@@ -81,7 +81,9 @@ button/primary/background/default
 button/primary/background/hover
 button/primary/text/default
 button/primary/radius
-button/md/padding-inline
+button/focus-ring
+button/disabled/bg
+button/disabled/on-action
 ```
 
 Component tokens should alias semantic or primitive tokens rather than duplicate raw values.
@@ -587,12 +589,6 @@ Button/{Variant}/Text/{State}
 Button/{Variant}/Icon/{State}
 Button/{Variant}/Border/{State}
 
-Button/{Size}/Height
-Button/{Size}/Padding/Inline
-Button/{Size}/Padding/Block
-Button/{Size}/Gap
-Button/{Size}/Icon/Size
-
 Button/Radius
 Button/Border/Width
 Button/Focus/Ring/Width
@@ -605,21 +601,29 @@ Example:
 Button/Primary/Background/Default
 Button/Primary/Background/Hover
 Button/Primary/Text/Default
-Button/Md/Height
-Button/Md/Padding/Inline
+Button/Focus/Ring
+Button/Disabled/Background
+Button/Disabled/On Action
 ```
 
 ## Published theme-aware button roles
 
-The `Lumen/Theme` Variables collection publishes shared disabled roles for
-the Button family. These are component tokens rather than primitive neutral
-utilities because their values intentionally change by theme:
+The final standard Button collection at node `1027:3733` publishes semantic
+roles for `primary`, `accent`, `secondary`, `outline`, `ghost`, `link`, and
+`destructive`. Each variant exposes its evidenced default and hover surface,
+content, and border roles through `--color-button-{variant}-*` variables.
+Shared interaction roles are:
 
-| Figma variable        | CSS custom property                  | Light     | Dark      |
-| --------------------- | ------------------------------------ | --------- | --------- |
-| `btn/disabled/bg`     | `--color-button-disabled-background` | `#EDF0F1` | `#20272D` |
-| `btn/disabled/border` | `--color-button-disabled-border`     | `#DBE1E2` | `#2C343B` |
-| `btn/disabled/text`   | `--color-button-disabled-text`       | `#A4B3B7` | `#A4B3B7` |
+| Role                    | CSS custom property                 | Light     | Dark      |
+| ----------------------- | ----------------------------------- | --------- | --------- |
+| Focus ring              | `--color-button-focus-ring`         | `#E599B1` | `#E599B1` |
+| Disabled background     | `--color-button-disabled-bg`        | `#DFDFDF` | `#231C24` |
+| Disabled action content | `--color-button-disabled-on-action` | `#7F7F7F` | `#7B777C` |
+
+The older `--color-button-disabled-background`,
+`--color-button-disabled-border`, and `--color-button-disabled-text` roles
+remain temporarily for `AIButton` and `SplitButton`; the final standard
+Button does not consume them.
 
 `text/brand`, `icon/brand`, and `stroke/brand` are also published as
 `--color-text-brand`, `--color-icon-brand`, and `--color-border-brand`.

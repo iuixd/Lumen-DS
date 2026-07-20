@@ -77,60 +77,79 @@ Every production component must include the following sections.
 # Component name
 
 ## Status
+
 Draft | Experimental | Beta | Stable | Deprecated
 
 ## Figma source
+
 Component URL, node ID, component-set name, and last synchronization date.
 
 ## Purpose
+
 What the component enables.
 
 ## When to use
+
 Approved use cases.
 
 ## When not to use
+
 Misuse cases and recommended alternatives.
 
 ## Anatomy
+
 Named component regions.
 
 ## Variants
+
 Supported semantic variants.
 
 ## Sizes
+
 Supported size options.
 
 ## States
+
 Supported interaction and validation states.
 
 ## Properties
+
 Figma properties and the framework-neutral property contract (canonical name, type, and meaning — independent of any single framework's API syntax).
 
 ## Behavior
+
 Interaction rules, state transitions, layout, and content behavior.
 
 ## Content
+
 Labels, descriptions, truncation, localization, and tone.
 
 ## Tokens
+
 Semantic and component token dependencies.
 
 ## Accessibility
+
 Semantics, keyboard interaction, focus, announcements, and contrast.
 
 ## Responsive behavior
+
 Resizing, wrapping, density, and breakpoint expectations.
 
 ## Storybook
+
 Required stories, controls, and documentation.
 
 ## Testing
+
 Unit, accessibility, visual, and integration coverage.
 
 ## Code mapping
+
 One entry per shipped framework package: export or custom-element name, source path, and Code Connect mapping. React is the only shipped framework package today.
 
 ## Change history
+
 Component-specific additions, changes, and deprecations.
 ```
 
@@ -264,25 +283,25 @@ The current Figma source provides the following foundations.
 
 ## Typography
 
-| Role | Size | Line height |
-|---|---:|---:|
-| Heading H1 | 60px | 72px |
-| Heading H2 | 50px | 60px |
-| Heading H3 | 40px | 50px |
-| Heading H4 | 32px | 42px |
-| Heading H5 | 24px | 32px |
-| Heading H6 | 20px | 28px |
-| Body Lg | 20px | 32px |
-| Body Md | 16px | 26px |
-| Body Sm | 14px | 22px |
-| Body Xs | 12px | 20px |
-| Label Lg | 14px | 20px |
-| Label Md | 12px | 18px |
-| Label Sm | 11px | 16px |
-| Overline | 11px | 16px |
-| Caption | 11px | 18px |
-| Code Md | 14px | 22px |
-| Code Sm | 12px | 20px |
+| Role       | Size | Line height |
+| ---------- | ---: | ----------: |
+| Heading H1 | 60px |        72px |
+| Heading H2 | 50px |        60px |
+| Heading H3 | 40px |        50px |
+| Heading H4 | 32px |        42px |
+| Heading H5 | 24px |        32px |
+| Heading H6 | 20px |        28px |
+| Body Lg    | 20px |        32px |
+| Body Md    | 16px |        26px |
+| Body Sm    | 14px |        22px |
+| Body Xs    | 12px |        20px |
+| Label Lg   | 14px |        20px |
+| Label Md   | 12px |        18px |
+| Label Sm   | 11px |        16px |
+| Overline   | 11px |        16px |
+| Caption    | 11px |        18px |
+| Code Md    | 14px |        22px |
+| Code Sm    | 12px |        20px |
 
 ## Spacing
 
@@ -313,18 +332,11 @@ Exact color values, aliases, modes, font families, font weights, letter spacing,
 
 ## Status
 
-Baseline specification, reconciled against the shipped implementation
-(`packages/ui/src/primitives/Button.tsx`, Lumen-AI-Design-System node `475:7210`,
-formerly `466:4365`) on 2026-07-12 — see `docs/roadmap.md` Phase 13
-Findings for what was wrong before this reconciliation and why. Updated
-2026-07-14 to add the `status` (Success/Warning/Error) property — see
-`docs/changelog.md` `[Unreleased]`. Updated 2026-07-16: corrected `secondary`
-(it rendered `bg-transparent` at rest and used the lighter `brand.border`
-token — a direct `get_design_context` re-check against `Type=Secondary,
-State=Default` showed a filled `brand.subtle` background and the stronger
-`brand.border-strong` border at rest all along) and added the previously-
-unimplemented `outline` variant, across all three framework packages — see
-`docs/changelog.md` `[Unreleased]` for the full node-id citations.
+Final specification, synchronized across React, Web Components, Angular,
+and Storybook from Lumen-AI-Design-System node `1027:3733` on 2026-07-20.
+This final collection supersedes the previous standard Button collection's
+multiple sizes, Raised/Tertiary variants,
+Pressed/Loading/status states, Pill, or Icon-only modifiers.
 
 ## Purpose
 
@@ -356,12 +368,10 @@ Do not use a Button for:
 ```text
 Button
 ├── Container
-├── State layer
 ├── Content
 │   ├── Leading icon
 │   ├── Label
 │   └── Trailing icon
-├── Loading indicator
 └── Focus ring
 ```
 
@@ -369,159 +379,83 @@ Button
 
 ```text
 Primary
-Raised
-Secondary
-Tertiary
-Outline
-Link
 Accent
+Secondary
+Outline
+Ghost
+Link
+Destructive
 ```
 
 ### Primary
 
 Use for the highest-priority action in a logical region. Flat fill, no elevation.
 
-### Raised
-
-Same priority and coloring as Primary, with an elevation shadow that increases on hover and settles on press — use when a button needs to visually lift off a busy or low-contrast background.
-
 ### Secondary
 
-Use for important supporting actions. Filled (`brand.subtle`) at rest and hover, with a `brand.border-strong` border and `brand.default` text — same border/text colors as Outline, differing only in the rest-state fill.
-
-### Tertiary
-
-Use for lower-emphasis actions that still require a visible control boundary or text action treatment.
+Use for important supporting actions on a neutral bordered surface.
 
 ### Outline
 
-Added 2026-07-16 (previously documented as an unresolved Figma-to-code
-difference — see `docs/changelog.md`). Same border (`brand.border-strong`)
-and text (`brand.default`) colors as Secondary; the only difference is fill —
-Outline stays transparent at rest and only fills (`brand.subtle`) on hover,
-where Secondary is already filled at rest. Both variants share an identical
-solid-dark-fill, white-text, no-border `active` state (`brand.solid-active`).
-Use where a bordered action should read as lower-emphasis than Secondary at
-rest — e.g. next to a Secondary button in the same group, or on a surface
-already busy enough that Secondary's constant fill would compete for
-attention.
+Use for a transparent, brand-colored bordered action.
+
+### Ghost
+
+Use for a lower-emphasis action without a visible boundary at rest.
 
 ### Link
 
-Use when the interaction visually resembles a text action. Use a semantic link element when the action navigates.
+Use for the lowest-emphasis blue/teal text action. Use a semantic link element
+when the action navigates.
 
 ### Accent
 
-Added 2026-07-20, sourced from the canonical Figma "AppShell" page
-(Lumen-AI-Design-System, node `1007:3700`, `Breakpoint=Desktop/Theme=Light`
-instance `1127:4196`) via `get_variable_defs`: `btn/accent/bg` (#2B2F2F,
-rounds to the existing `neutral.800`) and `btn/accent/text` (white) — a
-deliberate, non-brand near-black treatment confirmed as intentional (not
-stale Figma authoring) for dashboard/AppShell contexts, e.g. `PageHeader`'s
-primary action and `AIPanel`'s send button. Only the Default state was
-sourced; hover/active/focus are a reasonable placeholder (there is no
-darker neutral step to fall back to), not independently Figma-confirmed.
+Use for an emphasized action whose application-context treatment is distinct
+from Primary. It is near-black in light mode and teal in dark mode.
 
-## Modifiers
+### Destructive
 
-Independent of variant and size:
-
-### Icon only
-
-Renders a square, label-less button sized to just its icon. Figma documents this as its own "Type" (always Primary-styled, always bordered) rather than a variant; in code it's the `{ variant: "primary", iconOnly: true }` compound, and `iconOnly` also works as a general square-shape modifier on other variants. An accessible name (`aria-label` or `aria-labelledby`) is mandatory.
-
-### Pill
-
-Fully rounded corners instead of the default radius, independent of variant or size.
+Use for destructive or irreversible actions. Significant consequences still
+require confirmation.
 
 ## Sizes
 
-```text
-Xs
-Sm
-Md
-Lg
-```
-
-Each size must define:
-
-```text
-height
-padding-inline
-padding-block
-gap
-label typography
-icon size
-spinner size
-```
-
-Exact values must be synchronized from the Button Figma component.
+The final collection has one standardized size: 34px height, 14px inline
+padding, 7px block padding, 8px content gap, 8px radius, 1px border, 14px
+icons, and Instrument Sans Medium 14/20 with 0.14px letter spacing.
 
 ## States
+
+The final collection defines only:
 
 ```text
 Default
 Hover
-Pressed
-Focus
+Focused
 Disabled
-Loading
 ```
 
-## Status (independent of State)
-
-```text
-Success
-Warning
-Error
-```
-
-Added 2026-07-14, sourced from the Button component-set's own State property
-on node `475:7210` (Success/Error/Warning instances now exist for Primary and
-Secondary at every size, confirmed via `get_design_context`). Figma models
-these as three more mutually-exclusive values of the same "State" enum as
-Default/Hover/.../Loading; the shipped implementation instead exposes them as
-an independent `status` modifier (see Properties below) because it composes
-better with the live interaction pseudo-classes (`:hover`, `:active`) code
-already needs — a button can be both "showing success" and momentarily
-hovered, a combination Figma's model has no instance for but code must still
-render sensibly. `Selected` is still not implemented or in the Figma
-source — a prior version of this section speculatively listed it alongside
-Success/Error and was corrected on 2026-07-12; it stays out until Figma
-specs it.
+Pressed, Loading, and status states are not part of this collection and must
+not be inferred.
 
 ## Properties
 
-Figma properties (per the Button/Icon Button/Pill Button instances on the
-Figma node cited in Status above):
+Figma properties:
 
 ```text
 Variant
-Size
 State
 Label
-Icon only
-Pill
 Show leading icon
 Leading icon
 Show trailing icon
 Trailing icon
 ```
 
-Figma's "State" property also carries the three Status values (Success/Warning/Error) described above — the framework-neutral contract below splits them into a separate `status` property rather than folding them into `variant` or a single combined `state` enum.
-
-A prior version of this list also included "Full width" — no such property
-exists on the Figma component or the shipped implementation; removed.
-
 Property contract (framework-neutral — every framework package exposes these, named and typed identically in spirit):
 
 ```text
-variant   enum: primary | raised | secondary | tertiary | outline | link | accent
-size      enum: xs | sm | md | lg
-status    enum: success | warning | error (optional — no value means no status tint)
-iconOnly  boolean
-pill      boolean
-loading   boolean
+variant   enum: primary | accent | secondary | outline | ghost | link | destructive
 disabled  boolean
 iconStart renderable content (icon)
 iconEnd   renderable content (icon)
@@ -530,44 +464,27 @@ iconEnd   renderable content (icon)
 Reference implementation — React (`@lumen/ui`, `packages/ui/src/primitives/Button.tsx`):
 
 ```ts
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "raised" | "secondary" | "tertiary" | "outline" | "link" | "accent";
-  size?: "xs" | "sm" | "md" | "lg";
-  status?: "success" | "warning" | "error";
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "accent" | "secondary" | "outline" | "ghost" | "link" | "destructive";
   iconStart?: React.ReactNode;
   iconEnd?: React.ReactNode;
-  isLoading?: boolean;
-  iconOnly?: boolean;
-  pill?: boolean;
 }
 ```
-
-React names the `loading` contract property `isLoading` — an inconsistency
-with this document's own naming guidance (`docs/component-architecture.md`
-§5.1: avoid unnecessary `is-` prefixes) that predates the multi-framework
-work and hasn't been fixed in `Button.tsx` itself. `@lumen/web-components`'s
-`<lumen-button>` uses the canonical `loading` name instead — see
-`packages/web-components/README.md`.
 
 ## Behavior
 
 - Activation occurs through pointer click, Enter, or Space.
-- Loading prevents duplicate activation where appropriate.
-- Loading preserves the component width.
 - Disabled buttons do not receive interaction.
 - Focus-visible treatment appears for keyboard navigation.
 - Link-styled buttons must use semantic anchors for navigation.
-- Icon-only buttons resize to a single square per size, replacing the size's normal min-width/padding box model.
-- Pill applies fully-rounded corners regardless of variant or size.
-- Destructive or irreversible actions should use confirmation when consequences are significant, regardless of which variant is used to present them — there is no dedicated "danger" variant today (see Variants above).
+- Destructive or irreversible actions use `destructive` and should use
+  confirmation when consequences are significant.
 
 ## Content
 
 - Use concise, action-oriented labels.
 - Begin with a verb where practical.
 - Avoid generic labels such as “Click here.”
-- Keep labels stable during loading unless the replacement clarifies progress.
 - Avoid truncating critical action labels.
 - Account for localization expansion.
 
@@ -581,12 +498,6 @@ Button/{Variant}/Text/{State}
 Button/{Variant}/Icon/{State}
 Button/{Variant}/Border/{State}
 
-Button/{Size}/Height
-Button/{Size}/Padding/Inline
-Button/{Size}/Padding/Block
-Button/{Size}/Gap
-Button/{Size}/Icon/Size
-
 Button/Radius
 Button/Border/Width
 Button/Focus/Ring/Width
@@ -594,74 +505,36 @@ Button/Focus/Ring/Offset
 Button/Focus/Ring/Color
 ```
 
-`brand.solid-active` is the solid dark fill + white text used by both
-Secondary's and Outline's `active` state (added 2026-07-16) — distinct from
-`brand.pressed` (Primary/Raised's own solid-fill active state, one primitive
-step darker) and from `brand.subtle-pressed` (Tertiary's and AIButton's own
-lighter pressed fill, unaffected by this change).
-
-Status tint tokens (variant-agnostic, applied via `status` rather than `variant`; verified against Primary and Secondary only — not yet re-verified for Outline):
-
-```text
-Color/Status/Success/Subtle   → --color-status-success-subtle
-Color/Status/Success/Text     → --color-status-success-text
-Color/Status/Success/Border   → --color-status-success-border
-Color/Status/Warning/Subtle   → --color-status-warning-subtle
-Color/Status/Warning/Text     → --color-status-warning-text
-Color/Status/Warning/Border   → --color-status-warning-border
-Color/Status/Error/Subtle     → --color-status-error-subtle
-Color/Status/Error/Text       → --color-status-error-text
-Color/Status/Error/Border     → --color-status-error-border
-```
+Runtime roles use the generated `--color-button-*` semantic variables. Every
+role has light and dark values sourced from node `1027:3733`.
 
 ## Accessibility
 
 - Use `<button>` for actions.
 - Use `<a>` for navigation.
-- Icon-only buttons require `aria-label`.
-- Loading status should be announced when meaningful.
 - Do not rely on color alone for disabled states.
 - Focus must remain visible.
 - Touch target should meet the approved minimum target size.
-- Spinner animation must respect reduced-motion preferences.
 
 ## Storybook
 
 Required stories:
 
 ```text
-Overview
-Variants (including Pill)
-Sizes
-States
-With Icons
-Icon Only
-Loading
-Disabled
-Long Labels
-Dark Mode
-Keyboard Focus
-Accessibility
+Playground
+Final Variant Collection (all seven variants and four states, light and dark)
+Icon Positions
 ```
 
-The current React Storybook (`packages/ui/src/primitives/Button.stories.tsx`)
-covers Playground, All Variants, Pill, Sizes, Icon Only, With Icons (by
-default size and by every size), Status States, Loading, and Disabled — Long
-Labels, explicit Dark Mode, and Keyboard Focus stories are still gaps against
-this requirement, not yet false claims corrected by this reconciliation.
-`outline` was added to All Variants, Pill, With Icons, and Disabled
-2026-07-16; Status States intentionally excludes it (not yet re-verified
-against Figma, see Status above).
+The React Storybook implements all three required stories.
 
 ## Testing
 
 - activation by click, Enter, and Space
 - disabled behavior
-- loading behavior
 - accessible name
 - focus-visible behavior
 - variant rendering
-- size rendering
 - icon alignment
 - dark mode
 - reduced motion
@@ -704,12 +577,7 @@ Lg
 ## Reference implementation (React)
 
 ```tsx
-<IconButton
-  aria-label="Delete record"
-  icon={<TrashIcon />}
-  variant="danger"
-  size="md"
-/>
+<IconButton aria-label="Delete record" icon={<TrashIcon />} variant="danger" size="md" />
 ```
 
 ---
@@ -1380,16 +1248,16 @@ Figma-sourced specification. The Variants and States below do not match the
 real component and are kept only as a historical record of the pre-Figma
 design intent:
 
-- Variants: Figma ships `Primary AI | Secondary AI | Tertiary AI | Outline
-  AI`, not `Primary AI | Secondary AI | Ghost AI | Icon AI` — there is no
+- Variants: Figma ships `Primary AI | Primary Raised AI | Secondary AI |
+Tertiary AI | Outline AI | Link AI`, not `Primary AI | Secondary AI |
+Ghost AI | Icon AI` — there is no
   "Ghost AI"; "Icon AI" is an `iconOnly` modifier in the real component
-  (mirroring how Button's own Icon Only isn't a `variant`), not a variant.
-- States: Figma's real AI Button models only the same interaction states
-  as Button (Default/Hover/Active/Focus/Disabled/Loading, plus the same
-  Success/Error/Warning status tint — see §5's Status subsection) — not an
+  rather than a variant.
+- States: Figma's real AI Button has its own Default/Hover/Active/Focus/
+  Disabled/Loading and Success/Error/Warning states (see §46) — not an
   AI-process state machine (Idle/Generating/Streaming/Complete/Needs
   Review/Cancelled/Unavailable). Those AI-process states may still be the
-  right model for a future AI *response* surface (see
+  right model for a future AI _response_ surface (see
   `docs/component-architecture.md` §8's `AIResponse`/`AIStatus` primitives,
   still unbuilt) — they just aren't what the Button-shaped trigger control
   implements.
@@ -1747,9 +1615,11 @@ Report changed files, validation results, and unresolved Figma-to-code differenc
 # [Component Name]
 
 ## Status
+
 [Draft | Experimental | Beta | Stable | Deprecated]
 
 ## Figma source
+
 - URL:
 - Node ID:
 - Component set:
@@ -1772,9 +1642,11 @@ Report changed files, validation results, and unresolved Figma-to-code differenc
 ## Figma properties
 
 ## Property contract
+
 Framework-neutral property names, types, and meanings.
 
 ## Reference implementation (React)
+
 The current shipped implementation of the property contract above. Add one additional "Reference implementation ([Framework])" section per additional framework package once it ships.
 
 ## Behavior
@@ -1954,8 +1826,10 @@ removeIcon  renderable content (icon), trailing, shown only when selected — de
 ## Reference implementation (React)
 
 ```ts
-export interface FilterChipProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "disabled"> {
+export interface FilterChipProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "disabled"
+> {
   selected?: boolean;
   disabled?: boolean;
   icon?: React.ReactNode;
@@ -2010,9 +1884,9 @@ onClick, disabled behavior, padding by selection state.
 
 ## Code mapping
 
-| Framework | Export | Source |
-|---|---|---|
-| React | `FilterChip` | `packages/ui/src/primitives/FilterChip.tsx` |
+| Framework | Export       | Source                                      |
+| --------- | ------------ | ------------------------------------------- |
+| React     | `FilterChip` | `packages/ui/src/primitives/FilterChip.tsx` |
 
 ## Known limitations
 
@@ -2103,8 +1977,10 @@ disabled  boolean
 ## Reference implementation (React)
 
 ```ts
-export interface ChoiceChipProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "disabled"> {
+export interface ChoiceChipProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "disabled"
+> {
   selected?: boolean;
   disabled?: boolean;
 }
@@ -2145,9 +2021,9 @@ behavior.
 
 ## Code mapping
 
-| Framework | Export | Source |
-|---|---|---|
-| React | `ChoiceChip` | `packages/ui/src/primitives/ChoiceChip.tsx` |
+| Framework | Export       | Source                                      |
+| --------- | ------------ | ------------------------------------------- |
+| React     | `ChoiceChip` | `packages/ui/src/primitives/ChoiceChip.tsx` |
 
 ## Known limitations
 
@@ -2215,11 +2091,12 @@ AI Button
 
 ```text
 Primary
+Raised
 Secondary  (filled-tint look: brand-subtle fill + brand-border-strong
-            border — NOT the same treatment as Button's own `secondary`)
-Tertiary   (identical colors to Button's `tertiary`)
-Outline    (brand-border-strong border, transparent fill — Button has no
-            matching variant yet, see `docs/changelog.md` `[Unreleased]`)
+            border — not the final standard Button `secondary`)
+Tertiary   (AI-specific legacy treatment; no final standard Button equivalent)
+Outline    (AI-specific brand-border-strong treatment)
+Link       (AI-specific underlined treatment)
 ```
 
 ## Modifiers
@@ -2228,8 +2105,8 @@ Outline    (brand-border-strong border, transparent fill — Button has no
 
 Square, label-less button showing just the leading icon. Documented in
 Figma as its own "Icon Only" sub-section (Primary/Secondary/Outline, 3
-sizes each) rather than a variant — modeled here as `iconOnly`, matching
-Button's own Icon Only modifier pattern.
+sizes each) rather than a variant — modeled here as `iconOnly`. The final
+standard Button collection has no icon-only modifier.
 
 ### Destructive
 
@@ -2248,10 +2125,9 @@ Md
 Lg
 ```
 
-Reuses Button's sm/md/lg padding and text scale exactly. Figma's `xs` AI
-Button is 28px tall — 4px shorter than Button's own 32px `xs` — not
-matched exactly, to avoid introducing a second `xs` height scale for one
-component; flagged as a known limitation.
+Retains the independently sourced 32/36/40/48px AI Button size scale. Figma's
+`xs` AI Button is 28px tall and remains a known limitation. This scale is not
+derived from the final standard Button, which now has one 34px size.
 
 ## States
 
@@ -2264,26 +2140,23 @@ Disabled
 Loading
 ```
 
-Plus the same Success/Warning/Error status tint documented in §5 — Figma's
-State property lists Success/Error/Warning for the general Button
-component-set, and the AI Button's own States sub-section under node
-`760:1965` mirrors that same list on Primary Raised/Primary/Secondary/
-Tertiary/Outline/Link columns. Not implemented on `AIButton` in this pass
-— `status` was verified and shipped on Button (§5) but not re-verified
-against AI-Button-specific instances; flagged as an open item rather than
-assumed identical.
+The AI Button's own States sub-section under node `760:1965` also defines
+Success, Warning, and Error. `AIButton` implements these as an independent
+`status` modifier; this specialized status API is not part of the final
+standard Button collection.
 
 ## Properties
 
 Figma properties (per the AI Button instances on node `760:1965`):
-`Type` (Primary/Secondary/Tertiary/Outline), `Size` (Xs/Sm/Md/Lg), `State`,
+`Type` (Primary/Raised/Secondary/Tertiary/Outline/Link), `Size` (Xs/Sm/Md/Lg), `State`,
 `Label`, an instance-swappable leading icon.
 
 Property contract (framework-neutral):
 
 ```text
-variant     enum: primary | secondary | tertiary | outline
+variant     enum: primary | raised | secondary | tertiary | outline | link
 size        enum: xs | sm | md | lg
+status      enum: success | warning | error, optional
 icon        renderable content (icon) — always rendered; defaults to the `lm-aisymbol` glyph
 iconOnly    boolean
 loading     boolean
@@ -2299,10 +2172,10 @@ capability  string (React only, see Known limitations) — not a Figma property;
 ## Reference implementation (React)
 
 ```ts
-export interface AIButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "tertiary" | "outline";
+export interface AIButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "raised" | "secondary" | "tertiary" | "outline" | "link";
   size?: "xs" | "sm" | "md" | "lg";
+  status?: "success" | "warning" | "error";
   icon?: React.ReactNode;
   isLoading?: boolean;
   iconOnly?: boolean;
@@ -2311,22 +2184,20 @@ export interface AIButtonProps
 ```
 
 Source: `packages/ui/src/primitives/AIButton.tsx`. Not a variant of
-`Button` — implemented as a standalone component because two of its four
-`variant` values don't reuse Button's existing colors (see Variants
-above).
+the final standard `Button` — it retains a separately sourced variant, size,
+loading, status, and icon-only contract.
 
 ## Behavior
 
-- Same activation/loading/disabled behavior as Button (§5): pointer click,
-  Enter, or Space; `aria-disabled` (not the native `disabled` attribute)
+- Activation uses pointer click, Enter, or Space; `aria-disabled` (not the native `disabled` attribute)
   so a disabled AI Button stays keyboard-reachable; loading preserves
   width and prevents duplicate activation.
 - Loading swaps the leading icon for a spinner and is expected to pair
   with a label change (e.g. "Generating…") — confirmed via the Loading AI
   Figma instance, otherwise identical to Primary AI.
 - Destructive AI actions require confirmation before running, same rule
-  Button.tsx already documents for its own destructive actions (§5
-  Behavior) — `destructive` only marks intent, the caller owns the
+  the same confirmation principle as standard destructive actions —
+  `destructive` only marks intent, the caller owns the
   confirmation UI.
 
 ## Content
@@ -2340,7 +2211,7 @@ verb-first where practical.
 Color/Brand/Default, Hover, Pressed          (primary variant)
 Color/Brand/Subtle, Subtle-Pressed           (secondary/tertiary/outline fills)
 Color/Brand/Border-Strong                    (secondary/outline border, new — see Split Button §43)
-Radius/Md
+Radius/Lg
 Spacing/32,36,40,48 (heights), /8 (icon gap), /10,12,16,20 (padding)
 ```
 
@@ -2391,10 +2262,10 @@ behavior.
 
 ## Code mapping
 
-| Framework | Export | Source |
-|---|---|---|
-| React | `AIButton` | `packages/ui/src/primitives/AIButton.tsx` |
-| React | `aiCapabilities`, `AICapability`, `AICapabilityId`, `getAICapability` | `packages/ui/src/primitives/ai-capabilities.ts` |
+| Framework | Export                                                                | Source                                          |
+| --------- | --------------------------------------------------------------------- | ----------------------------------------------- |
+| React     | `AIButton`                                                            | `packages/ui/src/primitives/AIButton.tsx`       |
+| React     | `aiCapabilities`, `AICapability`, `AICapabilityId`, `getAICapability` | `packages/ui/src/primitives/ai-capabilities.ts` |
 
 ## Known limitations
 
@@ -2522,8 +2393,7 @@ spacing.{4,16,20}
 ## Reference implementation (React)
 
 ```ts
-export interface KPICardProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface KPICardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   label: string;
   value: string;
   delta?: string;
@@ -2637,8 +2507,10 @@ spacing.{2,20,24,32,56}
 ## Reference implementation (React)
 
 ```ts
-export interface ThemeToggleProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {}
+export interface ThemeToggleProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {}
 ```
 
 Native checkbox props (`checked`, `defaultChecked`, `onChange`, `disabled`,
@@ -2984,6 +2856,8 @@ onNewThread      () => void, optional — shows the "+Thread" control when provi
   ignored.
 - The panel does not manage conversation state itself — the caller owns
   `messages` and appends to it in response to `onSend`.
+- Use the final standard `Button variant="secondary"` for actions below an
+  assistant response (Button node `1027:3733`).
 
 ## Accessibility
 
@@ -2991,7 +2865,7 @@ onNewThread      () => void, optional — shows the "+Thread" control when provi
   and `aria-live="polite"` so new messages are announced without being
   overly disruptive — not independently verified with a screen reader this
   pass; manual review recommended before marking Stable (`docs/
-  accessibility.md` §20/§21 requires manual screen-reader testing for
+accessibility.md` §20/§21 requires manual screen-reader testing for
   critical interactions).
 - The input has a visually-hidden `<label>` ("Message") rather than relying
   on the placeholder as a label, per `docs/accessibility.md` §9.
@@ -3014,6 +2888,7 @@ color.text.link-subtle       (new — "+Thread" control text)
 color.border.default / color.border.table (new — response bubble border)
 color.border.input           (new — text input border)
 color.border.focus
+color.app-shell.button-secondary-bg / -border / -text
 ```
 
 ## Known limitations
@@ -3059,3 +2934,5 @@ rejection, and the labeled live region.
 ## Change history
 
 - 2026-07-20: added, sourced from node `1007:3700`.
+- 2026-07-20: standardized inline response actions on the final secondary
+  Button from node `1027:3733`.

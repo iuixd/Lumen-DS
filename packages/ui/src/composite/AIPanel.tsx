@@ -5,7 +5,7 @@ import { LmAiOutlineIcon } from "../icons/generated";
 export interface AIPanelMessage {
   role: "user" | "assistant";
   content: ReactNode;
-  /** Secondary-button actions rendered below an assistant message (Figma's "Review draft"/"View accounts"). */
+  /** Actions rendered below an assistant message. Use the standard secondary Button. */
   actions?: ReactNode;
 }
 

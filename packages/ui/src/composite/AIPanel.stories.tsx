@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { AIPanel, type AIPanelMessage } from "./AIPanel";
 import { Button } from "../primitives/Button";
+import { AIPanel, type AIPanelMessage } from "./AIPanel";
 
 const messages: AIPanelMessage[] = [
   { role: "user", content: "Which renewals should I focus on this week?" },
@@ -11,12 +11,8 @@ const messages: AIPanelMessage[] = [
       "Start with Meridian Health — $380k closing in 15 days with no exec touchpoint since May. I've drafted an outreach email referencing support tickets.",
     actions: (
       <>
-        <Button variant="secondary" size="sm">
-          Review draft
-        </Button>
-        <Button variant="secondary" size="sm">
-          View accounts
-        </Button>
+        <Button variant="secondary">Review draft</Button>
+        <Button variant="secondary">View accounts</Button>
       </>
     )
   }
@@ -31,7 +27,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Sourced from the canonical Figma 'AppShell' page (Lumen-AI-Design-System, node 1007:3700, `AIPanel` component `1079:3141`): a 304px right-side assistant chat panel."
+          "Sourced from the canonical Figma 'AppShell' page (Lumen-AI-Design-System, node 1007:3700, `AIPanel` component `1079:3141`, instance `1119:3351`), with actions standardized on the final secondary Button collection at node 1027:3733."
       }
     }
   },

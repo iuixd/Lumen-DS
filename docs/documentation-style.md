@@ -314,30 +314,30 @@ Use the Apply filters button.
 
 Use the following terms consistently.
 
-| Preferred term | Avoid |
-|---|---|
-| design system | UI kit, style guide, component set when referring to the full system |
-| design token | variable value, style value |
-| Figma Variable | Figma token, unless explaining informally |
-| component | widget, element, module when referring to a defined Lumen component |
-| variant | type, flavor |
-| state | mode, condition when describing interaction state |
-| property | option when referring to a Figma component property or code prop |
-| prop | property when discussing React APIs |
-| Light theme | light mode when referring to the Lumen theme name |
-| Dark theme | dark mode when referring to the Lumen theme name |
-| accessible name | screen-reader label |
-| assistive technology | accessibility software |
-| disabled | inactive |
-| read-only | disabled when the control remains focusable or readable |
-| destructive | dangerous |
-| loading | processing, unless the product language requires processing |
-| Storybook | storybook |
-| GitHub | Github |
-| TypeScript | Typescript |
-| JavaScript | Javascript |
-| Figma Dev Mode | dev mode |
-| Code Connect | code connect |
+| Preferred term       | Avoid                                                                |
+| -------------------- | -------------------------------------------------------------------- |
+| design system        | UI kit, style guide, component set when referring to the full system |
+| design token         | variable value, style value                                          |
+| Figma Variable       | Figma token, unless explaining informally                            |
+| component            | widget, element, module when referring to a defined Lumen component  |
+| variant              | type, flavor                                                         |
+| state                | mode, condition when describing interaction state                    |
+| property             | option when referring to a Figma component property or code prop     |
+| prop                 | property when discussing React APIs                                  |
+| Light theme          | light mode when referring to the Lumen theme name                    |
+| Dark theme           | dark mode when referring to the Lumen theme name                     |
+| accessible name      | screen-reader label                                                  |
+| assistive technology | accessibility software                                               |
+| disabled             | inactive                                                             |
+| read-only            | disabled when the control remains focusable or readable              |
+| destructive          | dangerous                                                            |
+| loading              | processing, unless the product language requires processing          |
+| Storybook            | storybook                                                            |
+| GitHub               | Github                                                               |
+| TypeScript           | Typescript                                                           |
+| JavaScript           | Javascript                                                           |
+| Figma Dev Mode       | dev mode                                                             |
+| Code Connect         | code connect                                                         |
 
 ## User interface terms
 
@@ -415,7 +415,7 @@ Use lowercase when referring to the generic concept:
 
 ```text
 Use a button for this action.
-The Lumen Button supports loading.
+The Lumen Button supports seven theme-aware variants.
 ```
 
 ## Token names
@@ -615,7 +615,9 @@ Use numbered H1-level sections for long governance documents:
 
 ```markdown
 # 1. Purpose
+
 # 2. Principles
+
 # 3. Workflow
 ```
 
@@ -707,8 +709,8 @@ Avoid tables when:
 ## Table style
 
 ```markdown
-| Token | Value | Usage |
-|---|---:|---|
+| Token       | Value | Usage                 |
+| ----------- | ----: | --------------------- |
 | `Spacing/8` | `8px` | Compact internal gaps |
 ```
 
@@ -786,19 +788,21 @@ Examples must:
 
 Use explicit labels:
 
-```markdown
+````markdown
 ### Before
 
 ```tsx
 <Button quiet />
 ```
+````
 
 ### After
 
 ```tsx
-<Button variant="tertiary" />
+<Button variant="ghost" />
 ```
-```
+
+````
 
 ---
 
@@ -809,7 +813,7 @@ Use repository-relative paths:
 ```text
 `docs/accessibility.md`
 `packages/tokens/src/semantic.json`
-```
+````
 
 Do not use local machine paths such as:
 
@@ -1035,7 +1039,7 @@ Include:
 For each public prop, document:
 
 | Prop | Type | Default | Description |
-|---|---|---|---|
+| ---- | ---- | ------- | ----------- |
 
 Avoid documenting private implementation props.
 
@@ -1384,16 +1388,16 @@ Each document should have an accountable owner.
 
 Suggested ownership:
 
-| Document type | Primary owner |
-|---|---|
-| Token foundations | Design-system designer |
-| Component behavior | Designer and engineer |
-| API reference | Component engineer |
-| Accessibility | Accessibility owner |
-| Storybook guidance | Storybook owner |
-| Release process | Release manager |
-| Migration guide | Engineer and documentation owner |
-| AI guidance | AI product and design-system owners |
+| Document type      | Primary owner                       |
+| ------------------ | ----------------------------------- |
+| Token foundations  | Design-system designer              |
+| Component behavior | Designer and engineer               |
+| API reference      | Component engineer                  |
+| Accessibility      | Accessibility owner                 |
+| Storybook guidance | Storybook owner                     |
+| Release process    | Release manager                     |
+| Migration guide    | Engineer and documentation owner    |
+| AI guidance        | AI product and design-system owners |
 
 Ownership does not remove cross-functional review.
 
@@ -1451,7 +1455,7 @@ Ownership does not remove cross-functional review.
 
 # 29. Standard document template
 
-```markdown
+````markdown
 # Lumen [Document name]
 
 > One-sentence purpose.
@@ -1470,6 +1474,7 @@ Ownership does not remove cross-functional review.
 ```text
 docs/example.md
 ```
+````
 
 ---
 
@@ -1488,7 +1493,8 @@ docs/example.md
 # 7. Known limitations
 
 # 8. Current verification status
-```
+
+````
 
 Use only sections relevant to the document.
 
@@ -1538,7 +1544,7 @@ Use only sections relevant to the document.
 ## Figma source
 
 ## Changelog
-```
+````
 
 ---
 
@@ -1573,6 +1579,7 @@ Read `docs/project-governance.md` to determine which source documents are releva
 Update only documentation affected by `[Unreleased]`.
 
 Requirements:
+
 - preserve verified facts
 - label assumptions and recommendations
 - use sentence case
@@ -1587,6 +1594,7 @@ Requirements:
 - do not rewrite unrelated documents
 
 After editing, report:
+
 1. files changed
 2. factual sources used
 3. unresolved contradictions
