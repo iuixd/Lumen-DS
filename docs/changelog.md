@@ -126,6 +126,16 @@ Use the following headings for every release:
 
 ### Fixed
 
+- Corrected ThemeToggle to match the final Light/Dark Figma component set.
+  - Affected token group/component: `color.theme-toggle` semantic roles and ThemeToggle in React, Web Components, Angular, and Storybook
+  - Figma source: Lumen-AI-Design-System node `1126:4185`; Light `1079:1723`, Dark `1126:4186`; geometry verified with `get_design_context`, structure with `get_metadata`, exact roles with per-mode `get_variable_defs`, and glyph/color details against the exported SVG assets
+  - Previous: the selected circle used theme surfaces, so it became dark gray in Dark mode instead of remaining white; React used the correct 54px/30px geometry but generic icon roles, while Web Components and Angular still rounded the track/travel to 56px/32px and used generic background/text tokens plus a shadow not present in Figma
+  - Current: all three framework implementations use the exact 54×24px track, 20px white selected circle, 2px inset, 30px travel, no selected-circle shadow, and the Figma-bound Light/Dark track and selected/unselected icon roles. Storybook documents both approved modes together in `FinalModeCollection` and keeps the interactive preview's theme synchronized with its checked state.
+  - Affects: `packages/tokens/src/{primitives,semantic}/color.json`, generated token output, `packages/ui/src/primitives/ThemeToggle.{tsx,stories.tsx,test.tsx}`, `packages/web-components/src/theme-toggle/*`, `packages/angular/src/theme-toggle/*`, `docs/{changelog,component-architecture,component-specifications,design-tokens,figma-sync}.md`
+  - Migration: none — the public props, events, element names, and accessibility semantics are unchanged
+  - Validation: token build, repository-wide typecheck and lint, all 286 workspace tests (React 121, Web Components 68, Angular 64, create-app 27, patterns 6), and the production Storybook build (2,125 modules) passed. The generated Storybook CSS and story bundle contain the exact verified Light/Dark values, 54px/30px geometry tokens, white selected-surface binding, and `FinalModeCollection`. Browser-backed screenshot comparison could not run because the environment exposed no browser session (`agent.browsers.list()` returned an empty list); this limitation is recorded rather than presented as visual proof.
+  - Changeset: `theme-toggle-selected-circle.md`
+
 - Fixed the Lumen logo URL in the published Storybook manager.
   - Source: production Storybook at `/Lumen-DS/`; no Figma node is involved
   - Previous: the logo and brand link used domain-root URLs, causing GitHub Pages to request `/lumen-ds-logo.svg` outside the repository deployment path

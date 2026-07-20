@@ -193,6 +193,8 @@
   --color-app-shell-dark-warning: #F5B46E;
   --color-app-shell-dark-warning-bg: rgba(201, 122, 46, 0.15);
   --color-app-shell-dark-badge-bg: rgba(180, 142, 224, 0.16);
+  --color-app-shell-dark-theme-toggle-icon-selected: #0E0B0E;
+  --color-app-shell-dark-theme-toggle-icon-inactive: #C9C2C7;
   --color-app-shell-dark-button-disabled-bg: #20272D;
   --color-app-shell-dark-button-disabled-border: #2C343B;
   --color-app-shell-dark-brand-stroke: #594D54;
@@ -531,6 +533,10 @@
   --color-segment-border-selected: #C8D1D4;
   --color-segment-text: #626B6E;
   --color-segment-text-selected: #4C0018;
+  --color-theme-toggle-track: #F6F8F8;
+  --color-theme-toggle-selected-surface: #FFFFFF;
+  --color-theme-toggle-icon-selected: #2B2F2F;
+  --color-theme-toggle-icon-unselected: #838F92;
   --color-app-shell-background: #F6F8F8;
   --color-app-shell-surface: #FFFFFF;
   --color-app-shell-nav-active: #EDF0F1;
@@ -652,6 +658,10 @@
   --color-segment-border-selected: #A4B3B7;
   --color-segment-text: #EDF0F1;
   --color-segment-text-selected: #F9E6EC;
+  --color-theme-toggle-track: #000000;
+  --color-theme-toggle-selected-surface: #FFFFFF;
+  --color-theme-toggle-icon-selected: #0E0B0E;
+  --color-theme-toggle-icon-unselected: #C9C2C7;
   --color-app-shell-background: #17101A;
   --color-app-shell-surface: #231C24;
   --color-app-shell-nav-active: #231C24;

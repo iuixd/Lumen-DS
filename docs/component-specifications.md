@@ -2421,13 +2421,13 @@ content, no interactive semantics).
 
 ## Status
 
-Baseline specification, added 2026-07-20.
+Synced specification, updated 2026-07-21.
 
 ## Figma source
 
-- Node: `1197:1652` ("appshell-desktop-closed-light" reference screen),
-  Header instance `I1102:6515;1124:1193`
-- Last synchronized: 2026-07-20
+- Component set: `1126:4185` (`ThemeToggle`)
+- Variants: `Mode=Light` (`1079:1723`) and `Mode=Dark` (`1126:4186`)
+- Last synchronized: 2026-07-21
 
 ## Purpose
 
@@ -2447,7 +2447,7 @@ an app header's right-actions area.
 ```text
 Theme Toggle
 ├── Track
-├── Thumb (slides between Sun/Moon)
+├── Selected circle (slides between Sun/Moon)
 ├── Sun icon
 └── Moon icon
 ```
@@ -2479,30 +2479,22 @@ not a new interaction model.
 ## Tokens
 
 ```text
-color.background.subtle (track)
-color.background.default (thumb)
-color.text.title / color.text.muted (icon tint)
+color.theme-toggle.track
+color.theme-toggle.selected-surface (white in both modes)
+color.theme-toggle.icon-selected / icon-unselected
 color.border.focus
-spacing.{2,20,24,32,56}
+spacing.{2,20,24,30,54}
 ```
 
-## Known limitations
+## Cross-framework behavior
 
-- Only the Light-theme instance was sourced; no Dark-theme or
-  mid-interaction instance was available, so the sliding-thumb interaction
-  is the conventional accessible-toggle pattern, not independently
-  Figma-confirmed.
-- Track width rounds Figma's 54px to `--spacing-56` so the thumb's
-  translate distance lands on a real spacing token (`--spacing-32`)
-  instead of an unbacked 30px — the same "round to the nearest existing
-  token" treatment already applied to `SplitButton`'s `sm` dropdown
-  segment.
-- Cross-framework parity: `@lumen/web-components`'s `<lumen-theme-toggle>`
+- `@lumen/web-components`'s `<lumen-theme-toggle>`
   fires a bubbling, composed `lumen-change` `CustomEvent` (a native
   `change` on the internal `<input>` can't cross the shadow boundary);
   `@lumen/angular`'s `LumenThemeToggleComponent` exposes a `checkedChange`
-  `EventEmitter` for `[(checked)]` two-way binding — both complete as of
-  2026-07-20, no Storybook coverage for either yet.
+  `EventEmitter` for `[(checked)]` two-way binding. Both frameworks use the
+  same final geometry and semantic color roles as React. Storybook remains
+  the React implementation showcase.
 
 ## Reference implementation (React)
 
@@ -2520,15 +2512,19 @@ Source: `packages/ui/src/primitives/ThemeToggle.tsx`.
 
 ## Storybook
 
-`Primitives/ThemeToggle` — Playground, Checked, Interactive.
+`Primitives/ThemeToggle` — Playground, Checked, FinalModeCollection,
+Interactive.
 
 ## Testing
 
 Unit tests cover the default accessible name, `aria-label` override,
-click-to-toggle behavior, and label/input association.
+click-to-toggle behavior, label/input association, final geometry, and the
+selected-circle styling hook.
 
 ## Change history
 
+- 2026-07-21: synchronized both modes to component set `1126:4185`, including
+  the white selected circle and exact 54px/30px geometry.
 - 2026-07-20: added, sourced from node `1197:1652`.
 
 # 49. Page Header
