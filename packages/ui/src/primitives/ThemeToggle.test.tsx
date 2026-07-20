@@ -26,4 +26,17 @@ describe("ThemeToggle", () => {
     render(<ThemeToggle name="theme" id="theme-toggle" />);
     expect(screen.getByRole("switch")).toHaveAttribute("id", "theme-toggle");
   });
+
+  it("uses the final 54px geometry and white selected-circle token", () => {
+    const { container } = render(<ThemeToggle name="theme" />);
+    const track = container.querySelector("label");
+    const selection = container.querySelector('[data-part="selection"]');
+
+    expect(track).toHaveClass("w-[var(--spacing-54)]", "h-[var(--spacing-24)]");
+    expect(selection).toHaveClass(
+      "size-[var(--spacing-20)]",
+      "bg-[var(--color-theme-toggle-selected-surface)]",
+      "peer-checked:translate-x-[var(--spacing-30)]"
+    );
+  });
 });

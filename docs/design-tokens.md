@@ -625,6 +625,22 @@ The older `--color-button-disabled-background`,
 remain temporarily for `AIButton` and `SplitButton`; the final standard
 Button does not consume them.
 
+## Published theme-toggle roles
+
+The final ThemeToggle component set at node `1126:4185` publishes one
+semantic group for the exact Light and Dark compositions:
+
+| Role             | CSS custom property                     | Light     | Dark      |
+| ---------------- | --------------------------------------- | --------- | --------- |
+| Track            | `--color-theme-toggle-track`            | `#F6F8F8` | `#000000` |
+| Selected surface | `--color-theme-toggle-selected-surface` | `#FFFFFF` | `#FFFFFF` |
+| Selected icon    | `--color-theme-toggle-icon-selected`    | `#2B2F2F` | `#0E0B0E` |
+| Unselected icon  | `--color-theme-toggle-icon-unselected`  | `#838F92` | `#C9C2C7` |
+
+The selected surface intentionally remains white in both themes. Geometry
+uses the published `spacing.54` track width and `spacing.30` selected-circle
+travel rather than rounding to the base 8px scale.
+
 `text/brand`, `icon/brand`, and `stroke/brand` are also published as
 `--color-text-brand`, `--color-icon-brand`, and `--color-border-brand`.
 They are available for exact component bindings, but must not replace older

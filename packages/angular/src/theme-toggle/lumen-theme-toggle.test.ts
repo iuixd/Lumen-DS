@@ -6,7 +6,10 @@ import { LumenThemeToggleComponent } from "./lumen-theme-toggle";
 @Component({
   standalone: true,
   imports: [LumenThemeToggleComponent],
-  template: `<lumen-theme-toggle [checked]="checked" (checkedChange)="onCheckedChange($event)"></lumen-theme-toggle>`
+  template: `<lumen-theme-toggle
+    [checked]="checked"
+    (checkedChange)="onCheckedChange($event)"
+  ></lumen-theme-toggle>`
 })
 class TestHostComponent {
   checked = false;
@@ -43,6 +46,7 @@ describe("LumenThemeToggleComponent", () => {
   it("reflects the checked input to the native input's checked property", () => {
     const fixture = createHost({ checked: true });
     expect(innerInput(fixture.nativeElement).checked).toBe(true);
+    expect(fixture.nativeElement.querySelector(".thumb")?.getAttribute("part")).toBe("selection");
   });
 
   it("emits checkedChange with the new state on toggle", () => {

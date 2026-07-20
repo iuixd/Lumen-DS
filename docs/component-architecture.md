@@ -1030,11 +1030,12 @@ Angular: LumenAIButtonComponent       packages/angular/src/ai-button/lumen-ai-bu
 Storybook coverage for all three Web Components/Angular rows above remains
 "not covered" (same open decision noted in each package's README).
 
-As of 2026-07-20, sourced from the "appshell-desktop-closed-light"
-reference screen (node `1197:1652`), `KPICard`, `Theme Toggle`, and
-`Footer` ship as three-row (React/Web Components/Angular) mappings, same
-pattern as Button. `Page Header` remains React-only — page/composite-level,
-no Web Components/Angular equivalent expected:
+`KPICard` and `Footer` were sourced from the 2026-07-20
+"appshell-desktop-closed-light" reference screen (node `1197:1652`);
+`Theme Toggle` was re-synchronized on 2026-07-21 from its final component
+set (`1126:4185`). All three ship as React/Web Components/Angular mappings,
+following the same pattern as Button. `Page Header` remains React-only —
+page/composite-level, with no Web Components/Angular equivalent expected:
 
 ```text
 Figma: KPICard                 Node: 1197:1652 (1102:6521-23)
@@ -1042,7 +1043,7 @@ React: KPICard                         packages/ui/src/primitives/KPICard.tsx
 Web Components: lumen-kpi-card         packages/web-components/src/kpi-card/lumen-kpi-card.ts
 Angular: LumenKPICardComponent         packages/angular/src/kpi-card/lumen-kpi-card.ts
 
-Figma: Theme Toggle             Node: 1197:1652 (Header instance)
+Figma: Theme Toggle             Node: 1126:4185 (Light + Dark modes)
 React: ThemeToggle                     packages/ui/src/primitives/ThemeToggle.tsx
 Web Components: lumen-theme-toggle     packages/web-components/src/theme-toggle/lumen-theme-toggle.ts
 Angular: LumenThemeToggleComponent     packages/angular/src/theme-toggle/lumen-theme-toggle.ts

@@ -105,6 +105,12 @@
       "text": "lumen-gray.700",
       "text-selected": "primary.800"
     },
+    "theme-toggle": {
+      "track": "lumen-gray.50",
+      "selected-surface": "neutral.white",
+      "icon-selected": "app-shell.light.text-heading",
+      "icon-unselected": "lumen-gray.600"
+    },
     "app-shell": {
       "background": "lumen-gray.50",
       "surface": "neutral.white",
@@ -242,6 +248,12 @@
       "border-selected": "lumen-gray.500",
       "text": "lumen-gray.100",
       "text-selected": "primary.50"
+    },
+    "theme-toggle": {
+      "track": "neutral.black",
+      "selected-surface": "neutral.white",
+      "icon-selected": "app-shell.dark.theme-toggle-icon-selected",
+      "icon-unselected": "app-shell.dark.theme-toggle-icon-inactive"
     },
     "app-shell": {
       "background": "app-shell.dark.background",

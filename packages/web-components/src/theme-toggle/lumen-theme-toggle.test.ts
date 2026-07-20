@@ -26,13 +26,16 @@ describe("lumen-theme-toggle", () => {
   });
 
   it("accepts an aria-label override", async () => {
-    const el = await renderToggle('<lumen-theme-toggle aria-label="Switch to dark mode"></lumen-theme-toggle>');
+    const el = await renderToggle(
+      '<lumen-theme-toggle aria-label="Switch to dark mode"></lumen-theme-toggle>'
+    );
     expect(innerInput(el).getAttribute("aria-label")).toBe("Switch to dark mode");
   });
 
   it("reflects the checked property to an attribute", async () => {
     const el = await renderToggle("<lumen-theme-toggle checked></lumen-theme-toggle>");
     expect(innerInput(el).checked).toBe(true);
+    expect(el.shadowRoot!.querySelector(".thumb")?.getAttribute("part")).toBe("selection");
   });
 
   it("fires a lumen-change event with the new checked state on toggle", async () => {

@@ -193,6 +193,8 @@ export const colorPrimitives = {
   "app-shell.dark.warning": "#F5B46E",
   "app-shell.dark.warning-bg": "rgba(201, 122, 46, 0.15)",
   "app-shell.dark.badge-bg": "rgba(180, 142, 224, 0.16)",
+  "app-shell.dark.theme-toggle-icon-selected": "#0E0B0E",
+  "app-shell.dark.theme-toggle-icon-inactive": "#C9C2C7",
   "app-shell.dark.button-disabled-bg": "#20272D",
   "app-shell.dark.button-disabled-border": "#2C343B",
   "app-shell.dark.brand-stroke": "#594D54"
@@ -303,6 +305,12 @@ export const semanticColor = {
       "border-selected": "lumen-gray.300",
       "text": "lumen-gray.700",
       "text-selected": "primary.800"
+    },
+    "theme-toggle": {
+      "track": "lumen-gray.50",
+      "selected-surface": "neutral.white",
+      "icon-selected": "app-shell.light.text-heading",
+      "icon-unselected": "lumen-gray.600"
     },
     "app-shell": {
       "background": "lumen-gray.50",
@@ -441,6 +449,12 @@ export const semanticColor = {
       "border-selected": "lumen-gray.500",
       "text": "lumen-gray.100",
       "text-selected": "primary.50"
+    },
+    "theme-toggle": {
+      "track": "neutral.black",
+      "selected-surface": "neutral.white",
+      "icon-selected": "app-shell.dark.theme-toggle-icon-selected",
+      "icon-unselected": "app-shell.dark.theme-toggle-icon-inactive"
     },
     "app-shell": {
       "background": "app-shell.dark.background",

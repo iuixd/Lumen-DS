@@ -6,10 +6,11 @@ export interface ThemeToggleProps extends Omit<InputHTMLAttributes<HTMLInputElem
 
 /**
  * ThemeToggle
- * Sourced from the canonical AppShell desktop/tablet light and dark variants
- * (node 1007:3700). The exact 54px track, 20px thumb, 2px inset, and 30px
- * checked travel are published tokens. The native checkbox and `role="switch"`
- * preserve the established accessible-toggle behavior.
+ * Sourced from the canonical ThemeToggle component set (node 1126:4185).
+ * The exact 54px track, 20px selected circle, 2px inset, 30px checked
+ * travel, and light/dark icon roles are published tokens. The native
+ * checkbox and `role="switch"` preserve the established accessible-toggle
+ * behavior.
  */
 export const ThemeToggle = forwardRef<HTMLInputElement, ThemeToggleProps>(
   ({ className, id, "aria-label": ariaLabel, ...props }, ref) => {
@@ -18,7 +19,7 @@ export const ThemeToggle = forwardRef<HTMLInputElement, ThemeToggleProps>(
       <label
         htmlFor={inputId}
         className={cn(
-          "relative inline-flex h-[var(--spacing-24)] w-[var(--spacing-54)] shrink-0 cursor-pointer items-center justify-between rounded-full bg-[var(--color-app-shell-background)] px-[var(--spacing-2)]",
+          "relative inline-flex h-[var(--spacing-24)] w-[var(--spacing-54)] shrink-0 cursor-pointer items-center justify-between overflow-hidden rounded-full bg-[var(--color-theme-toggle-track)] px-[var(--spacing-2)]",
           "has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-offset-4 has-[:focus-visible]:ring-[var(--color-border-focus)]",
           className
         )}
@@ -34,15 +35,18 @@ export const ThemeToggle = forwardRef<HTMLInputElement, ThemeToggleProps>(
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute left-[var(--spacing-2)] size-[var(--spacing-20)] rounded-full bg-[var(--color-app-shell-surface)] shadow-sm transition-transform peer-checked:translate-x-[var(--spacing-30)]"
+          data-part="selection"
+          className="pointer-events-none absolute left-[var(--spacing-2)] size-[var(--spacing-20)] rounded-full bg-[var(--color-theme-toggle-selected-surface)] transition-transform peer-checked:translate-x-[var(--spacing-30)]"
         />
         <SunIcon
           aria-hidden
-          className="relative z-10 size-[var(--spacing-20)] text-[var(--color-app-shell-text-heading)]"
+          data-part="sun"
+          className="relative z-10 size-[var(--spacing-20)] text-[var(--color-theme-toggle-icon-selected)] peer-checked:text-[var(--color-theme-toggle-icon-unselected)]"
         />
         <MoonIcon
           aria-hidden
-          className="relative z-10 size-[var(--spacing-20)] text-[var(--color-app-shell-text-placeholder)]"
+          data-part="moon"
+          className="relative z-10 size-[var(--spacing-20)] text-[var(--color-theme-toggle-icon-unselected)] peer-checked:text-[var(--color-theme-toggle-icon-selected)]"
         />
       </label>
     );
