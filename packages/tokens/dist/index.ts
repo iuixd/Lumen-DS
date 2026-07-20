@@ -167,13 +167,14 @@ export const colorPrimitives = {
   "forest.800": "#003118"
 } as const;
 export const semanticColor = {
-  "_comment": "Semantic tokens reference primitives by dot-path. Consumed by scripts/build.mjs to emit CSS variables that swap by [data-theme]. The Figma source (Lumen-AI-Design-System) defines only one mode per variable collection — there is no Figma-authored dark theme. The 'dark' block below is a manual, documented mapping onto the same primitive ramps, carried over from the previous system. light.brand.hover/pressed are sourced from the actual Primary-button Hover/Active instance fills on the 'Buttons' page (node 475:7210, formerly 466:4365) — trust those over the page's '04 Design Tokens' documentation table, which has a stale/mismatched hover value (a copy-paste artifact, same pattern seen on the Colors page). light.brand.pressed was updated again when that page's own instances were updated: the real Active fill is primary.900 (#310010), one step darker than the primary.800 previously read — see primitives/color.json's note on primary.900. light.brand.border/subtle-pressed are new tokens sourced from that same refresh (button border color at rest, and outlined/text-button active-state fill). dark.brand.border/subtle-pressed have no Figma source (same caveat as the rest of the dark block) — mirrored onto the ramp by position rather than invented outright: border sits one step lighter than dark's subtle, same relative distance light.border sits darker than light.subtle. status.{success,warning,error}-text/-border are sourced from the Button component-set's own Success/Error/Warning State instances (node 475:7210) — exact bound-variable fallback values matched existing primitives exactly (surface = the existing -subtle step, text = the family's 700 step, border = the family's 200 step), so no new primitives were needed. Their dark values have no Figma source (Figma specs no dark mode for these states) and were derived with the same ramp-mirroring rule already used for status.success/-subtle: dark index = 8 minus the light index on each family's 9-step (50-800) ramp. brand.border-strong is sourced from the Split Button's Outline type (node 555:300) default-state border color (`--button/border/secondary/default`, #E599B1 = primary.200) — a step darker than the existing brand.border (primary.100). brand.solid-active (added 2026-07-16) is sourced from a direct re-verification of the core Button component-set's `Type=Secondary, State=Active` and `Type=Outline, State=Active` instances (node 475:7210, nodes 538:1262/806:5989) — both bind to `--button/surface/secondary/active` (#4C0018 = primary.800) with white text and no border, confirming the `[Unreleased]` speculation this token now replaces (\"Secondary's Active/Pressed fill may have changed to a solid primary.800 background with white text\"). Distinct from brand.pressed (primary.900, Primary/Raised's own solid-fill active state) — Figma specs a one-step-lighter tier specifically for the bordered/outlined types' active state, not a reuse of Primary's. dark.brand.solid-active has no Figma source (same caveat as the rest of the dark block); placed at primary.700, one step past dark.brand.border-strong (primary.600), to stay dark enough for the same unconditional white text Primary/Raised already use in dark mode (dark.brand.default is only primary.300) while remaining a distinct, deeper tier. dark.brand.border-strong has no Figma source and was placed one step lighter than dark.brand.border (primary.700), the same relative-distance mirroring already documented above for brand.border/subtle-pressed. light.segment.* (added for the new SegmentedControl primitive, sourced from the Buttons page's 'AI ButtonGroup Component Library' section, node 958:5058 'Segmented Control Group' via get_design_context on 2026-07-16) are aliases onto existing primitives with zero new hex values: surface=#EDF0F1, surface-selected=white, border-selected=#C8D1D4, text=#626B6E, and text-selected=#4C0018 matched lumen-gray.100/neutral.white/lumen-gray.300/lumen-gray.700/primary.800 exactly. dark.segment.* has no Figma source (same caveat as the rest of the dark block) and was derived with the same 8-minus-light-index mirroring rule used for status.*, applied to lumen-gray's own 9-step (50-800) ramp; surface-selected mirrors background.default's own established white-to-neutral.800 pairing.",
+  "_comment": "Semantic tokens reference primitives by dot-path. Consumed by scripts/build.mjs to emit CSS variables that swap by [data-theme]. The Figma source (Lumen-AI-Design-System) defines only one mode per variable collection — there is no Figma-authored dark theme. The 'dark' block below is a manual, documented mapping onto the same primitive ramps, carried over from the previous system. light.brand.hover/pressed are sourced from the actual Primary-button Hover/Active instance fills on the 'Buttons' page (node 475:7210, formerly 466:4365) — trust those over the page's '04 Design Tokens' documentation table, which has a stale/mismatched hover value (a copy-paste artifact, same pattern seen on the Colors page). light.brand.pressed was updated again when that page's own instances were updated: the real Active fill is primary.900 (#310010), one step darker than the primary.800 previously read — see primitives/color.json's note on primary.900. light.brand.border/subtle-pressed are new tokens sourced from that same refresh (button border color at rest, and outlined/text-button active-state fill). dark.brand.border/subtle-pressed have no Figma source (same caveat as the rest of the dark block) — mirrored onto the ramp by position rather than invented outright: border sits one step lighter than dark's subtle, same relative distance light.border sits darker than light.subtle. status.{success,warning,error}-text/-border are sourced from the Button component-set's own Success/Error/Warning State instances (node 475:7210) — exact bound-variable fallback values matched existing primitives exactly (surface = the existing -subtle step, text = the family's 700 step, border = the family's 200 step), so no new primitives were needed. Their dark values have no Figma source (Figma specs no dark mode for these states) and were derived with the same ramp-mirroring rule already used for status.success/-subtle: dark index = 8 minus the light index on each family's 9-step (50-800) ramp. brand.border-strong is sourced from the Split Button's Outline type (node 555:300) default-state border color (`--button/border/secondary/default`, #E599B1 = primary.200) — a step darker than the existing brand.border (primary.100). brand.solid-active (added 2026-07-16) is sourced from a direct re-verification of the core Button component-set's `Type=Secondary, State=Active` and `Type=Outline, State=Active` instances (node 475:7210, nodes 538:1262/806:5989) — both bind to `--button/surface/secondary/active` (#4C0018 = primary.800) with white text and no border, confirming the `[Unreleased]` speculation this token now replaces (\"Secondary's Active/Pressed fill may have changed to a solid primary.800 background with white text\"). Distinct from brand.pressed (primary.900, Primary/Raised's own solid-fill active state) — Figma specs a one-step-lighter tier specifically for the bordered/outlined types' active state, not a reuse of Primary's. dark.brand.solid-active has no Figma source (same caveat as the rest of the dark block); placed at primary.700, one step past dark.brand.border-strong (primary.600), to stay dark enough for the same unconditional white text Primary/Raised already use in dark mode (dark.brand.default is only primary.300) while remaining a distinct, deeper tier. dark.brand.border-strong has no Figma source and was placed one step lighter than dark.brand.border (primary.700), the same relative-distance mirroring already documented above for brand.border/subtle-pressed. light.segment.* (added for the new SegmentedControl primitive, sourced from the Buttons page's 'AI ButtonGroup Component Library' section, node 958:5058 'Segmented Control Group' via get_design_context on 2026-07-16) are aliases onto existing primitives with zero new hex values: surface=#EDF0F1, surface-selected=white, border-selected=#C8D1D4, text=#626B6E, and text-selected=#4C0018 matched lumen-gray.100/neutral.white/lumen-gray.300/lumen-gray.700/primary.800 exactly. dark.segment.* has no Figma source (same caveat as the rest of the dark block) and was derived with the same 8-minus-light-index mirroring rule used for status.*, applied to lumen-gray's own 9-step (50-800) ramp; surface-selected mirrors background.default's own established white-to-neutral.800 pairing. light.border.subtle and light.text.secondary (added for the appshell-desktop-closed-light reference screen, Lumen-AI-Design-System node 1197:1652, via get_variable_defs on 2026-07-20) are new tiers distinct from the existing border.default/text.muted: `stroke/subtle` (#EDF0F1) and `text/secondary` (#626B6E) both appeared alongside `stroke/default`/`text/muted` as separate bound variables in the same frame, not substitutes for them. Both alias lumen-gray (a different family from border.default's neutral) with zero new hex values: border.subtle=lumen-gray.100, text.secondary=lumen-gray.700 — the same two steps already confirmed for light.segment.surface/text above. dark.border.subtle/text.secondary have no Figma source (same caveat as the rest of the dark block) and use the same 8-minus-light-index mirroring already applied to light.segment.* on lumen-gray's own ramp: border.subtle mirrors to lumen-gray.700, text.secondary mirrors to lumen-gray.100. light.background.nav-active (same source/session) is `bg/nav-active` (#EDF0F1) from the NavigationRail's active-item state — also lumen-gray.100, but kept as its own token rather than reused as border.subtle since the two express different purposes (a fill vs. a border) that happen to share a value; dark.background.nav-active mirrors to lumen-gray.700, same rule.",
   "light": {
     "background": {
       "default": "neutral.white",
       "subtle": "neutral.50",
       "raised": "neutral.white",
-      "inverse": "neutral.800"
+      "inverse": "neutral.800",
+      "nav-active": "lumen-gray.100"
     },
     "text": {
       "title": "neutral.800",
@@ -181,12 +182,14 @@ export const semanticColor = {
       "muted": "neutral.500",
       "inverse": "neutral.white",
       "link": "primary.500",
-      "disabled": "neutral.300"
+      "disabled": "neutral.300",
+      "secondary": "lumen-gray.700"
     },
     "border": {
       "default": "neutral.100",
       "strong": "neutral.300",
-      "focus": "primary.500"
+      "focus": "primary.500",
+      "subtle": "lumen-gray.100"
     },
     "brand": {
       "default": "primary.500",
@@ -227,7 +230,8 @@ export const semanticColor = {
       "default": "neutral.800",
       "subtle": "neutral.700",
       "raised": "neutral.700",
-      "inverse": "neutral.white"
+      "inverse": "neutral.white",
+      "nav-active": "lumen-gray.700"
     },
     "text": {
       "title": "neutral.white",
@@ -235,12 +239,14 @@ export const semanticColor = {
       "muted": "neutral.400",
       "inverse": "neutral.800",
       "link": "primary.300",
-      "disabled": "neutral.500"
+      "disabled": "neutral.500",
+      "secondary": "lumen-gray.100"
     },
     "border": {
       "default": "neutral.600",
       "strong": "neutral.400",
-      "focus": "primary.300"
+      "focus": "primary.300",
+      "subtle": "lumen-gray.700"
     },
     "brand": {
       "default": "primary.300",
@@ -573,7 +579,7 @@ export const radius = {
   }
 } as const;
 export const shadow = {
-  "_comment": "Elevation/shadow tier — previously undefined in this token set (see docs/figma-sync.md's former 'known gap'). Sourced fresh from the Buttons page (Lumen-AI-Design-System, node 475:7210)'s 'Raised' button type, the first real component in this file to use elevation. Each 'button' value is a two-layer drop-shadow (a soft ambient layer + a directional layer) read directly off that state's real Figma fill, not extrapolated. 'button.pressed-inset' is a separate inset shadow used by the flat (non-elevated) Primary/Icon-only types specifically on their Active state, to convey a pressed effect without giving them permanent elevation.",
+  "_comment": "Elevation/shadow tier — previously undefined in this token set (see docs/figma-sync.md's former 'known gap'). Sourced fresh from the Buttons page (Lumen-AI-Design-System, node 475:7210)'s 'Raised' button type, the first real component in this file to use elevation. Each 'button' value is a two-layer drop-shadow (a soft ambient layer + a directional layer) read directly off that state's real Figma fill, not extrapolated. 'button.pressed-inset' is a separate inset shadow used by the flat (non-elevated) Primary/Icon-only types specifically on their Active state, to convey a pressed effect without giving them permanent elevation. 'elevation.sm' is the first entry in the generic Elevation/None-Sm-Md-Lg-Xl scale docs/design-tokens.md §6 calls for — sourced from the appshell-desktop-closed-light reference screen's KPICard instance (Lumen-AI-Design-System node 1197:1652, `1102:6521`) via get_design_context on 2026-07-20, a single soft ambient shadow distinct from the directional button.* shadows above. Only this one tier is sourced so far; None/Md/Lg/Xl remain unimplemented pending a component that specs them.",
   "button": {
     "default": {
       "value": "0px 0px 1.5px rgba(0,0,0,0.16), 0px 2px 2px rgba(0,0,0,0.26)"
@@ -589,6 +595,11 @@ export const shadow = {
     },
     "pressed-inset": {
       "value": "inset 0px 2px 4px rgba(0,0,0,0.18)"
+    }
+  },
+  "elevation": {
+    "sm": {
+      "value": "0px 1px 2px rgba(0,0,0,0.04)"
     }
   }
 } as const;

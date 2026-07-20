@@ -1050,6 +1050,34 @@ Angular: LumenAIButtonComponent       packages/angular/src/ai-button/lumen-ai-bu
 Storybook coverage for all three Web Components/Angular rows above remains
 "not covered" (same open decision noted in each package's README).
 
+As of 2026-07-20, sourced from the "appshell-desktop-closed-light"
+reference screen (node `1197:1652`), the following are React-only —
+Web Components/Angular parity deferred (primitives, matching the
+established React-first-then-parity-PR pattern) or not expected
+(layout/pattern-level, `@lumen/patterns` is React-only per `CLAUDE.md`):
+
+```text
+Figma: KPICard                Node: 1197:1652 (1102:6521-23)
+React: KPICard                        packages/ui/src/primitives/KPICard.tsx
+
+Figma: Theme Toggle           Node: 1197:1652 (Header instance)
+React: ThemeToggle                    packages/ui/src/primitives/ThemeToggle.tsx
+
+Figma: Page Header            Node: 1197:1652 (1102:6519)
+React: PageHeader                     packages/ui/src/composite/PageHeader.tsx
+
+Figma: Footer                 Node: 1197:1652 (1102:6529)
+React: Footer                         packages/ui/src/layout/Footer.tsx
+```
+
+`AppShell` gained an additive `variant="rail"` (the sourced 64px collapsed
+NavigationRail) alongside the unchanged default `"sidebar"`; `Avatar`
+gained an additive `tone="neutral"`. Neither is a new component — both
+keep their existing `packages/ui/src/{layout/AppShell,primitives/Avatar}.tsx`
+mapping. The Header's notification bell and the table's status pills
+reuse `Button`/`Badge`/`DataTable` with no new component, per §1.3
+"Composition before duplication."
+
 ---
 
 # 14. Component maturity model

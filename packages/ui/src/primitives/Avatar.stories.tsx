@@ -13,9 +13,10 @@ const meta = {
     }
   },
   argTypes: {
-    size: { control: "select", options: ["sm", "md", "lg"] }
+    size: { control: "select", options: ["sm", "md", "lg"] },
+    tone: { control: "select", options: ["brand", "neutral"] }
   },
-  args: { name: "Jane Cooper", size: "md" }
+  args: { name: "Jane Cooper", size: "md", tone: "brand" }
 } satisfies Meta<typeof Avatar>;
 
 export default meta;
@@ -38,6 +39,17 @@ export const Sizes: Story = {
       <Avatar name="Jane Cooper" size="sm" />
       <Avatar name="Jane Cooper" size="md" />
       <Avatar name="Jane Cooper" size="lg" />
+    </div>
+  )
+};
+
+/** `neutral` is sourced from the app-shell Header's account avatar (Lumen-AI-Design-System, node 1197:1652, `AvatarInitials` instance `I1102:6515;1079:1889`) — a solid muted-gray circle, used where the avatar sits on brand-colored or busy chrome rather than a plain surface. */
+export const Tones: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex items-center gap-3">
+      <Avatar name="Jane Cooper" tone="brand" />
+      <Avatar name="Jane Cooper" tone="neutral" />
     </div>
   )
 };

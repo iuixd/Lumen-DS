@@ -17,6 +17,8 @@ export * from "./primitives/Select";
 export * from "./primitives/Tabs";
 export * from "./primitives/Tooltip";
 export * from "./primitives/Icon";
+export * from "./primitives/ThemeToggle";
+export * from "./primitives/KPICard";
 
 // Icons
 export * from "./icons/generated";
@@ -31,12 +33,14 @@ export * from "./composite/FormField";
 export * from "./composite/EmptyState";
 export * from "./composite/Toast";
 export * from "./composite/SplitButton";
+export * from "./composite/PageHeader";
 
 // Layout
 export * from "./layout/Container";
 export * from "./layout/Stack";
 export * from "./layout/Grid";
 export * from "./layout/AppShell";
+export * from "./layout/Footer";
 
 // Utilities
 export { cn } from "./lib/cn";
