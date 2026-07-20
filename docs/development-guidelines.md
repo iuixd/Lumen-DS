@@ -312,11 +312,10 @@ Example:
 All public components must be fully typed.
 
 ```tsx
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "raised" | "secondary" | "tertiary" | "link";
-  size?: "xs" | "sm" | "md" | "lg";
-  isLoading?: boolean;
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "accent" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+  iconStart?: React.ReactNode;
+  iconEnd?: React.ReactNode;
 }
 ```
 
@@ -338,8 +337,8 @@ Extend native element attributes where practical.
 Examples:
 
 ```ts
-React.ButtonHTMLAttributes<HTMLButtonElement>
-React.InputHTMLAttributes<HTMLInputElement>
+React.ButtonHTMLAttributes<HTMLButtonElement>;
+React.InputHTMLAttributes<HTMLInputElement>;
 ```
 
 Do not block native attributes unnecessarily.
@@ -349,11 +348,9 @@ Do not block native attributes unnecessarily.
 Forward refs for components that consumers may need to focus, measure, or integrate.
 
 ```tsx
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (props, ref) => {
-    return <button ref={ref} {...props} />;
-  }
-);
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+  return <button ref={ref} {...props} />;
+});
 ```
 
 ## 8.4 Display names
@@ -409,7 +406,7 @@ lowercase semantic variant values
 Examples:
 
 ```tsx
-<Button variant="primary" size="md" />
+<Button variant="primary">Create project</Button>
 ```
 
 ## Variant names
@@ -418,12 +415,12 @@ Use semantic names:
 
 ```text
 primary
+accent
 secondary
-tertiary
+outline
 ghost
 link
-danger
-ai
+destructive
 ```
 
 Avoid:
@@ -499,10 +496,10 @@ When Tailwind is used:
 
 ```ts
 // preferred
-className="bg-surface-brand text-on-brand rounded-control-md"
+className = "bg-surface-brand text-on-brand rounded-control-md";
 
 // avoid
-className="bg-[#0c77da] text-white rounded-[8px]"
+className = "bg-[#0c77da] text-white rounded-[8px]";
 ```
 
 Tailwind theme values must resolve to Lumen tokens.
@@ -1010,6 +1007,7 @@ Treat the approved Figma node and exported token files as the source of truth.
 Update only affected tokens, components, stories, tests, documentation, and exports.
 
 Preserve:
+
 - existing architecture
 - public APIs
 - accessibility behavior
@@ -1017,6 +1015,7 @@ Preserve:
 - unrelated files
 
 Do not:
+
 - regenerate the design system
 - refactor unrelated components
 - introduce hardcoded design values

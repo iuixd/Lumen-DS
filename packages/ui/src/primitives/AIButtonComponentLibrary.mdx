@@ -18,18 +18,17 @@ when the component changes, this page changes with it.
 
 ## Component Variants
 
-`primary` and `tertiary` reuse `Button`'s own colors exactly. `secondary` is a
-filled-tint look (brand-subtle fill + brand-border-strong border) — not the same
-treatment as `Button`'s borderless-until-hover `secondary`. `outline` has no
-equivalent on `Button` yet.
+AI Button retains its own independently sourced variants: `primary`, `raised`,
+`secondary`, `tertiary`, `outline`, and `link`. These do not inherit the final
+standard Button collection at node `1027:3733`, even where names overlap.
 
 <Canvas of={AIButtonStories.AllVariants} />
 
 ## Sizes
 
-`xs`/`sm`/`md`/`lg` reuse `Button`'s padding and text scale. Figma's `xs` AI Button is
-28px tall (4px shorter than `Button`'s own `xs`) — not matched exactly, to avoid a
-second `xs` height scale for one component; tracked as a known limitation.
+`xs`/`sm`/`md`/`lg` retain AI Button's independent 32/36/40/48px implementation.
+Figma's `xs` AI Button is 28px tall and remains a known limitation. The final
+standard Button uses one 34px size and does not define this scale.
 
 <Canvas of={AIButtonStories.Sizes} />
 
@@ -68,35 +67,34 @@ instance rather than specifying per-action icons.
 
 ## Accessibility
 
-Same contract as `Button`: a native `<button>`, `aria-disabled` (not the native
-`disabled` attribute) so a disabled AI Button stays keyboard-reachable, `aria-busy`
+AI Button uses a native `<button>` and `aria-disabled` (not the native `disabled`
+attribute) so a disabled AI Button stays keyboard-reachable, plus `aria-busy`
 while loading, and a mandatory accessible name for icon-only instances — either an
 explicit `aria-label`/`aria-labelledby`, or (new) an automatic fallback to the
 resolved `capability`'s label. Passing neither logs a dev-mode console warning.
 
 ## Design Tokens
 
-| Token | Used for |
-|---|---|
-| `color.brand.default` / `hover` / `pressed` | `primary` variant |
-| `color.brand.subtle` / `subtle-pressed` | `secondary` / `tertiary` / `outline` fills |
-| `color.brand.border-strong` | `secondary` / `outline` border |
-| `radius.md` | Corner radius, all variants |
-| `spacing.32` / `36` / `40` / `48` | Button heights (xs/sm/md/lg) |
-| `spacing.8` | Icon-to-label gap |
-| `spacing.10` / `12` / `16` / `20` | Horizontal padding (xs/sm/md/lg) |
+| Token                                       | Used for                                   |
+| ------------------------------------------- | ------------------------------------------ |
+| `color.brand.default` / `hover` / `pressed` | `primary` variant                          |
+| `color.brand.subtle` / `subtle-pressed`     | `secondary` / `tertiary` / `outline` fills |
+| `color.brand.border-strong`                 | `secondary` / `outline` border             |
+| `radius.lg`                                 | Corner radius, all variants                |
+| `spacing.32` / `36` / `40` / `48`           | Button heights (xs/sm/md/lg)               |
+| `spacing.8`                                 | Icon-to-label gap                          |
+| `spacing.10` / `12` / `16` / `20`           | Horizontal padding (xs/sm/md/lg)           |
 
-No new tokens were required beyond `brand.border-strong`, already added for Split
-Button's Outline type.
+These specialized legacy roles remain independent of the final standard Button tokens.
 
 ## Do & Don't
 
-| Do | Don't |
-|---|---|
-| Use one `AIButton` per explicit AI action a user can trigger | Use it for an action the system runs automatically without the user asking |
-| Pass `capability` for any of the 24 cataloged actions | Hand-roll a custom icon/label pair that duplicates an existing capability |
-| Require confirmation before running a `destructive` AI action | Assume `destructive` changes the button's appearance — it doesn't |
-| Pair `isLoading` with a label change like "Generating…" | Leave the original label showing while `isLoading` is true |
+| Do                                                            | Don't                                                                      |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Use one `AIButton` per explicit AI action a user can trigger  | Use it for an action the system runs automatically without the user asking |
+| Pass `capability` for any of the 24 cataloged actions         | Hand-roll a custom icon/label pair that duplicates an existing capability  |
+| Require confirmation before running a `destructive` AI action | Assume `destructive` changes the button's appearance — it doesn't          |
+| Pair `isLoading` with a label change like "Generating…"       | Leave the original label showing while `isLoading` is true                 |
 
 ## Code Examples
 
@@ -124,9 +122,7 @@ not yet implemented):
 implemented):
 
 ```html
-<lumen-ai-button variant="secondary" [icon]="rewriteIconTemplate">
-  Rewrite
-</lumen-ai-button>
+<lumen-ai-button variant="secondary" [icon]="rewriteIconTemplate"> Rewrite </lumen-ai-button>
 ```
 
 ## Split Button AI

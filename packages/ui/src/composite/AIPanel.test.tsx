@@ -5,7 +5,11 @@ import { AIPanel, type AIPanelMessage } from "./AIPanel";
 
 const messages: AIPanelMessage[] = [
   { role: "user", content: "Which renewals should I focus on this week?" },
-  { role: "assistant", content: "Start with Meridian Health.", actions: <button>Review draft</button> }
+  {
+    role: "assistant",
+    content: "Start with Meridian Health.",
+    actions: <button>Review draft</button>
+  }
 ];
 
 describe("AIPanel", () => {

@@ -17,9 +17,7 @@ export const Playground: Story = {
     <Card className="max-w-sm">
       <CardHeader>
         <CardTitle>Filters</CardTitle>
-        <Button variant="tertiary" size="sm">
-          Reset
-        </Button>
+        <Button variant="ghost">Reset</Button>
       </CardHeader>
       <p className="text-body-md text-[var(--color-text-body)]">
         Card content goes here — form fields, a table, anything.
@@ -31,7 +29,9 @@ export const Playground: Story = {
 export const Plain: Story = {
   render: () => (
     <Card className="max-w-sm">
-      <p className="text-body-md text-[var(--color-text-body)]">A card with no header, just content.</p>
+      <p className="text-body-md text-[var(--color-text-body)]">
+        A card with no header, just content.
+      </p>
     </Card>
   )
 };

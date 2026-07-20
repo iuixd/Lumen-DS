@@ -615,9 +615,9 @@ Interactive composites should clearly document controlled and uncontrolled usage
 Examples:
 
 ```ts
-open
-defaultOpen
-onOpenChange
+open;
+defaultOpen;
+onOpenChange;
 ```
 
 Do not mix both models ambiguously.
@@ -666,75 +666,56 @@ Button is a foundational primitive and must remain tightly governed. This
 section is kept in sync with the full specification in
 `docs/component-specifications.md` §5 — that document is authoritative for
 behavior, content, accessibility, and Storybook detail; this section covers
-architecture-level contract shape only. Reconciled against the shipped
-implementation (`packages/ui/src/primitives/Button.tsx`, Lumen-AI-Design-System node
-`475:7210`) on 2026-07-12 — see `docs/roadmap.md` Phase 13 Findings.
+architecture-level contract shape only. Synchronized against the final
+Lumen-AI-Design-System Button collection at node `1027:3733` on 2026-07-20.
 
 ## 7.1 Supported variants
 
 ```text
 Primary
-Raised
+Accent
 Secondary
-Tertiary
+Outline
+Ghost
 Link
+Destructive
 ```
-
-Icon only and Pill are independent modifiers, not variants — see
-`docs/component-specifications.md` §5 "Modifiers".
 
 ## 7.2 Supported sizes
 
-```text
-Xs
-Sm
-Md
-Lg
-```
+One standardized size: 34px high with 14px inline padding, 7px block
+padding, an 8px gap/radius, and 14px optional icons.
 
 ## 7.3 Supported properties
 
 ```text
 variant
-size
-status
-iconOnly
-pill
 disabled
-loading
 iconStart
 iconEnd
 children
 type
 ```
 
-Icon-only buttons require an accessible name.
-
 ## 7.4 Anatomy
 
 ```text
 Button
-├── State layer
 ├── Content
 │   ├── Leading icon
 │   ├── Label
 │   └── Trailing icon
-├── Loading indicator
 └── Focus ring
 ```
 
 ## 7.5 Suggested API
 
-The properties listed in §7.3 form the framework-neutral contract. Below is the current React reference implementation of that contract; a future Angular, Vue, or Web Components package exposes the same properties through its own idiom. React names the `loading` contract property `isLoading` (see `docs/component-specifications.md` §5 for why that's an inconsistency, not the canonical name).
+The properties listed in §7.3 form the framework-neutral contract. React,
+Web Components, and Angular expose the same final contract through each
+framework's idioms.
 
 ```tsx
-<Button
-  variant="primary"
-  size="md"
-  iconStart={<PlusIcon />}
-  isLoading={false}
-  disabled={false}
->
+<Button variant="primary" iconStart={<PlusIcon />} disabled={false}>
   Create project
 </Button>
 ```
@@ -743,10 +724,9 @@ The properties listed in §7.3 form the framework-neutral contract. Below is the
 
 - Use one primary action per logical region where possible.
 - Do not use a disabled state to hide unavailable permissions without explanation.
-- Loading must preserve button width.
-- Icon-only buttons must provide `aria-label`.
 - Link buttons must behave like links when navigation is intended.
-- Destructive or irreversible actions require clear intent and, when consequences are significant, confirmation — regardless of which variant presents them.
+- Destructive or irreversible actions use the `destructive` variant and
+  require confirmation when consequences are significant.
 
 ---
 
@@ -984,16 +964,16 @@ Each published Figma component should map to one component-specification entry, 
 
 Recommended mapping record — one row per framework package that ships the component:
 
-| Field | Description |
-|---|---|
-| Figma component | Published component or component-set name |
-| Node ID | Stable Figma node identifier |
-| Framework | React, Angular, Vue, Web Components, ... |
-| Code component | Export name or custom-element tag in that framework package |
-| Source | Repository path |
-| Storybook | Story path |
-| Status | Mapped, partial, pending, deprecated |
-| Last synchronized | Date or release |
+| Field             | Description                                                 |
+| ----------------- | ----------------------------------------------------------- |
+| Figma component   | Published component or component-set name                   |
+| Node ID           | Stable Figma node identifier                                |
+| Framework         | React, Angular, Vue, Web Components, ...                    |
+| Code component    | Export name or custom-element tag in that framework package |
+| Source            | Repository path                                             |
+| Storybook         | Story path                                                  |
+| Status            | Mapped, partial, pending, deprecated                        |
+| Last synchronized | Date or release                                             |
 
 Use Figma Code Connect for approved production mappings.
 
@@ -1311,6 +1291,7 @@ Do not invent missing Figma specifications.
 
 Run type checks, tests, accessibility checks, and the Storybook build.
 Then summarize:
+
 1. files changed
 2. behavior changed
 3. validation results
@@ -1327,57 +1308,75 @@ Use this structure for individual component documentation.
 # Component name
 
 ## Status
+
 Stable
 
 ## Purpose
+
 What the component does.
 
 ## When to use
+
 Approved use cases.
 
 ## When not to use
+
 Alternatives and anti-patterns.
 
 ## Anatomy
+
 Named component regions.
 
 ## Variants
+
 Supported semantic variants.
 
 ## Sizes
+
 Supported sizes.
 
 ## States
+
 Supported interaction states.
 
 ## Properties
+
 Figma properties and code props.
 
 ## Behavior
+
 Interaction and responsive behavior.
 
 ## Accessibility
+
 Keyboard, semantics, focus, and announcements.
 
 ## Content guidance
+
 Labels, descriptions, and localization.
 
 ## Tokens
+
 Component and semantic token dependencies.
 
 ## Figma mapping
+
 Figma component and node reference.
 
 ## Code mapping
+
 Package export and source path.
 
 ## Storybook
+
 Story path and required examples.
 
 ## Testing
+
 Unit, accessibility, visual, and integration coverage.
 
 ## Change history
+
 Component-specific changes.
 ```
 

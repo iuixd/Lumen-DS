@@ -786,7 +786,7 @@ Example:
 <Button quiet />
 
 // After
-<Button variant="tertiary" />
+<Button variant="ghost" />
 ```
 
 ---
@@ -1070,6 +1070,7 @@ Prepare a release only for changes listed under `[Unreleased]`.
 First perform an audit without modifying or publishing anything.
 
 Report:
+
 1. release scope
 2. affected packages
 3. affected tokens and components
@@ -1083,6 +1084,7 @@ Report:
 After approval, update only required release files and affected implementation files.
 
 Do not:
+
 - regenerate the design system
 - refactor unrelated files
 - upgrade unrelated dependencies
@@ -1095,6 +1097,7 @@ unless explicitly instructed.
 Run the available lint, type-check, test, build, Storybook-build, accessibility, and visual-regression commands.
 
 Return one recommendation:
+
 - Approved for Prerelease
 - Approved for Stable Release
 - Approved with Conditions

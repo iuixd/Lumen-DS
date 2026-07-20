@@ -23,7 +23,7 @@ the full layer diagram.
 </script>
 <link rel="stylesheet" href="@lumen/tokens/css" />
 
-<lumen-button variant="primary" size="md">Save changes</lumen-button>
+<lumen-button variant="primary">Save changes</lumen-button>
 ```
 
 Importing the package root registers every custom element it exports as a
@@ -51,18 +51,13 @@ inherit through the shadow DOM boundary, so no extra wiring is needed.
 
 ### `<lumen-button>`
 
-| Property (attribute) | Type | Default | Notes |
-|---|---|---|---|
-| `variant` | `primary \| raised \| secondary \| tertiary \| outline \| link` | `primary` | `outline` added 2026-07-16, alongside a fix to `secondary` (it previously rendered `bg-transparent` at rest — Figma re-verification confirmed a filled `brand.subtle` background all along). `outline` shares `secondary`'s border/text colors, differing only in rest/hover fill — see `Button.tsx`'s doc comment for the full citation. |
-| `size` | `xs \| sm \| md \| lg` | `md` | |
-| `status` | `success \| warning \| error` (optional) | none | Added 2026-07-14, mirrors `Button.tsx`. Tinted override independent of `variant`; status-colored border only on `secondary`, not re-verified for `outline`. |
-| `icon-only` | boolean | `false` | Requires `aria-label` or `aria-labelledby`; warns in the console otherwise. |
-| `pill` | boolean | `false` | |
-| `loading` | boolean | `false` | React's equivalent is named `isLoading` — this package drops the `is-` prefix per `docs/component-architecture.md` §5.1's own naming guidance, which the React package doesn't currently follow either. |
-| `disabled` | boolean | `false` | |
+| Property (attribute) | Type                                                                        | Default   | Notes                                         |
+| -------------------- | --------------------------------------------------------------------------- | --------- | --------------------------------------------- |
+| `variant`            | `primary \| accent \| secondary \| outline \| ghost \| link \| destructive` | `primary` | Final collection from Figma node `1027:3733`. |
+| `disabled`           | boolean                                                                     | `false`   |                                               |
 
-Both `loading` and `disabled` set `aria-disabled`/prevent the click from
-reaching listeners, matching `@lumen/ui`'s `Button` — native `disabled` is
+`disabled` sets `aria-disabled` and prevents the click from reaching
+listeners, matching `@lumen/ui`'s `Button` — native `disabled` is
 intentionally not used, for the same keyboard-reachability reason documented
 on the React component.
 
@@ -74,14 +69,14 @@ can't distinguish which one fired once retargeted at the host — it
 dispatches `lumen-main-click` and `lumen-dropdown-click` custom events
 instead (`event.detail` carries the original `MouseEvent`).
 
-| Property (attribute) | Type | Default | Notes |
-|---|---|---|---|
-| `variant` | `primary \| raised \| secondary \| outline` | `primary` | |
-| `size` | `sm \| md \| lg` | `lg` | |
-| `pill` | boolean | `false` | |
-| `loading` | boolean | `false` | Disables only the main segment; the dropdown stays interactive. |
-| `disabled` | boolean | `false` | Disables both segments. |
-| `dropdown-label` | string | `"More options"` | Accessible name for the dropdown-toggle segment. Warns in the console if left at the default. |
+| Property (attribute) | Type                                        | Default          | Notes                                                                                         |
+| -------------------- | ------------------------------------------- | ---------------- | --------------------------------------------------------------------------------------------- |
+| `variant`            | `primary \| raised \| secondary \| outline` | `primary`        |                                                                                               |
+| `size`               | `sm \| md \| lg`                            | `lg`             |                                                                                               |
+| `pill`               | boolean                                     | `false`          |                                                                                               |
+| `loading`            | boolean                                     | `false`          | Disables only the main segment; the dropdown stays interactive.                               |
+| `disabled`           | boolean                                     | `false`          | Disables both segments.                                                                       |
+| `dropdown-label`     | string                                      | `"More options"` | Accessible name for the dropdown-toggle segment. Warns in the console if left at the default. |
 
 Leading icon uses `<span slot="icon-start">`, matching `<lumen-button>`'s
 slot convention.
@@ -97,10 +92,10 @@ Toggleable pills — Selection primitives with no React-equivalent naming
 divergence (`selected`/`disabled` map directly). Only the `lg` size (36px)
 is specced for either.
 
-| Property (attribute) | Type | Default | Notes |
-|---|---|---|---|
-| `selected` | boolean | `false` | Reflected as `aria-pressed`. |
-| `disabled` | boolean | `false` | Reflected as `aria-disabled` (not the native attribute), same reasoning as `<lumen-button>`. |
+| Property (attribute) | Type    | Default | Notes                                                                                        |
+| -------------------- | ------- | ------- | -------------------------------------------------------------------------------------------- |
+| `selected`           | boolean | `false` | Reflected as `aria-pressed`.                                                                 |
+| `disabled`           | boolean | `false` | Reflected as `aria-disabled` (not the native attribute), same reasoning as `<lumen-button>`. |
 
 `<lumen-filter-chip>` renders a leading icon slot (`<span slot="icon">`,
 default: a plus glyph) that's kept even when `selected`, plus a trailing
@@ -113,20 +108,21 @@ check icon only when `selected`.
 
 Mirrors `AIButton.tsx` (`packages/ui/src/primitives/AIButton.tsx`).
 
-| Property (attribute) | Type | Default | Notes |
-|---|---|---|---|
-| `variant` | `primary \| secondary \| tertiary \| outline` | `primary` | `secondary` and `outline` do not reuse `<lumen-button>`'s own colors for those names — see `AIButton.tsx`'s doc comment. |
-| `size` | `xs \| sm \| md \| lg` | `md` | Figma's `xs` AI Button is 28px tall vs. this package's 32px `xs` — not matched exactly, same known limitation as the React component. |
-| `icon-only` | boolean | `false` | Requires `aria-label` or `aria-labelledby`. |
-| `loading` | boolean | `false` | |
-| `disabled` | boolean | `false` | |
-| `destructive` | boolean | `false` | Behavioral only — sets `data-destructive` on the inner button for hook-in; Figma specs no distinct color for it. |
+| Property (attribute) | Type                                          | Default   | Notes                                                                                                                                 |
+| -------------------- | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`            | `primary \| secondary \| tertiary \| outline` | `primary` | Specialized AI treatment; overlapping names do not inherit the final standard `<lumen-button>` colors.                                |
+| `size`               | `xs \| sm \| md \| lg`                        | `md`      | Figma's `xs` AI Button is 28px tall vs. this package's 32px `xs` — not matched exactly, same known limitation as the React component. |
+| `icon-only`          | boolean                                       | `false`   | Requires `aria-label` or `aria-labelledby`.                                                                                           |
+| `loading`            | boolean                                       | `false`   |                                                                                                                                       |
+| `disabled`           | boolean                                       | `false`   |                                                                                                                                       |
+| `destructive`        | boolean                                       | `false`   | Behavioral only — sets `data-destructive` on the inner button for hook-in; Figma specs no distinct color for it.                      |
 
 A leading icon is always rendered — default slot content (`<span
 slot="icon">`) is a sparkle glyph; override it for capability-specific
 icons (Figma swaps the glyph per action, e.g. a wand for Rewrite).
-`status` (Success/Warning/Error) is not implemented, matching the React
-component's own open item.
+`raised`, `link`, and `status` remain React-only AI Button extensions; they
+are not part of this Web Components implementation or the final standard
+Button contract.
 
 ## History: the spec discrepancy this package surfaced
 
@@ -142,7 +138,9 @@ the real React implementation, not the inaccurate docs.
 That discrepancy has since been reconciled — `docs/component-specifications.md`
 §5 and `docs/component-architecture.md` §7 now match `Button.tsx`, and by
 extension match this package too. See `docs/roadmap.md` Phase 13 Findings
-for the full record. Kept here as history, not a live issue.
+for the full record. The older API described in that history was subsequently
+superseded by final Figma node `1027:3733`; React, Web Components, and Angular
+now implement the same final contract. Kept here as history, not a live issue.
 
 ## Testing
 

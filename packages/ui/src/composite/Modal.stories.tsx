@@ -37,7 +37,7 @@ export const Playground: Story = {
           title="Delete this record?"
           footer={
             <>
-              <Button variant="tertiary" onClick={() => setOpen(false)}>
+              <Button variant="ghost" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
               {/* Figma's Buttons page has no distinct destructive/error type — tint Secondary

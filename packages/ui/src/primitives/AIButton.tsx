@@ -15,13 +15,11 @@ import { getAICapability, type AICapabilityId } from "./ai-capabilities";
  * Figma "Buttons" page (Lumen-AI-Design-System, node 760:1965), added 2026-07-14 —
  * confirmed via `get_design_context` on the Primary/Secondary/Tertiary/
  * Outline AI instances, the Icon-Only AI instances, Loading AI, and
- * Destructive AI. This is a distinct component from `Button`, not a variant
- * of it, because two of its four types don't reuse Button's existing variant
- * colors: `secondary` here is a filled-tint look (brand-subtle background +
- * brand-border-strong border) that doesn't match Button's borderless-until-
- * hover `secondary`, and `outline` doesn't exist on Button at all yet (see
- * `docs/changelog.md` `[Unreleased]` for that open item). `primary` and
- * `tertiary` do reuse Button's exact primary/tertiary colors.
+ * Destructive AI. This is a distinct component from the final standard
+ * `Button`, not a variant of it: it retains its independently sourced
+ * variants, four-size scale, loading/status states, and icon-only modifier.
+ * Overlapping variant names do not inherit the final Button collection at
+ * node `1027:3733`.
  *
  * Every instance in Figma — every variant, every size, Loading, even
  * Destructive — carries a mandatory leading icon, the `lm-aisymbol` glyph
@@ -35,23 +33,21 @@ import { getAICapability, type AICapabilityId } from "./ai-capabilities";
  * `destructive` is a behavioral flag, not a color: Figma's "Destructive AI"
  * instance is pixel-identical to Secondary AI (same surface/border/text
  * tokens) — the distinction is that destructive AI actions require
- * confirmation before running, same rule Button.tsx already documents for
- * regular destructive actions. No dedicated visual treatment was invented.
+ * confirmation before running, consistent with the standard destructive-
+ * action principle. No dedicated visual treatment was invented.
  *
- * Corner radius (2026-07-16): moved to `rounded-lg` (8px) — see `Button.tsx`'s
- * matching note; confirmed via `get_design_context` on a "Split Button
+ * Corner radius (2026-07-16): moved to `rounded-lg` (8px), confirmed via
+ * `get_design_context` on a "Split Button
  * Groups" AI instance (node 769:9290) binding `--radius/segment`.
  *
- * `isLoading` mirrors Button's own pattern exactly: the leading icon is
- * replaced by a spinner and the label is expected to change ("Generating…")
+ * `isLoading` replaces the leading icon with a spinner and the label is
+ * expected to change ("Generating…")
  * — confirmed via the Loading AI instance, which is otherwise identical to
  * Primary AI.
  *
- * Sizes reuse Button's xs/sm/md/lg padding and text scale. Figma's AI Sizes
- * section specs `xs` at 28px tall, 4px shorter than Button's own 32px `xs` —
- * not matched exactly here, to avoid a second xs height scale for one
- * component; flagged as a known limitation rather than invented as a new
- * token. sm/md/lg (36/40/48px) match Button's scale exactly.
+ * AI Button retains its 32/36/40/48px size scale. Figma specs `xs` at 28px,
+ * which remains a known limitation. This scale is independent of the final
+ * standard Button's single 34px geometry.
  *
  * Split Button AI (a dropdown-toggle pairing, analogous to `SplitButton`)
  * is documented in Figma but not implemented here — see
@@ -61,23 +57,15 @@ import { getAICapability, type AICapabilityId } from "./ai-capabilities";
  * the "AI Button Component Library" States table, node `852:7996`, which
  * specs 6 variant columns × 9 state rows — this component previously only
  * covered 4 of those columns and none of the status rows):
- * - `raised` reuses `Button`'s exact `raised` classes (same
- *   `--button/shadow/ambient`/`--button/shadow` tokens, confirmed on node
- *   `852:8035`) — Figma's "Primary Raised" AI instance is pixel-identical
- *   to `Button`'s.
- * - `link` is NOT `Button`'s `link` (hover-only underline) — Figma's AI
- *   Link instance (node `860:8464`) is **always** underlined, still
- *   carries the mandatory leading icon, and uses the same
- *   `gap-8`/`p-4`/`min-w-0` compact layout `Button`'s `link` already
- *   established.
- * - `status` (success/error/warning) is NOT a copy of `Button`'s status
- *   treatment, which tints every variant the same subtle way. Figma's AI
- *   Button instead treats `primary`/`raised` differently from the rest:
+ * - `raised` uses the legacy elevation roles confirmed on node `852:8035`.
+ * - `link` (node `860:8464`) is always underlined, carries the mandatory
+ *   leading icon, and uses its own compact `gap-8`/`p-4`/`min-w-0` layout.
+ * - `status` (success/error/warning) is an AI-specific treatment. Figma
+ *   treats `primary`/`raised` differently from the rest:
  *   `secondary`/`tertiary`/`outline`/`link` get the familiar subtle tint
  *   (confirmed on node `860:8344` Secondary+Success: `success.subtle`
- *   bg/`success.border` border/`success.text` text — the same tokens and
- *   the same Secondary-only tinted-border exception `Button.tsx` already
- *   documents), but `primary`/`raised` get a **solid** fill with white
+ *   bg/`success.border` border/`success.text` text with a Secondary-only
+ *   tinted-border exception), but `primary`/`raised` get a **solid** fill with white
  *   text instead (confirmed on nodes `860:8278`/`860:8242`: solid
  *   `success.text` (green.700, `#006400`) background, not the usual
  *   light `success.subtle`). Error/Warning are solid `status.error`/
@@ -127,8 +115,8 @@ const aiButtonVariants = cva(
         true: "min-w-0 p-0"
       },
       /**
-       * Figma's Success/Error/Warning "State" values, same modeling as
-       * `Button.tsx`'s own `status` — independent of `variant`, base
+       * Figma's Success/Error/Warning "State" values, modeled independently
+       * of `variant`; base
        * classes here are the subtle tint shared by secondary/tertiary/
        * outline/link; `primary`/`raised` get a solid override via
        * `compoundVariants` below. See the file doc comment for the exact
@@ -149,8 +137,7 @@ const aiButtonVariants = cva(
       { iconOnly: true, size: "md", class: "size-[var(--spacing-40)]" },
       { iconOnly: true, size: "lg", class: "size-[var(--spacing-48)]" },
       // Only Secondary (the sole bordered non-solid variant Figma specced a
-      // Success/Error/Warning instance for) gets a status-tinted border —
-      // same exception `Button.tsx` documents for its own `secondary`.
+      // Success/Error/Warning instance for) gets a status-tinted border.
       ...(["secondary"] as const).flatMap((variant) =>
         (["success", "warning", "error"] as const).map((status) => ({
           variant,

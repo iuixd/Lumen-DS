@@ -5,8 +5,8 @@ specifications. This is Lumen's second non-React framework package — see
 `docs/roadmap.md` Phase 13 — following `@lumen/web-components`. It ships
 `LumenButtonComponent`, `LumenSplitButtonComponent`,
 `LumenFilterChipComponent`, `LumenChoiceChipComponent`, and
-`LumenAIButtonComponent`, matching `@lumen/ui`'s 2026-07-14 Figma sync (see
-`docs/changelog.md` `[Unreleased]`).
+`LumenAIButtonComponent`. Its standard Button matches the final cross-framework
+Figma contract at node `1027:3733`; see `docs/changelog.md` `[Unreleased]`.
 
 ## Angular version
 
@@ -27,9 +27,7 @@ import { LumenButtonComponent } from "@lumen/angular";
 @Component({
   standalone: true,
   imports: [LumenButtonComponent],
-  template: `
-    <lumen-button variant="primary" size="md">Save changes</lumen-button>
-  `
+  template: ` <lumen-button variant="primary">Save changes</lumen-button> `
 })
 export class MyComponent {}
 ```
@@ -53,13 +51,11 @@ Icon content uses Angular's native content-projection selectors, not React's
 
 ### `LumenButtonComponent` (`<lumen-button>`)
 
-Same properties as `@lumen/web-components`' `<lumen-button>`, plus `status`
-(`success | warning | error`, optional), added 2026-07-14 to mirror
-`Button.tsx`'s later addition — a tinted override independent of `variant`,
-status-colored border only on `secondary`, not re-verified for `outline`.
-`variant` gained `outline` 2026-07-16, alongside a fix to `secondary` (it
-previously rendered transparent at rest) — see `Button.tsx`'s doc comment
-for the full Figma citation; both packages fixed identically.
+Final Figma node `1027:3733` contract: `variant` is `primary | accent |
+secondary | outline | ghost | link | destructive` (default `primary`) and
+`disabled` is boolean (default `false`). Leading and trailing icons use the
+`[iconStart]` and `[iconEnd]` projection selectors. The standard Button has
+one fixed 34px size and no size, status, pill, icon-only, or loading inputs.
 
 ### `LumenSplitButtonComponent` (`<lumen-split-button>`)
 
@@ -92,16 +88,17 @@ icon by default and a fixed check icon only when `selected`, matching
 
 ### `LumenAIButtonComponent` (`<lumen-ai-button>`)
 
-Mirrors `AIButton.tsx`. `variant` (`primary | secondary | tertiary |
-outline`, default `primary`; `secondary`/`outline` do not reuse
-`LumenButtonComponent`'s own colors for those names), `size` (`xs | sm | md
+Mirrors the baseline AI Button contract. `variant` (`primary | secondary |
+tertiary | outline`, default `primary`; overlapping names do not inherit the
+final standard `LumenButtonComponent` colors), `size` (`xs | sm | md
 | lg`, default `md`; Figma's `xs` AI Button is 28px tall vs. this package's
 32px `xs`, not matched exactly), `iconOnly`, `loading`, `disabled`,
 `destructive` (behavioral only — sets `data-destructive` on the inner
 button, no color change). A leading icon is always rendered; override via
 the `[icon]` `TemplateRef` input (same pattern as `LumenFilterChipComponent`).
-`status` (Success/Warning/Error) is not implemented, matching the React and
-Web Components components' own open item.
+`raised`, `link`, and `status` remain React-only AI Button extensions; they
+are not part of this Angular implementation or the final standard Button
+contract.
 
 ## Why classic `@Input()` decorators, not signal `input()`
 
@@ -145,7 +142,7 @@ CSS values — jsdom can't meaningfully resolve styles derived from CSS
 custom properties, and those tokens aren't loaded in the test environment.
 
 One real gotcha worth documenting: mutating a test host component's plain
-property *after* an initial `fixture.detectChanges()` and then calling
+property _after_ an initial `fixture.detectChanges()` and then calling
 `detectChanges()` again threw `NG0100: ExpressionChangedAfterItHasBeenCheckedError`
 under zoneless `TestBed`, even though the mutate-then-redetect pattern is
 completely standard in zone-based Angular tests. The reliable fix used here:

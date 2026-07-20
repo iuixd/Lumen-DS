@@ -11,15 +11,15 @@ Lumen is the shared design language and implementation system for Lumen products
 
 ## Start here
 
-| Audience | Recommended starting point |
-|---|---|
-| Product and delivery | [Storybook](http://srikumar.design/Lumen-AI-DS/) and the [roadmap](docs/roadmap.md) |
-| Designers | [Figma source](docs/figma-source.md), [design tokens](docs/design-tokens.md), and [design review](docs/design-review.md) |
-| Engineers | [Usage guide](docs/usage-guidelines.md), Storybook Docs, and the integration example below |
-| Architects | [Component architecture](docs/component-architecture.md), [project governance](docs/project-governance.md), and [versioning](docs/versioning-and-releases.md) |
-| Accessibility specialists | [Accessibility requirements](docs/accessibility.md) and Storybook accessibility checks |
-| Contributors | [Contributing guide](CONTRIBUTING.md) and [development guidelines](docs/development-guidelines.md) |
-| AI-assisted teams | [Claude Code integration](docs/claude-code-integration.md) |
+| Audience                  | Recommended starting point                                                                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product and delivery      | [Storybook](http://srikumar.design/Lumen-AI-DS/) and the [roadmap](docs/roadmap.md)                                                                           |
+| Designers                 | [Figma source](docs/figma-source.md), [design tokens](docs/design-tokens.md), and [design review](docs/design-review.md)                                      |
+| Engineers                 | [Usage guide](docs/usage-guidelines.md), Storybook Docs, and the integration example below                                                                    |
+| Architects                | [Component architecture](docs/component-architecture.md), [project governance](docs/project-governance.md), and [versioning](docs/versioning-and-releases.md) |
+| Accessibility specialists | [Accessibility requirements](docs/accessibility.md) and Storybook accessibility checks                                                                        |
+| Contributors              | [Contributing guide](CONTRIBUTING.md) and [development guidelines](docs/development-guidelines.md)                                                            |
+| AI-assisted teams         | [Claude Code integration](docs/claude-code-integration.md)                                                                                                    |
 
 ## Explore the system
 
@@ -38,14 +38,14 @@ Use Storybook to:
 
 ## What is included
 
-| Package | Contents | Current delivery model |
-|---|---|---|
-| `@lumen/tokens` | Color, typography, spacing, and radius tokens. Generated CSS variables, a Tailwind preset, and typed TypeScript exports. | Built output consumed from this repository |
-| `@lumen/ui` | React, TypeScript, and Tailwind primitives, composite components, and layout primitives. Lumen's React framework package — see [Architecture](#architecture). | TypeScript source consumed from this repository |
-| `@lumen/patterns` | Composed enterprise screens built from `@lumen/ui`, including CRUD, settings, authentication, and dashboard patterns. | TypeScript source consumed from this repository |
-| `@lumen/web-components` | Framework-agnostic custom elements built with Lit. Proof of concept — Button only. | TypeScript source consumed from this repository |
-| `@lumen/angular` | Angular standalone components, targeting Angular 20 LTS. Proof of concept — Button only. | TypeScript source consumed from this repository |
-| `@lumen/storybook` | Interactive component and pattern documentation with controls, usage code, themes, and accessibility tooling. React components only — `@lumen/web-components` and `@lumen/angular` aren't covered yet. | Private; deployed as static documentation |
+| Package                 | Contents                                                                                                                                                                                               | Current delivery model                          |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
+| `@lumen/tokens`         | Color, typography, spacing, and radius tokens. Generated CSS variables, a Tailwind preset, and typed TypeScript exports.                                                                               | Built output consumed from this repository      |
+| `@lumen/ui`             | React, TypeScript, and Tailwind primitives, composite components, and layout primitives. Lumen's React framework package — see [Architecture](#architecture).                                          | TypeScript source consumed from this repository |
+| `@lumen/patterns`       | Composed enterprise screens built from `@lumen/ui`, including CRUD, settings, authentication, and dashboard patterns.                                                                                  | TypeScript source consumed from this repository |
+| `@lumen/web-components` | Framework-agnostic custom elements built with Lit, including the final standard Button contract.                                                                                                       | TypeScript source consumed from this repository |
+| `@lumen/angular`        | Angular standalone components targeting Angular 20 LTS, including the final standard Button contract.                                                                                                  | TypeScript source consumed from this repository |
+| `@lumen/storybook`      | Interactive component and pattern documentation with controls, usage code, themes, and accessibility tooling. React components only — `@lumen/web-components` and `@lumen/angular` aren't covered yet. | Private; deployed as static documentation       |
 
 Lumen does not currently define an elevation or shadow token tier because it is not present in the approved Figma foundation source. See [Figma synchronization](docs/figma-sync.md) for verified sources and provisional areas.
 
@@ -63,8 +63,8 @@ Framework-agnostic foundations
         ↓                          the component contract itself)
 Framework packages
    ├── React           → @lumen/ui, @lumen/patterns      (reference implementation)
-   ├── Web Components  → @lumen/web-components            (proof of concept, Button only)
-   ├── Angular         → @lumen/angular                    (proof of concept, Button only, Angular 20 LTS)
+   ├── Web Components  → @lumen/web-components            (Lit custom elements)
+   ├── Angular         → @lumen/angular                    (standalone components, Angular 20 LTS)
    └── Vue             → not yet built
         ↓
 Product applications
@@ -72,7 +72,7 @@ Product applications
 Tokens + framework packages → Storybook (React only; Web Components and Angular not yet covered)
 ```
 
-`@lumen/ui` and `@lumen/patterns` are Lumen's reference implementation, not the definition of a Lumen component — `docs/component-specifications.md` is. `@lumen/web-components` and `@lumen/angular` are early proofs of concept covering one component each; building the first of them surfaced that the written Button specification didn't actually match what `@lumen/ui` shipped, which has since been reconciled (see [docs/roadmap.md](docs/roadmap.md) Phase 13 Findings). See [docs/component-architecture.md](docs/component-architecture.md) §0 for the full layer diagram and rationale.
+`@lumen/ui` and `@lumen/patterns` are Lumen's reference implementation, not the definition of a Lumen component — `docs/component-specifications.md` is. The final standard Button contract is synchronized across React, Web Components, and Angular from Figma node `1027:3733`; see [docs/component-specifications.md](docs/component-specifications.md) §5 and [docs/figma-sync.md](docs/figma-sync.md). See [docs/component-architecture.md](docs/component-architecture.md) §0 for the full layer diagram and rationale.
 
 The canonical design foundation is **Lumen AI Design System**, page **Design Tokens**. Source identifiers and the authority hierarchy are maintained in [docs/figma-source.md](docs/figma-source.md).
 

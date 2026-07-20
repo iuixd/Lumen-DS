@@ -244,39 +244,6 @@ function StatusBadge({ tone, children }: { tone: "success" | "warning"; children
   );
 }
 
-function AppButton({
-  accent = false,
-  small = false,
-  icon,
-  children
-}: {
-  accent?: boolean;
-  small?: boolean;
-  icon?: ReactNode;
-  children: ReactNode;
-}) {
-  return (
-    <Button
-      variant={accent ? "accent" : "secondary"}
-      size="xs"
-      iconStart={icon}
-      className={cnButton(small, accent)}
-    >
-      {children}
-    </Button>
-  );
-}
-
-function cnButton(small: boolean, accent: boolean) {
-  const size = small
-    ? "h-[var(--spacing-28)] min-w-0 border px-[var(--spacing-14)] py-[var(--spacing-6)] font-interface text-app-button-sm [letter-spacing:var(--text-app-button-sm-letter-spacing)]"
-    : "h-[var(--spacing-34)] min-w-0 border px-[var(--spacing-14)] py-[var(--spacing-7)] font-interface text-app-button [letter-spacing:var(--text-app-button-letter-spacing)]";
-  const color = accent
-    ? "border-transparent bg-[var(--color-app-shell-button-accent-bg)] text-[var(--color-app-shell-button-accent-text)]"
-    : "border-[var(--color-app-shell-button-secondary-border)] bg-[var(--color-app-shell-button-secondary-bg)] text-[var(--color-app-shell-button-secondary-text)] hover:bg-[var(--color-app-shell-button-secondary-bg)]";
-  return `${size} ${color}`;
-}
-
 function DesktopContent() {
   return (
     <div className="hidden h-full flex-col desktop:flex">
@@ -290,11 +257,11 @@ function DesktopContent() {
         description="Track all risk accounts and let the assistant draft outreach before contracts lapse."
         actions={
           <>
-            <AppButton>Share</AppButton>
-            <AppButton>Export</AppButton>
-            <AppButton accent icon={<PlusIcon />}>
+            <Button variant="secondary">Share</Button>
+            <Button variant="secondary">Export</Button>
+            <Button variant="accent" iconStart={<PlusIcon aria-hidden />}>
               New project
-            </AppButton>
+            </Button>
           </>
         }
       />
@@ -350,11 +317,11 @@ function TabletContent() {
           </p>
         </div>
         <div className="flex gap-[var(--spacing-12)]">
-          <AppButton>Share</AppButton>
-          <AppButton>Export</AppButton>
-          <AppButton accent icon={<PlusIcon />}>
+          <Button variant="secondary">Share</Button>
+          <Button variant="secondary">Export</Button>
+          <Button variant="accent" iconStart={<PlusIcon aria-hidden />}>
             New project
-          </AppButton>
+          </Button>
         </div>
       </div>
       <div className="flex gap-[var(--spacing-16)]">
@@ -599,8 +566,8 @@ function AppShellDemo({ initialTheme }: { initialTheme: "light" | "dark" }) {
                   "Start with Meridian Health — $380k closing in 15 days with no exec touchpoint since May. I've drafted an outreach email referencing support tickets.",
                 actions: (
                   <>
-                    <AppButton small>Review draft</AppButton>
-                    <AppButton small>View accounts</AppButton>
+                    <Button variant="secondary">Review draft</Button>
+                    <Button variant="secondary">View accounts</Button>
                   </>
                 )
               }

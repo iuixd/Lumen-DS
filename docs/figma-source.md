@@ -27,13 +27,13 @@ docs/changelog.md
 
 Document responsibilities:
 
-| File | Responsibility |
-|---|---|
-| `figma-source.md` | Defines Figma authority, source locations, synchronization, and validation rules |
-| `design-tokens.md` | Defines token architecture, naming, values, aliases, and implementation rules |
+| File                        | Responsibility                                                                       |
+| --------------------------- | ------------------------------------------------------------------------------------ |
+| `figma-source.md`           | Defines Figma authority, source locations, synchronization, and validation rules     |
+| `design-tokens.md`          | Defines token architecture, naming, values, aliases, and implementation rules        |
 | `component-architecture.md` | Defines component hierarchy, API standards, states, testing, and Storybook structure |
-| `changelog.md` | Defines the exact scope of each incremental update |
-| `AGENTS.md` | Defines Claude Code operating instructions for the repository |
+| `changelog.md`              | Defines the exact scope of each incremental update                                   |
+| `AGENTS.md`                 | Defines Claude Code operating instructions for the repository                        |
 
 ---
 
@@ -109,13 +109,13 @@ Figma must not be treated as the source for undocumented business logic or runti
 
 The referenced `Design Tokens` canvas contains the following top-level sections:
 
-| Order | Section | Figma node |
-|---:|---|---|
-| 01 | Colors | `426:4396` |
-| 02 | Typography | `428:13769` |
-| 03 | Scale | `429:14216` |
-| 04 | Spacing | `511:2` |
-| 05 | Radius | `511:78` |
+| Order | Section    | Figma node  |
+| ----: | ---------- | ----------- |
+|    01 | Colors     | `426:4396`  |
+|    02 | Typography | `428:13769` |
+|    03 | Scale      | `429:14216` |
+|    04 | Spacing    | `511:2`     |
+|    05 | Radius     | `511:78`    |
 
 These sections form the current documented Lumen foundation.
 
@@ -272,7 +272,8 @@ Stores component-specific aliases:
 
 ```text
 Button/Primary/Background/Default
-Button/Md/Height
+Button/Focus/Ring
+Button/Disabled/Background
 Input/Border/Focus
 Card/Radius
 ```
@@ -457,15 +458,15 @@ Each stable Figma component should map to a production code component.
 
 Recommended mapping record:
 
-| Field | Example |
-|---|---|
-| Figma component | Button |
-| Figma node | Component-set node ID |
-| Code component | `Button` |
-| Source | `packages/components/src/primitives/button/Button.tsx` |
-| Storybook | `Components/Primitives/Button` |
-| Status | Stable |
-| Last synchronized | Release date |
+| Field             | Example                                                |
+| ----------------- | ------------------------------------------------------ |
+| Figma component   | Button                                                 |
+| Figma node        | Component-set node ID                                  |
+| Code component    | `Button`                                               |
+| Source            | `packages/components/src/primitives/button/Button.tsx` |
+| Storybook         | `Components/Primitives/Button`                         |
+| Status            | Stable                                                 |
+| Last synchronized | Release date                                           |
 
 Use Figma Code Connect when available.
 
@@ -682,14 +683,14 @@ Maintain a source manifest in this file or a separate machine-readable file.
 
 Recommended format:
 
-| Domain | Figma node | Figma status | Code status | Storybook status | Last sync |
-|---|---|---|---|---|---|
-| Colors | `426:4396` | Review required | Partial | Partial | 2026-07-12 |
-| Typography | `428:13769` | Documented | Baseline | Baseline | 2026-07-12 |
-| Scale | `429:14216` | Verification required | Pending | Pending | 2026-07-12 |
-| Spacing | `511:2` | Documented | Baseline | Baseline | 2026-07-12 |
-| Radius | `511:78` | Documented | Baseline | Baseline | 2026-07-12 |
-| Buttons | Component URL required | Pending | Existing | Existing | Not verified |
+| Domain     | Figma node             | Figma status          | Code status | Storybook status | Last sync    |
+| ---------- | ---------------------- | --------------------- | ----------- | ---------------- | ------------ |
+| Colors     | `426:4396`             | Review required       | Partial     | Partial          | 2026-07-12   |
+| Typography | `428:13769`            | Documented            | Baseline    | Baseline         | 2026-07-12   |
+| Scale      | `429:14216`            | Verification required | Pending     | Pending          | 2026-07-12   |
+| Spacing    | `511:2`                | Documented            | Baseline    | Baseline         | 2026-07-12   |
+| Radius     | `511:78`               | Documented            | Baseline    | Baseline         | 2026-07-12   |
+| Buttons    | Component URL required | Pending               | Existing    | Existing         | Not verified |
 
 Update this table after each approved synchronization.
 
