@@ -2413,3 +2413,471 @@ behavior.
   from `Primitives/AIButton` to `AI Components/AI Button`, refactored the
   Capability Catalog story to be data-driven, and added the
   `AI Components/AI Button Component Library` documentation page.
+
+# 47. KPICard
+
+## Status
+
+Baseline specification, added 2026-07-20.
+
+## Figma source
+
+- Node: `1197:1652` ("appshell-desktop-closed-light" reference screen),
+  instances `1102:6521`-`1102:6523`
+- Last synchronized: 2026-07-20
+
+## Purpose
+
+A metric tile — a short label, a large value, and an optional colored
+delta line — for dashboard-style KPI rows.
+
+## When to use
+
+- Summarizing a small number (2-4) of top-line metrics at the head of a
+  dashboard or report page.
+
+## When not to use
+
+- A generic bordered container for arbitrary content — use `Card`. `Card`
+  was reviewed before adding this component; its fixed 8px radius, flat
+  24px padding, and lack of elevation don't cover this shape without new
+  props, so this ships standalone per the "extend before duplicate" rule
+  rather than overloading `Card`.
+
+## Anatomy
+
+```text
+KPICard
+├── Label
+├── Value
+└── Delta (optional, colored by tone)
+```
+
+## Variants
+
+None — no `variant` property.
+
+## Sizes
+
+None — single size, matching the sourced Figma instances.
+
+## States
+
+Static content only; no interactive states.
+
+## Properties
+
+Property contract (framework-neutral):
+
+```text
+label       string, required
+value       string, required
+delta       string, optional — free text so callers compose their own delta glyph/copy
+deltaTone   "success" | "warning" | "error", optional, default "success"
+```
+
+## Tokens
+
+```text
+color.border.subtle           (new, see docs/design-tokens.md and the
+                                2026-07-20 changelog entry)
+color.background.default
+color.text.secondary          (new)
+color.text.body
+color.status.{success,warning,error}
+shadow.elevation.sm           (new — first entry in the generic Elevation
+                                scale docs/design-tokens.md §6 calls for)
+radius.xl (12px)
+spacing.{4,16,20}
+```
+
+## Known limitations
+
+- Typography rounds to the nearest existing type-scale tier rather than
+  adding one-off entries: label uses `label-md` (12px/18, weight 600 —
+  Figma specs 12px/16, weight 500); value uses `headline-lg` (32px/42 —
+  Figma specs 32px/40).
+- The success-delta background color used by the sourced instance
+  (`bg/status-success` #E5F9EC) is close to but not an exact match for the
+  existing `status.success-subtle` token (green.50, #E6F7E6) — observed,
+  not acted on pending direct re-verification.
+- React only — no `@lumen/web-components`/`@lumen/angular` equivalent yet;
+  deferred to match this repo's established React-first-then-parity-PR
+  pattern.
+
+## Reference implementation (React)
+
+```ts
+export interface KPICardProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+  label: string;
+  value: string;
+  delta?: string;
+  deltaTone?: "success" | "warning" | "error";
+}
+```
+
+Source: `packages/ui/src/primitives/KPICard.tsx`.
+
+## Storybook
+
+`Primitives/KPICard` — Playground, Row (three-up), WithoutDelta.
+
+## Testing
+
+Unit tests cover label/value rendering and conditional delta rendering.
+No accessibility-specific behavior beyond standard text contrast (static
+content, no interactive semantics).
+
+## Change history
+
+- 2026-07-20: added, sourced from node `1197:1652`.
+
+# 48. Theme Toggle
+
+## Status
+
+Baseline specification, added 2026-07-20.
+
+## Figma source
+
+- Node: `1197:1652` ("appshell-desktop-closed-light" reference screen),
+  Header instance `I1102:6515;1124:1193`
+- Last synchronized: 2026-07-20
+
+## Purpose
+
+A Sun/Moon pill switch for toggling Light/Dark theme, typically placed in
+an app header's right-actions area.
+
+## When to use
+
+- Exactly one Light/Dark theme control per application shell.
+
+## When not to use
+
+- A generic on/off setting — use `Switch`.
+
+## Anatomy
+
+```text
+Theme Toggle
+├── Track
+├── Thumb (slides between Sun/Moon)
+├── Sun icon
+└── Moon icon
+```
+
+## Variants
+
+None.
+
+## Sizes
+
+None — single size, matching the sourced instance.
+
+## States
+
+```text
+Default (Light)
+Checked (Dark)
+Focus
+Disabled (native input semantics)
+```
+
+## Properties
+
+Property contract (framework-neutral): a boolean toggle exposed through
+native checkbox/switch semantics (`checked`, `onChange`, `disabled`,
+`name`, `id`) — the same accessible-toggle approach `Switch` already uses,
+not a new interaction model.
+
+## Tokens
+
+```text
+color.background.subtle (track)
+color.background.default (thumb)
+color.text.title / color.text.muted (icon tint)
+color.border.focus
+spacing.{2,20,24,32,56}
+```
+
+## Known limitations
+
+- Only the Light-theme instance was sourced; no Dark-theme or
+  mid-interaction instance was available, so the sliding-thumb interaction
+  is the conventional accessible-toggle pattern, not independently
+  Figma-confirmed.
+- Track width rounds Figma's 54px to `--spacing-56` so the thumb's
+  translate distance lands on a real spacing token (`--spacing-32`)
+  instead of an unbacked 30px — the same "round to the nearest existing
+  token" treatment already applied to `SplitButton`'s `sm` dropdown
+  segment.
+- React only — deferred Web Components/Angular parity, same pattern noted
+  throughout this sync.
+
+## Reference implementation (React)
+
+```ts
+export interface ThemeToggleProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {}
+```
+
+Native checkbox props (`checked`, `defaultChecked`, `onChange`, `disabled`,
+`name`, `id`, `aria-label`) pass through directly.
+
+Source: `packages/ui/src/primitives/ThemeToggle.tsx`.
+
+## Storybook
+
+`Primitives/ThemeToggle` — Playground, Checked, Interactive.
+
+## Testing
+
+Unit tests cover the default accessible name, `aria-label` override,
+click-to-toggle behavior, and label/input association.
+
+## Change history
+
+- 2026-07-20: added, sourced from node `1197:1652`.
+
+# 49. Page Header
+
+## Status
+
+Baseline specification, added 2026-07-20.
+
+## Figma source
+
+- Node: `1197:1652` ("appshell-desktop-closed-light" reference screen),
+  instance `1102:6519`
+- Last synchronized: 2026-07-20
+
+## Purpose
+
+The standard page-level header for content pages: breadcrumbs, a title
+with trailing actions, and an optional description line.
+
+## When to use
+
+- The top of any content page inside `AppShell`, especially list/detail/
+  dashboard patterns.
+
+## When not to use
+
+- A component-level header (e.g. inside `Card` or `Dialog`) — those have
+  their own, smaller-scoped header conventions.
+
+## Anatomy
+
+```text
+Page Header
+├── Breadcrumbs (optional)
+├── Title (h1) + Actions (optional, trailing)
+└── Description (optional)
+```
+
+Breadcrumbs render inline within this component rather than composing the
+separately-specified Breadcrumb component (§22) — a reconciliation between
+the two is a tracked follow-up, not done in this pass.
+
+## Variants
+
+None.
+
+## Sizes
+
+None.
+
+## States
+
+Static layout; no interactive states of its own (actions are typically
+`Button` instances, which carry their own states).
+
+## Properties
+
+Property contract (framework-neutral):
+
+```text
+breadcrumbs   array of { label, href? }, optional — last entry (or any
+              entry without href) renders as the current page
+title         string, required
+description   string, optional
+actions       renderable content, optional, trailing next to the title
+```
+
+## Accessibility
+
+- Breadcrumbs render as a `<nav aria-label="Breadcrumb">` with the current
+  page marked `aria-current="page"`.
+- Title renders as a native `<h1>`.
+
+## Tokens
+
+```text
+color.text.title (title)
+color.text.secondary (breadcrumbs, description — new token)
+color.text.muted (breadcrumb separators)
+color.text.body (current breadcrumb)
+spacing.{6,8,10,16,20,24,32}
+```
+
+## Known limitations
+
+- Typography rounds to the nearest existing type-scale tier: title uses
+  `headline-md` (24px/32 — exact match); breadcrumbs round to `label-md`
+  (12px/18, weight 600 — Figma specs 12px/16, weight 400); description
+  rounds to `body-xs` (12px/20 — Figma specs 13px/20).
+- React only — no cross-framework equivalent; this and `Footer`/`AppShell`
+  `rail` variant/`DashboardPage` are page/layout-level, not expected to
+  need Web Components/Angular parity the way primitives do (`@lumen/patterns`
+  is React-only per `CLAUDE.md`).
+
+## Reference implementation (React)
+
+```ts
+export interface Breadcrumb {
+  label: string;
+  href?: string;
+}
+
+export interface PageHeaderProps {
+  breadcrumbs?: Breadcrumb[];
+  title: string;
+  description?: string;
+  actions?: React.ReactNode;
+  className?: string;
+}
+```
+
+Source: `packages/ui/src/composite/PageHeader.tsx`.
+
+## Storybook
+
+`Composite/PageHeader` — Playground, WithoutBreadcrumbs, WithoutActions.
+
+## Testing
+
+Unit tests cover the h1 title, breadcrumb nav landmark with
+`aria-current`, description rendering, actions rendering, and omission of
+the breadcrumb nav when not provided.
+
+## Change history
+
+- 2026-07-20: added, sourced from node `1197:1652`.
+
+# 50. Footer
+
+## Status
+
+Baseline specification, added 2026-07-20.
+
+## Figma source
+
+- Node: `1197:1652` ("appshell-desktop-closed-light" reference screen),
+  instance `1102:6529`
+- Last synchronized: 2026-07-20
+
+## Purpose
+
+The app-shell bottom bar: platform version, a live-status indicator, and a
+trailing link row.
+
+## When to use
+
+- Once per `AppShell`, passed via `AppShell`'s new `footer` prop.
+
+## When not to use
+
+- Page-level or section-level footers — compose those from other
+  primitives instead.
+
+## Anatomy
+
+```text
+Footer
+├── Version text (optional)
+├── Status indicator: dot + label (optional)
+├── Spacer
+└── Links (optional)
+```
+
+## Variants
+
+None.
+
+## Sizes
+
+None.
+
+## States
+
+`statusTone` (`success | warning | error`) changes the status dot's color
+only; not an interaction state.
+
+## Properties
+
+Property contract (framework-neutral):
+
+```text
+version       string, optional
+statusLabel   string, optional
+statusTone    "success" | "warning" | "error", optional, default "success"
+links         array of { label, href }, optional
+```
+
+## Accessibility
+
+Renders as a native `<footer>` (accessible `contentinfo` landmark). Links
+render as real `<a>` elements per `docs/accessibility.md`'s "navigation
+uses a link, not a button."
+
+## Tokens
+
+```text
+color.background.default
+color.border.default
+color.text.muted
+color.status.{success,warning,error}
+spacing.{6,10,16,24}
+```
+
+## Known limitations
+
+- The link list (Privacy/Terms/Security in the sourced instance) is
+  generalized as a `links` prop since those are page-specific, not a fixed
+  Lumen contract.
+- React only — no cross-framework equivalent expected; layout-level like
+  `PageHeader`/`AppShell`'s `rail` variant.
+
+## Reference implementation (React)
+
+```ts
+export interface FooterLink {
+  label: string;
+  href: string;
+}
+
+export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
+  version?: string;
+  statusLabel?: string;
+  statusTone?: "success" | "warning" | "error";
+  links?: FooterLink[];
+}
+```
+
+Source: `packages/ui/src/layout/Footer.tsx`.
+
+## Storybook
+
+`Layout/Footer` — Playground, StatusTones.
+
+## Testing
+
+Unit tests cover the `contentinfo` landmark, version/status text
+rendering, link rendering as real anchors, and omission of version/status
+when not provided.
+
+## Change history
+
+- 2026-07-20: added, sourced from node `1197:1652`.
