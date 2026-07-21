@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useRef, type InputHTMLAttributes } from "react";
+import { CheckIcon } from "../icons/generated";
 import { cn } from "../lib/cn";
 
-const checkAsset = new URL("../assets/input-checkbox-check.svg", import.meta.url).href;
 const indeterminateAsset = new URL("../assets/input-checkbox-indeterminate.svg", import.meta.url)
   .href;
 
@@ -37,8 +37,6 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       if (typeof forwardedRef === "function") forwardedRef(node);
       else if (forwardedRef) forwardedRef.current = node;
     };
-
-    const glyphAsset = indeterminate ? indeterminateAsset : checkAsset;
 
     return (
       <label
@@ -84,26 +82,37 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 "border-[var(--color-input-primary-error-border)] peer-hover:border-[var(--color-input-primary-error-border)]"
             )}
           />
-          <span
-            aria-hidden="true"
-            className={cn(
-              "pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[var(--color-input-radio-checkbox-selected-text)] opacity-0 [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%_100%] peer-checked:opacity-100",
-              visualSize === "sm" &&
-                (indeterminate
-                  ? "h-[var(--input-indeterminate-height-sm)] w-[var(--input-indeterminate-width-sm)]"
-                  : "h-[var(--input-check-height-sm)] w-[var(--input-check-width-sm)]"),
-              visualSize === "md" &&
-                (indeterminate
-                  ? "h-[var(--input-indeterminate-height-md)] w-[var(--input-indeterminate-width-md)]"
-                  : "h-[var(--input-check-height-md)] w-[var(--input-check-width-md)]"),
-              visualSize === "lg" &&
-                (indeterminate
-                  ? "h-[var(--input-indeterminate-height-lg)] w-[var(--input-indeterminate-width-lg)]"
-                  : "h-[var(--input-check-height-lg)] w-[var(--input-check-width-lg)]"),
-              indeterminate && "opacity-100"
-            )}
-            style={{ maskImage: `url(${glyphAsset})`, WebkitMaskImage: `url(${glyphAsset})` }}
-          />
+          {indeterminate ? (
+            <span
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[var(--color-input-radio-checkbox-selected-text)] opacity-100 [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%_100%]",
+                visualSize === "sm" &&
+                  "h-[var(--input-indeterminate-height-sm)] w-[var(--input-indeterminate-width-sm)]",
+                visualSize === "md" &&
+                  "h-[var(--input-indeterminate-height-md)] w-[var(--input-indeterminate-width-md)]",
+                visualSize === "lg" &&
+                  "h-[var(--input-indeterminate-height-lg)] w-[var(--input-indeterminate-width-lg)]"
+              )}
+              style={{
+                maskImage: `url(${indeterminateAsset})`,
+                WebkitMaskImage: `url(${indeterminateAsset})`
+              }}
+            />
+          ) : (
+            <CheckIcon
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[var(--color-input-radio-checkbox-selected-text)] opacity-0 peer-checked:opacity-100",
+                visualSize === "sm" &&
+                  "h-[var(--input-check-height-sm)] w-[var(--input-check-width-sm)]",
+                visualSize === "md" &&
+                  "h-[var(--input-check-height-md)] w-[var(--input-check-width-md)]",
+                visualSize === "lg" &&
+                  "h-[var(--input-check-height-lg)] w-[var(--input-check-width-lg)]"
+              )}
+            />
+          )}
           <span
             aria-hidden="true"
             className={cn(
