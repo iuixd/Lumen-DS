@@ -56,6 +56,16 @@ Use the following headings for every release:
 
 ### Changed
 
+- Corrected the React Checkbox state-icon rendering method and size-specific placement to match the live Figma instances.
+  - Affected token group/component: `input.{check,indeterminate}-offset-{x,y}.*` and React `Checkbox`; the six previously committed Figma SVG assets, semantic color roles, and public props remain unchanged
+  - Figma source: Lumen-AI-Design-System Checkbox node `1278:2207`, re-verified with `get_design_context`; Checked image frames use Y offsets −0.33/0.33/0.38px for sm/md/lg, while Indeterminate uses X offsets 0/0.25/0.36px
+  - Previous: although the deployed bundle contained the exact Figma path data, it rendered the SVGs as centered CSS masks. That differed from Figma's direct `<img>` rendering and omitted the per-size frame offsets, leaving visible placement/rendering drift.
+  - Current: Checked and Indeterminate render the committed Figma exports directly as fixed-size `<img>` assets with their exact size-specific offsets. Difference blending preserves the white glyph on the light theme's black selected surface and the inverse provisional dark treatment without rewriting the exported SVG bytes. The existing `VariantCollection` already covers both states at sm/md/lg in light and dark.
+  - Affects: `packages/tokens/src/input.json`, generated token output, `packages/ui/src/primitives/Checkbox.{tsx,test.tsx}`, `.changeset/checkbox-direct-figma-icons.md`, and `docs/{changelog,component-specifications,design-tokens,figma-sync}.md`
+  - Migration: none — Checkbox props, native semantics, state behavior, and semantic color bindings are unchanged
+  - Validation: token generation and drift checks passed; repository-wide typecheck and lint passed; all 324 tests passed (React/UI 159, including 13 Checkbox tests; Web Components 68; Angular 64; create-app 27; patterns 6); the production Storybook build passed (2,125 modules). Its Checkbox bundle renders `img`, contains all checked/indeterminate offset bindings and `mix-blend-difference`, and contains no `maskImage`; generated CSS contains the exact five non-zero Figma offsets. Browser-backed visual comparison was unavailable because no in-app browser session was present. PR checks, deployment, and published Storybook verification remain pending.
+  - Changeset: `.changeset/checkbox-direct-figma-icons.md` (`@lumen/tokens` patch, `@lumen/ui` patch)
+
 - Replaced the React Checkbox Checked and Indeterminate glyphs with the exact size-specific Figma exports.
   - Affected token group/component: `input.indeterminate-{width,height}.*` and React `Checkbox`; existing semantic color roles and public props remain unchanged
   - Figma source: Lumen-AI-Design-System Checkbox node `1278:2207`, verified with `get_design_context`, `get_variable_defs`, and all six exported SVG assets

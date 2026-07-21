@@ -784,10 +784,13 @@ Lg — 32px target, 21.333px indicator
 
 Figma source: node `1278:2207`. `invalid` maps Error, `indeterminate` sets the
 native DOM property, and Disabled remains the native `disabled` behavior.
-Checked and Indeterminate render their exact size-specific Figma-exported
-vectors through theme-aware masks; this preserves each glyph's published
-bounds, rounded caps, and bold stroke instead of stretching the generic 24px
-`CheckIcon`. Both states use the `input.radio-checkbox.*` roles.
+Checked and Indeterminate render their exact size-specific Figma-exported SVGs
+as image assets, including the published per-size X/Y placement offsets. This
+preserves each glyph's bounds, rounded caps, and bold stroke instead of
+stretching the generic 24px `CheckIcon` or converting the source to a mask.
+Difference blending preserves the source's white-on-black light appearance and
+the provisional inverse dark treatment. Both states use the
+`input.radio-checkbox.*` roles.
 
 ## Requirements
 

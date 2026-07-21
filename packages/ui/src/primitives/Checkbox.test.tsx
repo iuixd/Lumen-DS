@@ -24,10 +24,17 @@ describe("Checkbox", () => {
         <Checkbox name={`selected-${size}`} label="Selected" size={size} defaultChecked />
       );
       const checkIcon = container.querySelector('[data-checkbox-icon="checked"]');
+      expect(checkIcon?.tagName).toBe("IMG");
       expect(checkIcon).toHaveClass("peer-checked:opacity-100");
+      expect(checkIcon).toHaveClass("mix-blend-difference");
       expect(checkIcon?.className).toContain(`--input-check-width-${size}`);
       expect(checkIcon?.className).toContain(`--input-check-height-${size}`);
-      expect(checkIcon?.getAttribute("style")).toContain(`input-checkbox-check-${size}.svg`);
+      expect(checkIcon?.className).toContain(`--input-check-offset-x-${size}`);
+      expect(checkIcon?.className).toContain(`--input-check-offset-y-${size}`);
+      expect(checkIcon).toHaveAttribute(
+        "src",
+        expect.stringContaining(`input-checkbox-check-${size}.svg`)
+      );
       expect(container.querySelector("svg")).not.toBeInTheDocument();
     }
   );
@@ -48,10 +55,17 @@ describe("Checkbox", () => {
       const checkbox = screen.getByLabelText("Mixed") as HTMLInputElement;
       const icon = container.querySelector('[data-checkbox-icon="indeterminate"]');
       expect(checkbox.indeterminate).toBe(true);
+      expect(icon?.tagName).toBe("IMG");
       expect(icon).toHaveClass("opacity-100");
+      expect(icon).toHaveClass("mix-blend-difference");
       expect(icon?.className).toContain(`--input-indeterminate-width-${size}`);
       expect(icon?.className).toContain(`--input-indeterminate-height-${size}`);
-      expect(icon?.getAttribute("style")).toContain(`input-checkbox-indeterminate-${size}.svg`);
+      expect(icon?.className).toContain(`--input-indeterminate-offset-x-${size}`);
+      expect(icon?.className).toContain(`--input-indeterminate-offset-y-${size}`);
+      expect(icon).toHaveAttribute(
+        "src",
+        expect.stringContaining(`input-checkbox-indeterminate-${size}.svg`)
+      );
     }
   );
 

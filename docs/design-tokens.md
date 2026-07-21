@@ -105,7 +105,9 @@ The Input, Radio, and Checkbox collections at Figma nodes `1262:1181`,
 border widths, control/indicator sizes, Radio dots, Checkbox radii and exact
 exported checked/indeterminate glyph bounds, and focus geometry. The retained
 `input-check-stroke-width-*` values document the source-vector strokes; the
-component does not mutate those strokes at runtime. `input-sm`, `input-md`, `input-lg`, and
+component does not mutate those strokes at runtime. Size-specific
+`input-{check,indeterminate}-offset-{x,y}-*` tokens preserve the Figma icon
+frames' subpixel placement. `input-sm`, `input-md`, `input-lg`, and
 `input-shortcut` preserve exact component typography instead of reusing body
 styles with different line heights or weights. Figma currently publishes only
 the light mode; dark aliases remain provisional until dark control collections

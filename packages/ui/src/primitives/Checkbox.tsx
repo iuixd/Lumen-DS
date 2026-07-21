@@ -90,39 +90,34 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 "border-[var(--color-input-primary-error-border)] peer-hover:border-[var(--color-input-primary-error-border)]"
             )}
           />
-          <span
+          <img
             aria-hidden="true"
+            alt=""
+            draggable={false}
             data-checkbox-icon={indeterminate ? "indeterminate" : "checked"}
+            src={indeterminate ? indeterminateAssets[visualSize] : checkedAssets[visualSize]}
             className={cn(
-              "pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 bg-[var(--color-input-radio-checkbox-selected-text)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:100%_100%]",
+              "pointer-events-none absolute z-20 block max-w-none -translate-x-1/2 -translate-y-1/2 select-none mix-blend-difference",
               indeterminate ? "opacity-100" : "opacity-0 peer-checked:opacity-100",
               !indeterminate &&
                 visualSize === "sm" &&
-                "h-[var(--input-check-height-sm)] w-[var(--input-check-width-sm)]",
+                "h-[var(--input-check-height-sm)] w-[var(--input-check-width-sm)] [left:calc(50%+var(--input-check-offset-x-sm))] [top:calc(50%+var(--input-check-offset-y-sm))]",
               !indeterminate &&
                 visualSize === "md" &&
-                "h-[var(--input-check-height-md)] w-[var(--input-check-width-md)]",
+                "h-[var(--input-check-height-md)] w-[var(--input-check-width-md)] [left:calc(50%+var(--input-check-offset-x-md))] [top:calc(50%+var(--input-check-offset-y-md))]",
               !indeterminate &&
                 visualSize === "lg" &&
-                "h-[var(--input-check-height-lg)] w-[var(--input-check-width-lg)]",
+                "h-[var(--input-check-height-lg)] w-[var(--input-check-width-lg)] [left:calc(50%+var(--input-check-offset-x-lg))] [top:calc(50%+var(--input-check-offset-y-lg))]",
               indeterminate &&
                 visualSize === "sm" &&
-                "h-[var(--input-indeterminate-height-sm)] w-[var(--input-indeterminate-width-sm)]",
+                "h-[var(--input-indeterminate-height-sm)] w-[var(--input-indeterminate-width-sm)] [left:calc(50%+var(--input-indeterminate-offset-x-sm))] [top:calc(50%+var(--input-indeterminate-offset-y-sm))]",
               indeterminate &&
                 visualSize === "md" &&
-                "h-[var(--input-indeterminate-height-md)] w-[var(--input-indeterminate-width-md)]",
+                "h-[var(--input-indeterminate-height-md)] w-[var(--input-indeterminate-width-md)] [left:calc(50%+var(--input-indeterminate-offset-x-md))] [top:calc(50%+var(--input-indeterminate-offset-y-md))]",
               indeterminate &&
                 visualSize === "lg" &&
-                "h-[var(--input-indeterminate-height-lg)] w-[var(--input-indeterminate-width-lg)]"
+                "h-[var(--input-indeterminate-height-lg)] w-[var(--input-indeterminate-width-lg)] [left:calc(50%+var(--input-indeterminate-offset-x-lg))] [top:calc(50%+var(--input-indeterminate-offset-y-lg))]"
             )}
-            style={{
-              maskImage: `url(${
-                indeterminate ? indeterminateAssets[visualSize] : checkedAssets[visualSize]
-              })`,
-              WebkitMaskImage: `url(${
-                indeterminate ? indeterminateAssets[visualSize] : checkedAssets[visualSize]
-              })`
-            }}
           />
           <span
             aria-hidden="true"
