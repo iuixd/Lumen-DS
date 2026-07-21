@@ -502,12 +502,24 @@
   --input-check-stroke-width-sm: 2.5px;
   --input-check-stroke-width-md: 3.125px;
   --input-check-stroke-width-lg: 3.57143px;
+  --input-check-offset-x-sm: 0px;
+  --input-check-offset-x-md: 0px;
+  --input-check-offset-x-lg: 0px;
+  --input-check-offset-y-sm: -0.33px;
+  --input-check-offset-y-md: 0.33px;
+  --input-check-offset-y-lg: 0.38px;
   --input-indeterminate-width-sm: 10.4998px;
   --input-indeterminate-width-md: 12.6252px;
   --input-indeterminate-width-lg: 14.2871px;
   --input-indeterminate-height-sm: 2.5px;
   --input-indeterminate-height-md: 3.125px;
   --input-indeterminate-height-lg: 3.57187px;
+  --input-indeterminate-offset-x-sm: 0px;
+  --input-indeterminate-offset-x-md: 0.25px;
+  --input-indeterminate-offset-x-lg: 0.36px;
+  --input-indeterminate-offset-y-sm: 0px;
+  --input-indeterminate-offset-y-md: 0px;
+  --input-indeterminate-offset-y-lg: 0px;
 
   /* semantic: light (default) */
   --color-background-default: #FFFFFF;

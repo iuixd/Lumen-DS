@@ -1320,6 +1320,28 @@ export const input = {
       "value": 3.57143
     }
   },
+  "check-offset-x": {
+    "sm": {
+      "value": 0
+    },
+    "md": {
+      "value": 0
+    },
+    "lg": {
+      "value": 0
+    }
+  },
+  "check-offset-y": {
+    "sm": {
+      "value": -0.33
+    },
+    "md": {
+      "value": 0.33
+    },
+    "lg": {
+      "value": 0.38
+    }
+  },
   "indeterminate-width": {
     "sm": {
       "value": 10.4998
@@ -1340,6 +1362,28 @@ export const input = {
     },
     "lg": {
       "value": 3.57187
+    }
+  },
+  "indeterminate-offset-x": {
+    "sm": {
+      "value": 0
+    },
+    "md": {
+      "value": 0.25
+    },
+    "lg": {
+      "value": 0.36
+    }
+  },
+  "indeterminate-offset-y": {
+    "sm": {
+      "value": 0
+    },
+    "md": {
+      "value": 0
+    },
+    "lg": {
+      "value": 0
     }
   }
 } as const;
