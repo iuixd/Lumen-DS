@@ -226,6 +226,16 @@ Use the following headings for every release:
   - Validation: all 163 React/UI tests passed; `@lumen/ui` typecheck, repo-wide lint, formatting, and `git diff --check` passed; production Storybook built successfully with 2,125 modules. Static inspection of the emitted AppShell bundle confirms `variant="search"`, `size="md"`, the 36px height override, and all AppShell-scoped primary/search background, border, placeholder, icon, hover, and focus bindings. The Figma extraction itself supplied the source screenshot and exact values; separate browser-backed inspection remains unavailable because no in-app browser backend is registered.
   - Changeset: `.changeset/appshell-theme-toggle-parity.md` (existing `@lumen/ui` patch entry expanded).
 
+- Promoted the verified AppShell dark input values to the shared main `Input` component's dark base roles.
+  - Affected token group/component: dark `input.primary-{bg,border,placeholder-text}` and `input.search-{bg,border,icon}` semantic roles, React `Input`, and its Storybook `VariantCollection`.
+  - Figma source: canonical desktop dark AppShell node `1127:4197`, freshly verified with `get_design_context` on 2026-07-22; header Input instance `I1119:3337;1079:1884` and AI Panel Input instance `I1166:4827;1337:2450`.
+  - Previous: the shared Input outside AppShell still resolved dark default/search roles to `#262626` or `#424849` backgrounds, `#A4B3B7` borders, `#7F7F7F` placeholder, and a white search icon. AppShell corrected those values only through scoped overrides.
+  - Current: the shared Input's dark default and search variants now resolve background to `#0E0B0E`, border to `#3D3039`, and placeholder/search icon to `#A8939F`, so standalone Input consumers and Storybook match the same verified Figma design. Dark hover, focus, and error states remain unchanged and provisional because the standalone Figma Input collection publishes no dark state matrix.
+  - Affects: `packages/tokens/src/semantic/color.json`, generated token output, `packages/ui/src/primitives/Input.test.tsx`, `docs/{changelog.md,component-specifications.md,design-tokens.md,figma-sync.md}`, and `.changeset/input-design-tokens.md`.
+  - Migration: visual-only dark-theme correction; no prop, DOM, or token-name changes.
+  - Validation: token generation and repeat-build drift checks passed with exact dark output (`#0E0B0E`, `#3D3039`, `#A8939F`); all 164 React/UI tests passed, including seven Input tests; `@lumen/ui` typecheck, repository lint, targeted formatting, and `git diff --check` passed; production Storybook built successfully with 2,125 modules and emitted the updated Input story bundle. The Figma extraction supplied the source screenshot and exact values; separate browser-backed inspection remains unavailable because no in-app browser backend is registered.
+  - Changeset: `.changeset/input-design-tokens.md` (existing `@lumen/tokens` and `@lumen/ui` minor entry expanded).
+
 - Fixed the Lumen logo URL in the published Storybook manager.
   - Source: production Storybook at `/Lumen-DS/`; no Figma node is involved
   - Previous: the logo and brand link used domain-root URLs, causing GitHub Pages to request `/lumen-ds-logo.svg` outside the repository deployment path

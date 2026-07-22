@@ -109,8 +109,12 @@ component does not mutate those strokes at runtime. Size-specific
 `input-{check,indeterminate}-offset-{x,y}-*` tokens preserve the Figma icon
 frames' subpixel placement. `input-sm`, `input-md`, `input-lg`, and
 `input-shortcut` preserve exact component typography instead of reusing body
-styles with different line heights or weights. Figma currently publishes only
-the light mode; dark aliases remain provisional until dark control collections
+styles with different line heights or weights. The standalone collections
+publish only light mode. By direct user direction, the main Input's dark
+default and search base roles reuse the exact canonical desktop dark AppShell
+instances at node `1127:4197`: background `#0E0B0E`, border `#3D3039`, and
+placeholder/search icon `#A8939F`. Input hover/focus/error and all Radio and
+Checkbox dark aliases remain provisional until dedicated dark control states
 are published.
 
 The Badge collection at Figma node `1079:893` maps its exact light variables to

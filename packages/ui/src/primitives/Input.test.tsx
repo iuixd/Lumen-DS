@@ -19,6 +19,15 @@ describe("Input", () => {
     expect(screen.getByRole("textbox", { name: "native size" })).toHaveAttribute("size", "30");
   });
 
+  it("binds the shared primary surface and placeholder roles", () => {
+    render(<Input aria-label="Main input" placeholder="Type a question" />);
+    expect(screen.getByRole("textbox", { name: "Main input" })).toHaveClass(
+      "bg-[var(--color-input-primary-bg)]",
+      "border-[var(--color-input-primary-border)]",
+      "placeholder:text-[var(--color-input-primary-placeholder-text)]"
+    );
+  });
+
   it("binds the search tokens and shortcut anatomy", () => {
     render(<Input aria-label="Search" variant="search" />);
     const input = screen.getByRole("textbox", { name: "Search" });
