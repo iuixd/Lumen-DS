@@ -206,6 +206,16 @@ Use the following headings for every release:
   - Validation: all 163 React/UI tests passed (including the new AIPanel composition regression); `@lumen/ui` typecheck, repo-wide lint, targeted formatting, and `git diff --check` passed; production Storybook built successfully with 2,125 modules and emitted the updated `Input`, `Button`, `AIPanel`, and `AppShell` bundles. Browser-backed visual verification could not run because no in-app browser backend was registered in this session.
   - Changeset: `.changeset/appshell-theme-toggle-parity.md` (existing `@lumen/ui` patch entry expanded for this follow-up correction).
 
+- Added a 50%-opacity hover surface to AppShell left navigation in both themes without reducing selected-state opacity.
+  - Affected token group/component: `app-shell.nav-hover`, React `AppShell` sidebar and navigation rail.
+  - Source: user-directed correction against the rendered AppShell light/dark navigation; canonical color bases remain AppShell node `1007:3700` and its desktop light/dark variants `1127:4196`/`1127:4197`.
+  - Previous: inactive sidebar links, rail links, and collapse/expand controls reused the full-opacity `app-shell.nav-active` selection surface on hover. Rail items also applied the hover utility to active items.
+  - Current: new light and dark `app-shell.nav-hover` tokens preserve each mode's active RGB color at exactly 50% alpha (`rgba(..., 0.5)`). Only inactive items and navigation controls consume the hover role; active/selected items retain the full-opacity `app-shell.nav-active` surface, including while hovered.
+  - Affects: `packages/tokens/src/{primitives/color.json,semantic/color.json}`, generated token output, `packages/ui/src/layout/AppShell.{tsx,test.tsx}`, `docs/{changelog.md,design-tokens.md,figma-sync.md}`, and `.changeset/appshell-theme-toggle-parity.md`.
+  - Migration: none — no public API or existing token was changed; one additive semantic token was introduced.
+  - Validation: token generation and repeat-build drift checks passed with exact light `rgba(237, 240, 241, 0.5)` and dark `rgba(79, 73, 80, 0.5)` output; all 163 React/UI tests passed; `@lumen/ui` typecheck, repo-wide lint, formatting, and `git diff --check` passed; production Storybook built successfully with 2,125 modules and emitted the updated AppShell bundle. Browser-backed hover inspection remains unavailable because no in-app browser backend is registered in this session.
+  - Changeset: `.changeset/appshell-theme-toggle-parity.md` (existing `@lumen/tokens` minor and `@lumen/ui` patch entry expanded).
+
 - Fixed the Lumen logo URL in the published Storybook manager.
   - Source: production Storybook at `/Lumen-DS/`; no Figma node is involved
   - Previous: the logo and brand link used domain-root URLs, causing GitHub Pages to request `/lumen-ds-logo.svg` outside the repository deployment path

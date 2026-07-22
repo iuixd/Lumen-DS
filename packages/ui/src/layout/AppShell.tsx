@@ -121,7 +121,7 @@ function Sidebar({
                 navItemBase,
                 item.active
                   ? "bg-[var(--color-app-shell-nav-active)] text-[var(--color-app-shell-nav-selected-on-action)]"
-                  : "text-[var(--color-app-shell-nav-on-action)] hover:bg-[var(--color-app-shell-nav-active)] hover:text-[var(--color-app-shell-nav-selected-on-action)]"
+                  : "text-[var(--color-app-shell-nav-on-action)] hover:bg-[var(--color-app-shell-nav-hover)] hover:text-[var(--color-app-shell-nav-selected-on-action)]"
               )}
             >
               <span
@@ -148,7 +148,7 @@ function Sidebar({
           onClick={onCollapse}
           className={cn(
             navItemBase,
-            "text-[var(--color-app-shell-text-secondary)] hover:bg-[var(--color-app-shell-nav-active)]"
+            "text-[var(--color-app-shell-text-secondary)] hover:bg-[var(--color-app-shell-nav-hover)]"
           )}
         >
           <CircleArrowLeftIcon className="size-[var(--spacing-20)] shrink-0" aria-hidden />
@@ -191,9 +191,10 @@ function NavigationRail({
             title={item.label}
             aria-current={item.active ? "page" : undefined}
             className={cn(
-              "flex size-[var(--spacing-40)] items-center justify-center rounded-lg text-[var(--color-app-shell-icon-secondary)] transition-colors hover:bg-[var(--color-app-shell-nav-active)] hover:text-[var(--color-app-shell-nav-on-action)]",
-              item.active &&
-                "bg-[var(--color-app-shell-nav-active)] text-[var(--color-app-shell-nav-selected-on-action)]",
+              "flex size-[var(--spacing-40)] items-center justify-center rounded-lg text-[var(--color-app-shell-icon-secondary)] transition-colors",
+              item.active
+                ? "bg-[var(--color-app-shell-nav-active)] text-[var(--color-app-shell-nav-selected-on-action)]"
+                : "hover:bg-[var(--color-app-shell-nav-hover)] hover:text-[var(--color-app-shell-nav-on-action)]",
               index > 0 &&
                 nav.some((section) => section.items[0] === item && section.label) &&
                 "mt-[var(--spacing-8)]"
@@ -212,7 +213,7 @@ function NavigationRail({
           type="button"
           onClick={onExpand}
           aria-label="Expand navigation"
-          className="flex size-[var(--spacing-40)] items-center justify-center rounded-lg text-[var(--color-app-shell-text-secondary)] hover:bg-[var(--color-app-shell-nav-active)]"
+          className="flex size-[var(--spacing-40)] items-center justify-center rounded-lg text-[var(--color-app-shell-text-secondary)] hover:bg-[var(--color-app-shell-nav-hover)]"
         >
           <CircleArrowRightIcon className="size-[var(--spacing-20)]" aria-hidden />
         </button>

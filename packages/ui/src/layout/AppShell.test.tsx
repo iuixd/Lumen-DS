@@ -192,7 +192,11 @@ describe("AppShell", () => {
       "bg-[var(--color-app-shell-nav-active)]",
       "text-[var(--color-app-shell-nav-selected-on-action)]"
     );
-    expect(desktopInbox).toHaveClass("text-[var(--color-app-shell-nav-on-action)]");
+    expect(desktopHome).not.toHaveClass("hover:bg-[var(--color-app-shell-nav-hover)]");
+    expect(desktopInbox).toHaveClass(
+      "text-[var(--color-app-shell-nav-on-action)]",
+      "hover:bg-[var(--color-app-shell-nav-hover)]"
+    );
     expect(count).toHaveClass(
       "bg-[var(--color-badge-default-bg)]",
       "text-[var(--color-badge-default-text)]"

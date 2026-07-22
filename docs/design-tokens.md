@@ -132,14 +132,16 @@ root. This prevents generic dark-mode aliases from overriding the published
 AppShell modes.
 
 The Figma `btn/nav/*` roles map to `app-shell.nav-{bg,on-action,active,
-selected-on-action}`; `icon/default`, `icon/secondary`, and `bg/avatar` map to
-their matching AppShell roles. Theme Toggle uses
+selected-on-action}`; the user-directed `app-shell.nav-hover` interaction role
+uses the corresponding light/dark `nav-active` color at 50% alpha, without
+changing the full-opacity selected state. `icon/default`, `icon/secondary`, and
+`bg/avatar` map to their matching AppShell roles. Theme Toggle uses
 `app-shell.toggle-{track,on-action,on-bg,off-action,off-bg}` and a fixed 54 x
 24 two-cell layout. The Figma `brand/dark` role maps to
 `app-shell.brand-dark` (`primary.600`) and is used for branded data indicators,
-not the danger/error status role. These AppShell roles are Figma-authored in
-both modes; this does not change the provisional status of unrelated dark
-mappings.
+not the danger/error status role. Except for the explicitly directed
+50%-opacity hover derivative, these AppShell roles are Figma-authored in both
+modes; this does not change the provisional status of unrelated dark mappings.
 
 ---
 
