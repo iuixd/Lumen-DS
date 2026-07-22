@@ -6,7 +6,10 @@ import { LumenThemeToggleComponent } from "./lumen-theme-toggle";
 @Component({
   standalone: true,
   imports: [LumenThemeToggleComponent],
-  template: `<lumen-theme-toggle [checked]="checked" (checkedChange)="onCheckedChange($event)"></lumen-theme-toggle>`
+  template: `<lumen-theme-toggle
+    [checked]="checked"
+    (checkedChange)="onCheckedChange($event)"
+  ></lumen-theme-toggle>`
 })
 class TestHostComponent {
   checked = false;
@@ -51,5 +54,14 @@ describe("LumenThemeToggleComponent", () => {
     input.checked = true;
     input.dispatchEvent(new Event("change"));
     expect(fixture.componentInstance.lastEmitted).toBe(true);
+  });
+
+  it("renders the exact fixed two-cell Figma anatomy", () => {
+    const fixture = createHost();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector(".thumb")).toBeNull();
+    expect(root.querySelectorAll(".icon-cell")).toHaveLength(2);
+    expect(root.querySelectorAll("img")).toHaveLength(4);
+    expect(root.querySelector("svg")).toBeNull();
   });
 });

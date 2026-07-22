@@ -21,10 +21,9 @@ import {
   HomeIcon,
   LmAuditLogIcon,
   LmProjectIcon,
-  LmSearchIcon,
+  MenuIcon,
   PlusIcon,
   SignalIcon,
-  TrendingDownIcon,
   TrendingUpIcon,
   WifiIcon
 } from "../icons/generated";
@@ -88,13 +87,13 @@ const accounts = [
   }
 ];
 
-function Brand({ mobile = false }: { mobile?: boolean }) {
+function Brand({ mobile = false, tablet = false }: { mobile?: boolean; tablet?: boolean }) {
   return (
     <div className="flex items-center gap-[var(--spacing-8)]">
       <span
         className={
           mobile
-            ? "flex size-[var(--spacing-24)] items-center justify-center rounded-md bg-[var(--color-app-shell-brand-primary)] font-brand text-app-logo-compact text-[var(--color-app-shell-text-on-brand)]"
+            ? "flex size-[var(--spacing-28)] items-center justify-center rounded-md bg-[var(--color-app-shell-brand-primary)] font-brand text-app-logo-compact text-[var(--color-app-shell-text-on-brand)]"
             : "flex size-[var(--spacing-28)] items-center justify-center rounded-md bg-[var(--color-app-shell-brand-primary)] font-brand text-app-logo text-[var(--color-app-shell-text-on-brand)]"
         }
       >
@@ -104,7 +103,9 @@ function Brand({ mobile = false }: { mobile?: boolean }) {
         className={
           mobile
             ? "font-brand text-app-mobile-brand text-[var(--color-app-shell-text-primary)]"
-            : "font-brand text-app-brand text-[var(--color-app-shell-text-primary)]"
+            : tablet
+              ? "font-brand text-app-brand text-[var(--color-app-shell-text-heading)]"
+              : "font-brand text-app-brand text-[var(--color-app-shell-text-primary)]"
         }
       >
         Lumen
@@ -113,27 +114,14 @@ function Brand({ mobile = false }: { mobile?: boolean }) {
   );
 }
 
-function SearchBar({ tablet = false }: { tablet?: boolean }) {
+function SearchBar() {
   return (
-    <label
-      className={
-        tablet
-          ? "flex h-[var(--spacing-40)] w-[var(--spacing-360)] items-center gap-[var(--spacing-8)] rounded-[var(--radius-app-search)] border border-[var(--color-app-shell-border-input)] bg-[var(--color-app-shell-background)] px-[var(--spacing-10)]"
-          : "flex h-[var(--spacing-34)] w-[var(--spacing-400)] items-center gap-[var(--spacing-8)] rounded-lg border border-[var(--color-app-shell-border-input)] bg-[var(--color-app-shell-background)] px-[var(--spacing-10)]"
-      }
-    >
-      <LmSearchIcon
-        className="size-[var(--spacing-14)] shrink-0 text-[var(--color-app-shell-text-placeholder)]"
-        aria-hidden
-      />
-      <span className="sr-only">Search or ask AI</span>
+    <label className="flex h-[var(--spacing-36)] w-[var(--spacing-400)] items-center rounded-lg border-[length:var(--input-border-width-md)] border-[var(--color-app-shell-border-input)] bg-[var(--color-app-shell-background)] px-[var(--spacing-14)]">
+      <span className="sr-only">Type your question</span>
       <input
         className="min-w-0 flex-1 bg-transparent font-interface text-app-body text-[var(--color-app-shell-text-placeholder)] outline-none placeholder:text-[var(--color-app-shell-text-placeholder)]"
-        placeholder="Search or ask AI..."
+        placeholder="Type your question..."
       />
-      <kbd className="rounded-sm border border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-surface)] px-[var(--spacing-4)] py-px font-interface text-app-caption text-[var(--color-app-shell-text-placeholder)]">
-        ⌘K
-      </kbd>
     </label>
   );
 }
@@ -155,12 +143,12 @@ function AppHeader({
           : "flex w-full items-center justify-between px-[var(--spacing-16)]"
       }
     >
-      <Brand />
-      <SearchBar tablet={tablet} />
+      <Brand tablet={tablet} />
+      {!tablet && <SearchBar />}
       <div
         className={
           tablet
-            ? "flex items-center gap-[var(--spacing-16)]"
+            ? "flex items-center gap-[var(--spacing-8)]"
             : "flex items-center gap-[var(--spacing-4)]"
         }
       >
@@ -172,7 +160,7 @@ function AppHeader({
         <button
           type="button"
           aria-label="Notifications"
-          className="flex size-[var(--spacing-32)] items-center justify-center rounded-md text-[var(--color-app-shell-text-heading)]"
+          className="flex size-[var(--spacing-32)] items-center justify-center rounded-md text-[var(--color-app-shell-icon-default)]"
         >
           <BellIcon className="size-[var(--spacing-18)]" aria-hidden />
         </button>
@@ -180,7 +168,11 @@ function AppHeader({
           name="Jane Doe"
           tone="neutral"
           size="md"
-          className="bg-[var(--color-app-shell-text-muted)] text-app-label-semibold text-[var(--color-app-shell-text-on-brand)]"
+          className={
+            tablet
+              ? "bg-[var(--color-app-shell-avatar-tablet-bg)] text-app-label-semibold text-[var(--color-app-shell-text-on-brand)]"
+              : "bg-[var(--color-app-shell-avatar-bg)] text-app-label-semibold text-[var(--color-app-shell-text-on-brand)]"
+          }
         />
       </div>
     </div>
@@ -200,22 +192,35 @@ function MobileStatusBar() {
   );
 }
 
-function MobileHeader() {
+function MobileHeader({
+  dark,
+  onThemeChange
+}: {
+  dark: boolean;
+  onThemeChange: (dark: boolean) => void;
+}) {
   return (
     <div className="flex h-[var(--spacing-52)] items-center justify-between border-b border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-surface)] px-[var(--spacing-16)]">
-      <Brand mobile />
       <div className="flex items-center gap-[var(--spacing-12)]">
         <button
           type="button"
-          aria-label="Search"
-          className="flex size-[var(--spacing-32)] items-center justify-center"
+          aria-label="Open navigation"
+          className="flex size-[var(--spacing-32)] items-center justify-center text-[var(--color-app-shell-icon-default)]"
         >
-          <LmSearchIcon className="size-[var(--spacing-20)]" aria-hidden />
+          <MenuIcon className="size-[var(--spacing-20)]" aria-hidden />
         </button>
+        <Brand mobile />
+      </div>
+      <div className="flex items-center gap-[var(--spacing-8)]">
+        <ThemeToggle
+          name="mobile-theme"
+          checked={dark}
+          onChange={(event) => onThemeChange(event.currentTarget.checked)}
+        />
         <button
           type="button"
           aria-label="Notifications"
-          className="flex size-[var(--spacing-32)] items-center justify-center"
+          className="flex size-[var(--spacing-32)] items-center justify-center text-[var(--color-app-shell-icon-default)]"
         >
           <BellIcon className="size-[var(--spacing-18)]" aria-hidden />
         </button>
@@ -223,7 +228,7 @@ function MobileHeader() {
           name="Jane Doe"
           tone="neutral"
           size="md"
-          className="bg-[var(--color-app-shell-text-muted)] text-[var(--color-app-shell-text-on-brand)]"
+          className="bg-[var(--color-app-shell-avatar-bg)] text-[var(--color-app-shell-text-on-brand)]"
         />
       </div>
     </div>
@@ -231,18 +236,7 @@ function MobileHeader() {
 }
 
 function StatusBadge({ tone, children }: { tone: "success" | "warning"; children: ReactNode }) {
-  return (
-    <Badge
-      showDot={false}
-      className={
-        tone === "success"
-          ? "bg-[var(--color-app-shell-status-success-bg)] px-[var(--spacing-8)] py-[var(--spacing-2)] text-app-caption-medium text-[var(--color-app-shell-status-success)]"
-          : "bg-[var(--color-app-shell-status-warning-bg)] px-[var(--spacing-8)] py-[var(--spacing-2)] text-app-caption-medium text-[var(--color-app-shell-status-warning)]"
-      }
-    >
-      {children}
-    </Badge>
-  );
+  return <Badge status={tone}>{children}</Badge>;
 }
 
 function DesktopContent() {
@@ -260,7 +254,7 @@ function DesktopContent() {
           <>
             <Button variant="secondary">Share</Button>
             <Button variant="secondary">Export</Button>
-            <Button variant="accent" iconStart={<PlusIcon aria-hidden />}>
+            <Button variant="primary" iconStart={<PlusIcon aria-hidden />}>
               New project
             </Button>
           </>
@@ -280,7 +274,7 @@ function DesktopContent() {
             key={account.name}
             className="flex items-center gap-[var(--spacing-12)] border border-[var(--color-app-shell-border-subtle)] bg-[var(--color-app-shell-surface)] px-[var(--spacing-16)] py-[var(--spacing-10)] text-app-nav"
           >
-            <span className="size-[var(--spacing-6)] rounded-full bg-[var(--color-app-shell-status-danger)]" />
+            <span className="size-[var(--spacing-6)] rounded-full bg-[var(--color-app-shell-brand-dark)]" />
             <span className="min-w-0 flex-1 text-[var(--color-app-shell-text-body)]">
               {account.name}
             </span>
@@ -297,8 +291,8 @@ function DesktopContent() {
 function TabletContent() {
   return (
     <div className="hidden h-full flex-col gap-[var(--spacing-24)] p-[var(--spacing-32)] tablet:flex desktop:hidden">
-      <div className="flex flex-col gap-[var(--spacing-24)]">
-        <div className="flex gap-[var(--spacing-6)] text-app-breadcrumb">
+      <div className="flex flex-col gap-[var(--spacing-16)] pb-[var(--spacing-20)]">
+        <div className="flex gap-[var(--spacing-6)] text-app-breadcrumb text-[var(--color-app-shell-text-tertiary)]">
           <a href="#workspace" className="text-[var(--color-app-shell-text-link)]">
             Workspace
           </a>
@@ -307,30 +301,28 @@ function TabletContent() {
             Projects
           </a>
           <span>›</span>
-          <span>Renewal pipeline</span>
+          <span className="text-[var(--color-app-shell-text-body)]">Renewal pipeline</span>
         </div>
-        <div className="space-y-[var(--spacing-8)]">
-          <h1 className="text-app-tablet-title text-[var(--color-app-shell-text-primary)]">
-            Renewal pipeline
-          </h1>
-          <p className="text-app-tablet-body text-[var(--color-app-shell-text-secondary)]">
-            Track all risk accounts and let the AI surface next steps.
-          </p>
-        </div>
+        <h1 className="text-app-tablet-title text-[var(--color-app-shell-text-primary)]">
+          Renewal pipeline
+        </h1>
         <div className="flex gap-[var(--spacing-12)]">
           <Button variant="secondary">Share</Button>
           <Button variant="secondary">Export</Button>
-          <Button variant="accent" iconStart={<PlusIcon aria-hidden />}>
+          <Button variant="primary" iconStart={<PlusIcon aria-hidden />}>
             New project
           </Button>
         </div>
+        <p className="text-app-tablet-body text-[var(--color-app-shell-text-secondary)]">
+          Track all risk accounts and let the assistant draft outreach before contracts lapse.
+        </p>
       </div>
       <div className="flex gap-[var(--spacing-16)]">
         <KPICard label="Open renewals" value="47" delta="▲ 12% this quarter" />
         <KPICard label="At risk" value="9" delta="▲ 3 flagged" />
         <KPICard label="Forecast ARR" value="$4.2M" delta="83% confidence" />
       </div>
-      <div className="px-[var(--spacing-32)]">
+      <div>
         <h2 className="pb-[var(--spacing-12)] text-app-table-heading">
           Accounts closing this quarter
         </h2>
@@ -340,7 +332,7 @@ function TabletContent() {
             className="flex items-center gap-[var(--spacing-12)] border-b border-[var(--color-app-shell-border-subtle)] bg-[var(--color-app-shell-surface)] px-[var(--spacing-16)] py-[var(--spacing-10)] text-app-nav"
           >
             <div className="flex w-[var(--spacing-120)] items-center gap-[var(--spacing-8)]">
-              <span className="size-[var(--spacing-6)] rounded-full bg-[var(--color-app-shell-status-danger)]" />
+              <span className="size-[var(--spacing-6)] rounded-full bg-[var(--color-app-shell-brand-dark)]" />
               <span className="truncate">{index === 1 ? "Kestrel Industries" : account.name}</span>
             </div>
             <span>{account.value}</span>
@@ -358,12 +350,10 @@ function TabletContent() {
 function MobileMetric({
   label,
   value,
-  tone,
   children
 }: {
   label: string;
   value: string;
-  tone?: "success" | "warning" | "badge";
   children: ReactNode;
 }) {
   return (
@@ -372,15 +362,7 @@ function MobileMetric({
         <p className="text-app-label text-[var(--color-app-shell-text-secondary)]">{label}</p>
         <p className="text-app-mobile-value text-[var(--color-app-shell-text-body)]">{value}</p>
       </div>
-      <div
-        className={
-          tone === "warning"
-            ? "flex items-center gap-[var(--spacing-4)] rounded-md bg-[var(--color-app-shell-status-warning-bg)] px-[var(--spacing-8)] py-[var(--spacing-4)] text-app-label-semibold text-[var(--color-app-shell-status-warning)]"
-            : tone === "badge"
-              ? "rounded-md bg-[var(--color-app-shell-badge-bg)] px-[var(--spacing-8)] py-[var(--spacing-4)] text-app-label-semibold text-[var(--color-app-shell-badge-text)]"
-              : "flex items-center gap-[var(--spacing-4)] rounded-md bg-[var(--color-app-shell-status-success-bg)] px-[var(--spacing-8)] py-[var(--spacing-4)] text-app-label-semibold text-[var(--color-app-shell-status-success)]"
-        }
-      >
+      <div className="flex items-center gap-[var(--spacing-4)] rounded-md bg-[var(--color-app-shell-status-success-bg)] px-[var(--spacing-8)] py-[var(--spacing-4)] text-app-label-semibold text-[var(--color-app-shell-status-success)]">
         {children}
       </div>
     </div>
@@ -389,7 +371,7 @@ function MobileMetric({
 
 function MobileContent() {
   return (
-    <div className="flex flex-col gap-[var(--spacing-24)] pb-[var(--spacing-32)] pt-[var(--spacing-16)] tablet:hidden">
+    <div className="flex flex-col gap-[var(--spacing-24)] pb-[var(--spacing-32)] pt-[var(--spacing-32)] tablet:hidden">
       <div className="flex flex-col gap-[var(--spacing-12)] px-[var(--spacing-16)]">
         <a
           href="#projects"
@@ -408,12 +390,8 @@ function MobileContent() {
         </div>
         <div className="flex items-center justify-between">
           <div className="flex gap-[var(--spacing-8)]">
-            <button className="rounded-full border border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-surface)] px-[var(--spacing-12)] py-[var(--spacing-6)] text-app-label">
-              All Filters
-            </button>
-            <button className="rounded-full border border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-surface)] px-[var(--spacing-12)] py-[var(--spacing-6)] text-app-label">
-              Sort: Days Left
-            </button>
+            <Button variant="secondary">Share</Button>
+            <Button variant="secondary">Export</Button>
           </div>
           <button
             aria-label="New project"
@@ -428,10 +406,10 @@ function MobileContent() {
           <TrendingUpIcon className="size-[var(--spacing-14)]" />
           +12%
         </MobileMetric>
-        <MobileMetric label="At risk" value="9" tone="warning">
-          <TrendingDownIcon className="size-[var(--spacing-14)]" />3 flagged
+        <MobileMetric label="At risk" value="9">
+          3 flagged
         </MobileMetric>
-        <MobileMetric label="Forecast ARR" value="$4.2M" tone="badge">
+        <MobileMetric label="Forecast ARR" value="$4.2M">
           83% conf
         </MobileMetric>
       </div>
@@ -444,7 +422,7 @@ function MobileContent() {
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-[var(--spacing-8)]">
-                <span className="size-[var(--spacing-8)] rounded-full bg-[var(--color-app-shell-status-danger)]" />
+                <span className="size-[var(--spacing-8)] rounded-full bg-[var(--color-app-shell-brand-dark)]" />
                 <strong className="text-app-table-name text-[var(--color-app-shell-text-primary)]">
                   {account.name}
                 </strong>
@@ -496,7 +474,7 @@ function TabletFooter() {
         { label: "Terms", href: "#terms" },
         { label: "Security", href: "#security" }
       ]}
-      className="justify-between px-[var(--spacing-24)] py-[var(--spacing-16)] [&>div:nth-of-type(1)]:rounded-md [&>div:nth-of-type(1)]:border [&>div:nth-of-type(1)]:border-[var(--color-app-shell-border-default)] [&>div:nth-of-type(1)]:bg-[var(--color-app-shell-background)] [&>div:nth-of-type(1)]:px-[var(--spacing-10)] [&>div:nth-of-type(1)]:py-[var(--spacing-6)]"
+      className="h-[var(--spacing-60)] justify-between px-[var(--spacing-24)] py-[var(--spacing-16)]"
     />
   );
 }
@@ -542,7 +520,6 @@ function AppShellDemo({ initialTheme }: { initialTheme: "light" | "dark" }) {
     <div data-theme={theme} className="h-screen">
       <AppShell
         nav={nav}
-        workspace={{ name: "Northwind Corp", plan: "Enterprise" }}
         onCollapse={() => {}}
         onExpand={() => {}}
         header={
@@ -556,7 +533,9 @@ function AppShellDemo({ initialTheme }: { initialTheme: "light" | "dark" }) {
           />
         }
         mobileStatusBar={<MobileStatusBar />}
-        mobileHeader={<MobileHeader />}
+        mobileHeader={
+          <MobileHeader dark={dark} onThemeChange={(next) => setTheme(next ? "dark" : "light")} />
+        }
         assistant={
           <AIPanel
             messages={[
@@ -567,14 +546,13 @@ function AppShellDemo({ initialTheme }: { initialTheme: "light" | "dark" }) {
                   "Start with Meridian Health — $380k closing in 15 days with no exec touchpoint since May. I've drafted an outreach email referencing support tickets.",
                 actions: (
                   <>
-                    <Button variant="secondary">Review draft</Button>
-                    <Button variant="secondary">View accounts</Button>
+                    <Button variant="secondary">Secondary</Button>
+                    <Button variant="secondary">Secondary</Button>
                   </>
                 )
               }
             ]}
             inputPlaceholder="Summarize pipeline..."
-            onNewThread={() => {}}
           />
         }
         footer={
@@ -600,7 +578,7 @@ function AppShellDemo({ initialTheme }: { initialTheme: "light" | "dark" }) {
 const viewports = {
   desktop: { name: "Desktop 1440 × 900", styles: { width: "1440px", height: "900px" } },
   tablet: { name: "Tablet 768 × 1024", styles: { width: "768px", height: "1024px" } },
-  mobile: { name: "Mobile 390 × 1015", styles: { width: "390px", height: "1015px" } }
+  mobile: { name: "Mobile 390 × 844", styles: { width: "390px", height: "844px" } }
 };
 
 const meta = {

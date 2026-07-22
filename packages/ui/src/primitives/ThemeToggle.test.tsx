@@ -26,4 +26,22 @@ describe("ThemeToggle", () => {
     render(<ThemeToggle name="theme" id="theme-toggle" />);
     expect(screen.getByRole("switch")).toHaveAttribute("id", "theme-toggle");
   });
+
+  it("renders the exact fixed two-cell Figma anatomy", () => {
+    const { container } = render(<ThemeToggle name="theme" />);
+    const track = container.querySelector("label");
+    expect(track).toHaveClass(
+      "h-[var(--spacing-24)]",
+      "w-[var(--spacing-54)]",
+      "bg-[var(--color-app-shell-toggle-track)]"
+    );
+    expect(container.querySelector('[data-theme-toggle-asset="sunLight"]')).toHaveClass(
+      "left-[var(--spacing-2)]"
+    );
+    expect(container.querySelector('[data-theme-toggle-asset="moonLight"]')).toHaveClass(
+      "left-[var(--spacing-32)]"
+    );
+    expect(container.querySelectorAll("img")).toHaveLength(4);
+    expect(container.querySelector("svg")).toBeNull();
+  });
 });

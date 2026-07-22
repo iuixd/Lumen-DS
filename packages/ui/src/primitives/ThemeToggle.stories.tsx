@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Sourced from the Figma 'appshell-desktop-closed-light' reference screen (Lumen-AI-Design-System, node 1197:1652): a Sun/Moon pill switch for Light/Dark theme, built on a native checkbox with role=\"switch\" — same accessible-toggle approach as Switch."
+          'Sourced from the canonical AppShell light/dark variants (Lumen-AI-Design-System node 1007:3700; ThemeToggle nodes 1079:1723 and 1330:2282): an exact 54×24px two-cell Sun/Moon switch built on a native checkbox with role="switch".'
       }
     }
   },
@@ -20,10 +20,29 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Playground: Story = {};
+export const Light: Story = {
+  args: { checked: false },
+  decorators: [
+    (Story) => (
+      <div data-theme="light">
+        <Story />
+      </div>
+    )
+  ]
+};
 
-export const Checked: Story = {
-  args: { defaultChecked: true }
+export const Dark: Story = {
+  args: { checked: true },
+  decorators: [
+    (Story) => (
+      <div
+        data-theme="dark"
+        className="bg-[var(--color-app-shell-background)] p-[var(--spacing-16)]"
+      >
+        <Story />
+      </div>
+    )
+  ]
 };
 
 export const Interactive: Story = {
@@ -31,7 +50,14 @@ export const Interactive: Story = {
   render: () => {
     function Demo() {
       const [dark, setDark] = useState(false);
-      return <ThemeToggle name="theme" checked={dark} onChange={(e) => setDark(e.target.checked)} />;
+      return (
+        <div
+          data-theme={dark ? "dark" : "light"}
+          className="bg-[var(--color-app-shell-background)] p-[var(--spacing-16)]"
+        >
+          <ThemeToggle name="theme" checked={dark} onChange={(e) => setDark(e.target.checked)} />
+        </div>
+      );
     }
     return <Demo />;
   }

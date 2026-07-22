@@ -33,7 +33,7 @@ export function PageHeader({
   return (
     <div
       className={cn(
-        "flex flex-col gap-[var(--spacing-10)] px-[var(--spacing-32)] pb-[var(--spacing-20)] pt-[var(--spacing-24)]",
+        "flex flex-col gap-[var(--spacing-16)] px-[var(--spacing-32)] pb-[var(--spacing-20)] pt-[var(--spacing-24)]",
         className
       )}
     >
@@ -45,7 +45,7 @@ export function PageHeader({
           {breadcrumbs.map((crumb, i) => (
             <span key={crumb.label} className="flex items-center gap-[var(--spacing-6)]">
               {i > 0 && (
-                <span aria-hidden className="text-[var(--color-app-shell-text-placeholder)]">
+                <span aria-hidden className="text-[var(--color-app-shell-text-tertiary)]">
                   ›
                 </span>
               )}

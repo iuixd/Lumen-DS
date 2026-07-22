@@ -59,18 +59,17 @@ export function AIPanel({
         className
       )}
     >
-      <div className="flex items-center gap-[var(--spacing-8)] px-[var(--spacing-16)] py-[var(--spacing-14)]">
-        <LmAiOutlineIcon
-          className="size-5 shrink-0 text-[var(--color-app-shell-text-primary)]"
-          aria-hidden
-        />
+      <div className="flex items-center gap-[var(--spacing-8)] px-[var(--spacing-16)] py-[var(--spacing-8)]">
+        <span className="flex size-[var(--spacing-32)] shrink-0 items-center justify-center rounded-full bg-[var(--color-app-shell-assistant-icon-bg)] text-[var(--color-app-shell-assistant-icon)]">
+          <LmAiOutlineIcon className="size-[var(--spacing-20)]" aria-hidden />
+        </span>
         <p className="text-app-table-heading text-[var(--color-app-shell-text-primary)]">{title}</p>
         <div className="min-w-px flex-1" />
         {onNewThread && (
           <button
             type="button"
             onClick={onNewThread}
-            className="rounded-md bg-[var(--color-app-shell-badge-bg)] px-[var(--spacing-8)] py-[var(--spacing-4)] text-app-label text-[var(--color-app-shell-text-link)]"
+            className="rounded-md bg-[var(--color-badge-default-bg)] px-[var(--spacing-8)] py-[var(--spacing-4)] text-app-label text-[var(--color-badge-default-text)]"
           >
             + Thread
           </button>
@@ -92,7 +91,7 @@ export function AIPanel({
             </div>
           ) : (
             <div key={i} className="flex flex-col gap-[var(--spacing-8)] items-start">
-              <div className="max-w-[var(--spacing-240)] rounded-bl-xl rounded-br-xl rounded-tl-sm rounded-tr-xl border border-[var(--color-app-shell-border-table)] bg-[var(--color-app-shell-background)] px-[var(--spacing-12)] py-[var(--spacing-8)] text-app-body text-[var(--color-app-shell-text-heading)]">
+              <div className="max-w-[var(--spacing-240)] rounded-bl-xl rounded-br-xl rounded-tl-sm rounded-tr-xl border border-[var(--color-app-shell-border-table)] bg-[var(--color-app-shell-surface)] px-[var(--spacing-12)] py-[var(--spacing-8)] text-app-body text-[var(--color-app-shell-text-heading)]">
                 {message.content}
               </div>
               {message.actions && (
@@ -120,7 +119,7 @@ export function AIPanel({
         <button
           type="submit"
           aria-label="Send message"
-          className="flex size-[var(--spacing-32)] shrink-0 items-center justify-center rounded-lg bg-[var(--color-app-shell-button-accent-bg)] text-[var(--color-app-shell-button-accent-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-border-focus)]"
+          className="flex size-[var(--spacing-32)] shrink-0 items-center justify-center rounded-lg bg-[var(--color-app-shell-button-accent-bg)] text-[var(--color-app-shell-button-accent-on-action)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-border-focus)]"
         >
           <span aria-hidden>↑</span>
         </button>

@@ -26,7 +26,7 @@ export interface AppShellProps {
   children: ReactNode;
   /** Desktop header (52px in the canonical AppShell). */
   header?: ReactNode;
-  /** Tablet-only header (72px in the canonical AppShell). */
+  /** Tablet-only header (52px in the canonical AppShell). */
   tabletHeader?: ReactNode;
   /** Mobile-only application header, rendered below `mobileStatusBar`. */
   mobileHeader?: ReactNode;
@@ -40,7 +40,7 @@ export interface AppShellProps {
   mobileNavigation?: ReactNode;
   /** Desktop-only right-side assistant panel. */
   assistant?: ReactNode;
-  /** Desktop rail logo override. */
+  /** Optional custom content above the canonical rail navigation. */
   logo?: ReactNode;
   /** Desktop navigation mode. Tablet always uses the canonical rail; mobile uses bottom navigation. */
   variant?: "sidebar" | "rail";
@@ -82,7 +82,7 @@ function Sidebar({
   onCollapse
 }: Pick<AppShellProps, "nav" | "workspace" | "onCollapse">) {
   return (
-    <aside className="hidden w-[var(--spacing-224)] shrink-0 flex-col gap-[var(--spacing-2)] overflow-hidden border-x border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-surface)] px-[var(--spacing-12)] pb-[var(--spacing-12)] desktop:flex">
+    <aside className="hidden w-[var(--spacing-224)] shrink-0 flex-col gap-[var(--spacing-2)] overflow-hidden border-x border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-nav-bg)] px-[var(--spacing-12)] pb-[var(--spacing-12)] desktop:flex">
       {workspace && (
         <>
           <div className="flex w-full items-center gap-[var(--spacing-10)] py-[var(--spacing-12)]">
@@ -108,7 +108,7 @@ function Sidebar({
           className="flex flex-col gap-[var(--spacing-2)]"
         >
           {section.label && (
-            <p className="px-[var(--spacing-12)] pb-[var(--spacing-4)] pt-[var(--spacing-16)] font-interface text-app-admin uppercase [letter-spacing:var(--text-app-admin-letter-spacing)] text-[var(--color-app-shell-text-placeholder)]">
+            <p className="px-[var(--spacing-12)] pb-[var(--spacing-4)] pt-[var(--spacing-16)] font-interface text-app-admin uppercase [letter-spacing:var(--text-app-admin-letter-spacing)] text-[var(--color-app-shell-text-tertiary)]">
               {section.label}
             </p>
           )}
@@ -120,8 +120,8 @@ function Sidebar({
               className={cn(
                 navItemBase,
                 item.active
-                  ? "bg-[var(--color-app-shell-nav-active)] text-[var(--color-app-shell-text-heading)]"
-                  : "text-[var(--color-app-shell-text-secondary)] hover:bg-[var(--color-app-shell-nav-active)] hover:text-[var(--color-app-shell-text-heading)]"
+                  ? "bg-[var(--color-app-shell-nav-active)] text-[var(--color-app-shell-nav-selected-on-action)]"
+                  : "text-[var(--color-app-shell-nav-on-action)] hover:bg-[var(--color-app-shell-nav-active)] hover:text-[var(--color-app-shell-nav-selected-on-action)]"
               )}
             >
               <span
@@ -132,7 +132,7 @@ function Sidebar({
               </span>
               <span className="min-w-0 flex-1 truncate text-left">{item.label}</span>
               {item.badge !== undefined && (
-                <span className="rounded-full bg-[var(--color-app-shell-text-secondary)] px-[var(--spacing-6)] py-px font-brand text-app-caption-medium text-[var(--color-app-shell-text-on-brand)]">
+                <span className="rounded-full bg-[var(--color-badge-default-bg)] px-[var(--spacing-8)] py-[var(--spacing-2)] font-interface text-badge-sm text-[var(--color-badge-default-text)]">
                   {item.badge}
                 </span>
               )}
@@ -161,23 +161,24 @@ function Sidebar({
 
 function NavigationRail({
   nav,
-  workspace,
   logo,
   onExpand,
   desktopVisible
-}: Pick<AppShellProps, "nav" | "workspace" | "logo" | "onExpand"> & { desktopVisible: boolean }) {
+}: Pick<AppShellProps, "nav" | "logo" | "onExpand"> & { desktopVisible: boolean }) {
   const items = nav.flatMap((section) => section.items);
   return (
     <aside
       className={cn(
-        "hidden w-[var(--spacing-64)] shrink-0 flex-col items-center gap-[var(--spacing-4)] overflow-hidden border-x border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-surface)] px-[var(--spacing-8)] pb-[var(--spacing-12)] tablet:flex",
+        "hidden w-[var(--spacing-64)] shrink-0 flex-col items-center gap-[var(--spacing-4)] overflow-hidden border-x border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-nav-bg)] px-[var(--spacing-8)] pb-[var(--spacing-12)] tablet:flex",
         !desktopVisible && "desktop:hidden"
       )}
     >
-      <div className="flex justify-center py-[var(--spacing-12)]">
-        {logo ?? <WorkspaceMark workspace={workspace} size="rail" />}
-      </div>
-      <div className="h-px w-full bg-[var(--color-app-shell-border-default)]" />
+      {logo && (
+        <>
+          <div className="flex justify-center py-[var(--spacing-12)]">{logo}</div>
+          <div className="h-px w-full bg-[var(--color-app-shell-border-default)]" />
+        </>
+      )}
       <nav
         aria-label="Primary"
         className="flex w-full flex-col items-center gap-[var(--spacing-4)]"
@@ -190,9 +191,9 @@ function NavigationRail({
             title={item.label}
             aria-current={item.active ? "page" : undefined}
             className={cn(
-              "flex size-[var(--spacing-40)] items-center justify-center rounded-lg text-[var(--color-app-shell-text-placeholder)] transition-colors hover:bg-[var(--color-app-shell-nav-active)] hover:text-[var(--color-app-shell-text-secondary)]",
+              "flex size-[var(--spacing-40)] items-center justify-center rounded-lg text-[var(--color-app-shell-icon-secondary)] transition-colors hover:bg-[var(--color-app-shell-nav-active)] hover:text-[var(--color-app-shell-nav-on-action)]",
               item.active &&
-                "bg-[var(--color-app-shell-nav-active)] text-[var(--color-app-shell-text-heading)]",
+                "bg-[var(--color-app-shell-nav-active)] text-[var(--color-app-shell-nav-selected-on-action)]",
               index > 0 &&
                 nav.some((section) => section.items[0] === item && section.label) &&
                 "mt-[var(--spacing-8)]"
@@ -247,6 +248,9 @@ export function AppShell({
     <div
       className={cn(
         "flex min-h-screen w-full flex-col overflow-hidden bg-[var(--color-app-shell-background)] font-interface text-[var(--color-app-shell-text-body)]",
+        "[--color-button-primary-bg:var(--color-app-shell-button-primary-bg)] [--color-button-primary-on-action:var(--color-app-shell-button-primary-on-action)]",
+        "[--color-button-secondary-bg:var(--color-app-shell-button-secondary-bg)] [--color-button-secondary-border:var(--color-app-shell-button-secondary-border)] [--color-button-secondary-on-action:var(--color-app-shell-button-secondary-on-action)]",
+        "[--color-button-accent-bg:var(--color-app-shell-button-accent-bg)] [--color-button-accent-on-action:var(--color-app-shell-button-accent-on-action)]",
         className
       )}
     >
@@ -264,7 +268,6 @@ export function AppShell({
         )}
         <NavigationRail
           nav={nav}
-          workspace={workspace}
           logo={logo}
           onExpand={onExpand}
           desktopVisible={variant === "rail"}
@@ -272,7 +275,7 @@ export function AppShell({
 
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           {tabletHeader && (
-            <header className="hidden h-[var(--spacing-72)] shrink-0 items-center border-b border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-surface)] tablet:flex desktop:hidden">
+            <header className="hidden h-[var(--spacing-52)] shrink-0 items-center border-b border-[var(--color-app-shell-border-default)] bg-[var(--color-app-shell-surface)] tablet:flex desktop:hidden">
               {tabletHeader}
             </header>
           )}
