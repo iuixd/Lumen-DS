@@ -119,8 +119,27 @@ raw color is `badge.default-bg` (`#191919`); every other Badge color aliases an
 existing ramp step. `badge-sm`, `badge-md`, and `badge-lg` preserve the exact
 Instrument Sans medium typography, `radius.pill` preserves Figma's 100px pill
 radius, and existing `spacing.*` tokens provide the gap, padding, and dot sizes.
-Dark Badge roles are provisional ramp mirrors because Figma publishes no dark
-Badge mode.
+Dark Badge roles now use the exact values evidenced in the canonical AppShell
+light/dark variants at Figma node `1007:3700`; Badge modes outside that
+composition remain governed by the standalone Badge collection.
+
+The canonical AppShell component set at Figma node `1174:1357` supplies exact
+light and dark semantic roles for the application canvas, surfaces, borders,
+text, icons, avatars, navigation, buttons, badges, assistant treatment, and
+Theme Toggle. AppShell code consumes only the `app-shell.*` roles or the
+component-scoped `button.*` and `badge.*` roles that AppShell remaps at its
+root. This prevents generic dark-mode aliases from overriding the published
+AppShell modes.
+
+The Figma `btn/nav/*` roles map to `app-shell.nav-{bg,on-action,active,
+selected-on-action}`; `icon/default`, `icon/secondary`, and `bg/avatar` map to
+their matching AppShell roles. Theme Toggle uses
+`app-shell.toggle-{track,on-action,on-bg,off-action,off-bg}` and a fixed 54 x
+24 two-cell layout. The Figma `brand/dark` role maps to
+`app-shell.brand-dark` (`primary.600`) and is used for branded data indicators,
+not the danger/error status role. These AppShell roles are Figma-authored in
+both modes; this does not change the provisional status of unrelated dark
+mappings.
 
 ---
 

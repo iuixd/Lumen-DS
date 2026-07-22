@@ -333,7 +333,8 @@ Exact color values, aliases, modes, font families, font weights, letter spacing,
 ## Status
 
 Final specification, synchronized across React, Web Components, Angular,
-and Storybook from Lumen-AI-Design-System node `1027:3733` on 2026-07-20.
+and Storybook from Lumen-AI-Design-System node `1027:3733`, re-verified on
+2026-07-22 across all light and dark variant/state combinations.
 This final collection supersedes the previous standard Button collection's
 multiple sizes, Raised/Tertiary variants,
 Pressed/Loading/status states, Pill, or Icon-only modifiers.
@@ -411,7 +412,8 @@ when the action navigates.
 ### Accent
 
 Use for an emphasized action whose application-context treatment is distinct
-from Primary. It is near-black in light mode and teal in dark mode.
+from Primary. The current Figma collection uses the crimson primary surface
+in both themes, with mode-specific hover roles.
 
 ### Destructive
 
@@ -420,9 +422,11 @@ require confirmation.
 
 ## Sizes
 
-The final collection has one standardized size: 34px height, 14px inline
-padding, 7px block padding, 8px content gap, 8px radius, 1px border, 14px
-icons, and Instrument Sans Medium 14/20 with 0.14px letter spacing.
+Primary, Accent, Secondary, Outline, Ghost, and Destructive use the standard
+34px height, 14px inline padding, and 7px block padding. Link hugs its content
+with 8px inline padding and 2px block padding. All variants use an 8px content
+gap, 8px radius, 14px icons, and Instrument Sans Medium 14/20 with 0.14px
+letter spacing; bordered variants use a 1px border.
 
 ## States
 
@@ -2347,7 +2351,7 @@ behavior.
 
 ## Status
 
-Baseline specification, added 2026-07-20.
+Stable specification, corrected against the canonical light/dark variants on 2026-07-22.
 
 ## Figma source
 
@@ -2470,9 +2474,12 @@ Baseline specification, added 2026-07-20.
 
 ## Figma source
 
-- Node: `1197:1652` ("appshell-desktop-closed-light" reference screen),
-  Header instance `I1102:6515;1124:1193`
-- Last synchronized: 2026-07-20
+- Canonical AppShell page: `1007:3700`
+- Light Theme Toggle: `1079:1723`
+- Dark Theme Toggle: `1330:2282`
+- Verified in desktop and tablet compositions: `1127:4196`, `1127:4197`,
+  `1175:2521`, and `1175:2522`
+- Last synchronized: 2026-07-22
 
 ## Purpose
 
@@ -2492,9 +2499,8 @@ an app header's right-actions area.
 ```text
 Theme Toggle
 ├── Track
-├── Thumb (slides between Sun/Moon)
-├── Sun icon
-└── Moon icon
+├── Sun cell (selected in Light mode)
+└── Moon cell (selected in Dark mode)
 ```
 
 ## Variants
@@ -2524,24 +2530,25 @@ not a new interaction model.
 ## Tokens
 
 ```text
-color.background.subtle (track)
-color.background.default (thumb)
-color.text.title / color.text.muted (icon tint)
+color.app-shell.toggle-track
+color.app-shell.toggle-on-action
+color.app-shell.toggle-on-bg
+color.app-shell.toggle-off-action
+color.app-shell.toggle-off-bg
 color.border.focus
-spacing.{2,20,24,32,56}
+spacing.{2,20,24,32,54}
 ```
+
+The four committed 20px Figma exports embed the exact selected/unselected
+visuals for Light Sun, Light Moon, Dark Sun, and Dark Moon. Their fills and
+strokes are the rendered output of the five `btn/toggle/*` mode roles above;
+the track continues to bind `toggle-track` directly at runtime.
 
 ## Known limitations
 
-- Only the Light-theme instance was sourced; no Dark-theme or
-  mid-interaction instance was available, so the sliding-thumb interaction
-  is the conventional accessible-toggle pattern, not independently
-  Figma-confirmed.
-- Track width rounds Figma's 54px to `--spacing-56` so the thumb's
-  translate distance lands on a real spacing token (`--spacing-32`)
-  instead of an unbacked 30px — the same "round to the nearest existing
-  token" treatment already applied to `SplitButton`'s `sm` dropdown
-  segment.
+- Figma publishes Light and Dark visual modes but no separate disabled or
+  pressed visual. Native disabled semantics and the shared focus ring remain
+  the framework-neutral behavior for those states.
 - Cross-framework parity: `@lumen/web-components`'s `<lumen-theme-toggle>`
   fires a bubbling, composed `lumen-change` `CustomEvent` (a native
   `change` on the internal `<input>` can't cross the shadow boundary);
@@ -2565,16 +2572,22 @@ Source: `packages/ui/src/primitives/ThemeToggle.tsx`.
 
 ## Storybook
 
-`Primitives/ThemeToggle` — Playground, Checked, Interactive.
+`Primitives/ThemeToggle` — Light, Dark, Interactive.
 
 ## Testing
 
 Unit tests cover the default accessible name, `aria-label` override,
-click-to-toggle behavior, and label/input association.
+click-to-toggle behavior, label/input association, exact 54px track, fixed
+cell positions, and the four directly rendered 20px Figma assets in all three
+frameworks.
 
 ## Change history
 
 - 2026-07-20: added, sourced from node `1197:1652`.
+- 2026-07-22: corrected from a 56px sliding-thumb approximation to the exact
+  54px fixed two-cell Light/Dark design from nodes `1079:1723` and `1330:2282`.
+- 2026-07-22: replaced duplicated inline path markup with the four exact
+  committed Light/Dark Figma exports across React, Web Components, and Angular.
 
 # 49. Page Header
 

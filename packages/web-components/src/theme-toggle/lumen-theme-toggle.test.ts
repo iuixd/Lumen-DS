@@ -26,7 +26,9 @@ describe("lumen-theme-toggle", () => {
   });
 
   it("accepts an aria-label override", async () => {
-    const el = await renderToggle('<lumen-theme-toggle aria-label="Switch to dark mode"></lumen-theme-toggle>');
+    const el = await renderToggle(
+      '<lumen-theme-toggle aria-label="Switch to dark mode"></lumen-theme-toggle>'
+    );
     expect(innerInput(el).getAttribute("aria-label")).toBe("Switch to dark mode");
   });
 
@@ -44,5 +46,13 @@ describe("lumen-theme-toggle", () => {
     input.dispatchEvent(new Event("change"));
     expect(onChange).toHaveBeenCalledOnce();
     expect((onChange.mock.calls[0][0] as CustomEvent).detail).toEqual({ checked: true });
+  });
+
+  it("renders the exact fixed two-cell Figma anatomy", async () => {
+    const el = await renderToggle("<lumen-theme-toggle></lumen-theme-toggle>");
+    expect(el.shadowRoot!.querySelector(".thumb")).toBeNull();
+    expect(el.shadowRoot!.querySelectorAll(".icon-cell")).toHaveLength(2);
+    expect(el.shadowRoot!.querySelectorAll("img")).toHaveLength(4);
+    expect(el.shadowRoot!.querySelector("svg")).toBeNull();
   });
 });

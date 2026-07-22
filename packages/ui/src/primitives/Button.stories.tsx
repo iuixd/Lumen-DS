@@ -34,7 +34,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "The final standard Button collection from Figma node 1027:3733. Seven variants share one 34px geometry and four states across light and dark themes: Default, Hover, Focused, and Disabled."
+          "The final standard Button collection from Figma node 1027:3733. Primary, Accent, Secondary, Outline, Ghost, and Destructive use the 34px geometry; Link uses its compact 8px inline and 2px block padding. All seven variants use the published light and dark Default, Hover, Focused, and Disabled roles. Use Storybook's theme toggle to inspect either token mode."
       }
     }
   },

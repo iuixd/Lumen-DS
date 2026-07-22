@@ -96,6 +96,8 @@ export class LumenButton extends LitElement {
       background: var(--color-button-ghost-hover-bg);
     }
     :host([variant="link"]) button {
+      height: auto;
+      padding: var(--spacing-2) var(--spacing-8);
       background: var(--color-button-link-bg);
       color: var(--color-button-link-on-action);
     }

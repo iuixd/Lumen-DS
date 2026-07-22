@@ -214,10 +214,12 @@
   "button": {
     "_comment": "Exact component-only colors from the final Button variant collection (Lumen-AI-Design-System node 1027:3733). Added only where no existing primitive is an exact value match.",
     "light": {
+      "accent-on-action": { "value": "#FFF5F8" },
       "link-hover-bg": { "value": "#EAF0FD" }
     },
     "dark": {
-      "disabled-on-action": { "value": "#7B777C" },
+      "accent-on-action": { "value": "#FFF5F8" },
+      "disabled-on-action": { "value": "#A7A4A7" },
       "secondary-hover-bg": { "value": "#2D1A26" },
       "link-hover-bg": { "value": "#002121" }
     }
@@ -230,30 +232,38 @@
   },
   "app-shell": {
     "_comment": "Exact AppShell-only primitives sourced from Lumen-AI-Design-System node 1007:3700 and its six Breakpoint/Theme instances (1127:4196, 1127:4197, 1175:2521, 1175:2522, 1175:2588, 1175:2589). These values intentionally remain distinct where they are only near-matches for an existing ramp step; AppShell parity must not round them.",
-    "_latestSource": "button-disabled-bg, button-disabled-border, and brand-stroke were added from the Lumen/Theme Variables collection on 2026-07-20 (variables 1222:607, 1222:608, and the Nightshade/700 alias used by 1214:547).",
+    "_latestSource": "The canonical AppShell light/dark component variants were re-extracted from nodes 1127:4196/4197, 1175:2521/2522, and 1175:2588/2589 on 2026-07-22. All AppShell mode roles are mapped in semantic/color.json; the values below exist only where the published value has no exact foundation-ramp match.",
     "light": {
       "text-primary": { "value": "#1E2021" },
       "text-heading": { "value": "#2B2F2F" },
       "status-success-bg": { "value": "#E5F9EC" },
       "status-warning-bg": { "value": "#FFF4E1" },
       "badge-text": { "value": "#7038B8" },
+      "assistant-icon-bg": { "value": "#FFF5F8" },
       "button-secondary-border": { "value": "#E7E2DC" }
     },
     "dark": {
-      "background": { "value": "#17101A" },
+      "background": { "value": "#0E0B0E" },
       "surface": { "value": "#231C24" },
       "border": { "value": "#3D3039" },
+      "border-subtle": { "value": "#151116" },
+      "nav-active": { "value": "#4F4950" },
+      "nav-on-action": { "value": "#A7A4A7" },
+      "nav-selected-on-action": { "value": "#E9E9EA" },
       "text-primary": { "value": "#F5EFF3" },
       "text-heading": { "value": "#F9F3F7" },
-      "text-body": { "value": "#B2A4AC" },
+      "text-body": { "value": "#F9F3F7" },
       "text-secondary": { "value": "#B8ACB3" },
       "text-placeholder": { "value": "#A8939F" },
       "text-muted": { "value": "#7A6674" },
-      "link": { "value": "#B48EE0" },
+      "toggle-on-action": { "value": "#17101A" },
+      "toggle-off-action": { "value": "#C9C2C7" },
       "success": { "value": "#78E6A0" },
       "success-muted": { "value": "#0B8A3E" },
       "success-bg": { "value": "rgba(11, 138, 62, 0.15)" },
-      "warning": { "value": "#F5B46E" },
+      "badge-success-bg": { "value": "#002C00" },
+      "badge-warning-bg": { "value": "#42220B" },
+      "button-accent-on-action": { "value": "#E6F3F3" },
       "warning-bg": { "value": "rgba(201, 122, 46, 0.15)" },
       "badge-bg": { "value": "rgba(180, 142, 224, 0.16)" },
       "button-disabled-bg": { "value": "#20272D" },

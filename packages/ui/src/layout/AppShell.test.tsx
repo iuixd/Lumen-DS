@@ -69,7 +69,7 @@ describe("AppShell", () => {
     );
     expect(screen.getByText("Northwind Corp")).toBeInTheDocument();
     expect(screen.getByText("Enterprise")).toBeInTheDocument();
-    expect(screen.getAllByText("N")).toHaveLength(2);
+    expect(screen.getAllByText("N")).toHaveLength(1);
   });
 
   it("renders a Collapse control only when onCollapse is provided, and calls it on click", async () => {
@@ -156,7 +156,8 @@ describe("AppShell", () => {
     expect(screen.getByText("Desktop header").parentElement).toHaveClass("desktop:flex");
     expect(screen.getByText("Tablet header").parentElement).toHaveClass(
       "tablet:flex",
-      "desktop:hidden"
+      "desktop:hidden",
+      "h-[var(--spacing-52)]"
     );
     expect(screen.getByText("Mobile status").parentElement).toHaveClass("tablet:hidden");
     expect(screen.getByText("Mobile header").parentElement).toHaveClass("tablet:hidden");
@@ -169,7 +170,32 @@ describe("AppShell", () => {
     expect(screen.getByText("Assistant").parentElement).toHaveClass("desktop:block");
     expect(container.firstElementChild).toHaveClass(
       "bg-[var(--color-app-shell-background)]",
-      "text-[var(--color-app-shell-text-body)]"
+      "text-[var(--color-app-shell-text-body)]",
+      "[--color-button-primary-bg:var(--color-app-shell-button-primary-bg)]",
+      "[--color-button-secondary-bg:var(--color-app-shell-button-secondary-bg)]",
+      "[--color-button-accent-bg:var(--color-app-shell-button-accent-bg)]"
+    );
+  });
+
+  it("binds navigation and count badges to the published AppShell and Badge roles", () => {
+    render(
+      <AppShell nav={nav}>
+        <p>Content</p>
+      </AppShell>
+    );
+
+    const desktopHome = screen.getAllByRole("link", { name: /Home/ })[0];
+    const desktopInbox = screen.getAllByRole("link", { name: /Inbox/ })[0];
+    const count = desktopInbox.querySelector("span:last-child");
+
+    expect(desktopHome).toHaveClass(
+      "bg-[var(--color-app-shell-nav-active)]",
+      "text-[var(--color-app-shell-nav-selected-on-action)]"
+    );
+    expect(desktopInbox).toHaveClass("text-[var(--color-app-shell-nav-on-action)]");
+    expect(count).toHaveClass(
+      "bg-[var(--color-badge-default-bg)]",
+      "text-[var(--color-badge-default-text)]"
     );
   });
 });

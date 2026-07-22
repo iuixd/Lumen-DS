@@ -7,7 +7,19 @@ describe("Button", () => {
   it("renders its label and uses the final 34px geometry", () => {
     render(<Button>Save changes</Button>);
     const button = screen.getByRole("button", { name: "Save changes" });
-    expect(button).toHaveClass("h-[var(--spacing-34)]", "px-[var(--spacing-14)]");
+    expect(button).toHaveClass(
+      "h-[var(--button-height,var(--spacing-34))]",
+      "px-[var(--button-padding-x,var(--spacing-14))]"
+    );
+  });
+
+  it("uses the compact Figma geometry for the link variant", () => {
+    render(<Button variant="link">View details</Button>);
+    expect(screen.getByRole("button")).toHaveClass(
+      "[--button-height:auto]",
+      "[--button-padding-x:var(--spacing-8)]",
+      "[--button-padding-y:var(--spacing-2)]"
+    );
   });
 
   it("calls onClick when enabled", async () => {

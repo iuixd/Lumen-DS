@@ -49,6 +49,14 @@ describe("LumenButtonComponent", () => {
     }
   );
 
+  it("ships the compact tokenized link geometry", () => {
+    const styles = String(
+      (LumenButtonComponent as unknown as { ɵcmp: { styles: string[] } }).ɵcmp.styles
+    );
+    expect(styles).toContain('[variant="link"]');
+    expect(styles).toContain("padding: var(--spacing-2) var(--spacing-8)");
+  });
+
   it("allows activation when enabled", () => {
     const fixture = createHost();
     fixture.nativeElement.querySelector("button").click();
