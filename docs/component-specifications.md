@@ -716,6 +716,11 @@ Input
 ## Figma and code mapping
 
 - Source: Lumen AI Design System node `1262:1181`.
+- Dark base-role source: canonical desktop dark AppShell node `1127:4197`,
+  header Input instance `I1119:3337;1079:1884` and AI Panel Input instance
+  `I1166:4827;1337:2450`. These instances define the shared dark default/search
+  background (`#0E0B0E`), border (`#3D3039`), and placeholder/search icon
+  (`#A8939F`). Dark hover, focus, and invalid states remain provisional.
 - `size="sm" | "md" | "lg"` maps to 36px, 44px, and 60px control heights.
 - `variant="search"` adds the 14px search icon, search surface roles, and an
   optional keyboard-shortcut badge; `leadingIcon` may replace the default glyph.
