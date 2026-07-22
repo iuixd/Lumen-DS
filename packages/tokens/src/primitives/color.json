@@ -236,6 +236,7 @@
     "light": {
       "text-primary": { "value": "#1E2021" },
       "text-heading": { "value": "#2B2F2F" },
+      "nav-hover": { "value": "rgba(237, 240, 241, 0.5)" },
       "status-success-bg": { "value": "#E5F9EC" },
       "status-warning-bg": { "value": "#FFF4E1" },
       "badge-text": { "value": "#7038B8" },
@@ -248,6 +249,7 @@
       "border": { "value": "#3D3039" },
       "border-subtle": { "value": "#151116" },
       "nav-active": { "value": "#4F4950" },
+      "nav-hover": { "value": "rgba(79, 73, 80, 0.5)" },
       "nav-on-action": { "value": "#A7A4A7" },
       "nav-selected-on-action": { "value": "#E9E9EA" },
       "text-primary": { "value": "#F5EFF3" },

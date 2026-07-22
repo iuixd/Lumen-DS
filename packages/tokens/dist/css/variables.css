@@ -177,6 +177,7 @@
   --color-input-light-disabled-border: #D9DEE0;
   --color-app-shell-light-text-primary: #1E2021;
   --color-app-shell-light-text-heading: #2B2F2F;
+  --color-app-shell-light-nav-hover: rgba(237, 240, 241, 0.5);
   --color-app-shell-light-status-success-bg: #E5F9EC;
   --color-app-shell-light-status-warning-bg: #FFF4E1;
   --color-app-shell-light-badge-text: #7038B8;
@@ -187,6 +188,7 @@
   --color-app-shell-dark-border: #3D3039;
   --color-app-shell-dark-border-subtle: #151116;
   --color-app-shell-dark-nav-active: #4F4950;
+  --color-app-shell-dark-nav-hover: rgba(79, 73, 80, 0.5);
   --color-app-shell-dark-nav-on-action: #A7A4A7;
   --color-app-shell-dark-nav-selected-on-action: #E9E9EA;
   --color-app-shell-dark-text-primary: #F5EFF3;
@@ -660,6 +662,7 @@
   --color-app-shell-avatar-bg: #5E5E5E;
   --color-app-shell-avatar-tablet-bg: #5E5E5E;
   --color-app-shell-nav-active: #EDF0F1;
+  --color-app-shell-nav-hover: rgba(237, 240, 241, 0.5);
   --color-app-shell-nav-bg: #FFFFFF;
   --color-app-shell-nav-on-action: #626B6E;
   --color-app-shell-nav-selected-on-action: #1E2021;
@@ -836,6 +839,7 @@
   --color-app-shell-avatar-bg: #7A6674;
   --color-app-shell-avatar-tablet-bg: #262626;
   --color-app-shell-nav-active: #4F4950;
+  --color-app-shell-nav-hover: rgba(79, 73, 80, 0.5);
   --color-app-shell-nav-bg: #231C24;
   --color-app-shell-nav-on-action: #A7A4A7;
   --color-app-shell-nav-selected-on-action: #E9E9EA;
