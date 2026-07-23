@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Container, Stack, Grid, KPICard, PageHeader, type Breadcrumb } from "@lumen/ui";
+import { Container, Stack, Grid, KPICard, PageHeader, type PageHeaderBreadcrumb } from "@lumen/ui";
 
 export interface MetricCard {
   label: string;
@@ -13,7 +13,7 @@ export interface DashboardPageProps {
   metrics: MetricCard[];
   children?: ReactNode;
   /** New, optional — see `PageHeader`. */
-  breadcrumbs?: Breadcrumb[];
+  breadcrumbs?: PageHeaderBreadcrumb[];
   /** New, optional — see `PageHeader`. */
   description?: string;
   /** New, optional — see `PageHeader`. */

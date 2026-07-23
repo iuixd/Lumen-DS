@@ -1323,10 +1323,10 @@ Adopt shadcn/ui as a component *source* and behavioral-implementation layer for 
 Started 2026-07-23. Not planned ahead of time on this roadmap — it is recorded
 here retroactively for tracking, per this document's own governance
 requirement that shipped work be discoverable here (same pattern as Phase 14).
-First component: Command (no existing Lumen equivalent). See
-docs/shadcn-integration.md for the full governance model and
-docs/changelog.md's [Unreleased] entry for the concrete token bridge and
-dependency list.
+First components: Command, then Accordion (neither had an existing Lumen
+equivalent). See docs/shadcn-integration.md for the full governance model
+and docs/changelog.md's [Unreleased] entries for the concrete token bridge
+and dependency list per component.
 ```
 
 ## Deliverables
@@ -1334,7 +1334,16 @@ dependency list.
 - [x] `packages/ui/components.json` — shadcn CLI configuration targeting this repo's actual Tailwind v3 setup and monorepo aliases (generates into `packages/ui/src`, never into an application).
 - [x] `packages/ui/src/styles/shadcn-lumen-bridge.css` — a one-directional mapping from shadcn's compatibility variables onto existing Lumen semantic tokens (no invented tokens, no committed shadcn default theme values).
 - [x] `Command` adopted as the first component: internal generated source kept at `packages/ui/src/components/internal`, public API re-exported from `@lumen/ui` at `packages/ui/src/components/command`.
-- [ ] Additional components (`Sheet`, `DropdownMenu`, `Popover`, `ScrollArea`) adopted one at a time, each following the same internal/public split and bridge-only styling rule — not yet started.
+- [x] `Accordion` adopted as the second component, same internal/public split. Its adoption also surfaced that the shadcn CLI edits `tailwind.config.cjs` directly on generation (added `darkMode: ["class"]` and hardcoded animation keyframes) — both reverted; see `docs/shadcn-integration.md` §6.
+- [x] Scope expanded 2026-07-23 by direct user instruction to the entire shadcn `registry:ui` set (61 components), including ones that duplicate an existing Lumen primitive — see `docs/shadcn-integration.md` §7 for the override, naming-collision convention, and batching approach. `Alert`/`Separator`/`Skeleton`/`Progress`/`AspectRatio`/`Kbd` adopted as batch 1 (genuine gaps, no naming collisions, no non-Radix dependencies).
+- [x] `Popover`/`DropdownMenu`/`Sheet`/`ScrollArea`/`HoverCard`/`Slider` adopted as batch 2. Caught a second real upstream shadcn bug (`Slider` hardcoding a single thumb regardless of value count) — see `docs/shadcn-integration.md` §5.
+- [x] `Textarea`/`Toggle`/`InputOTP`/`ContextMenu`/`Breadcrumb`/`Drawer`/`Carousel`/`Item` adopted as batch 3. `Marker`/`Direction`/`Attachment` dropped (unavailable for the `new-york` registry style — see `docs/shadcn-integration.md` §7.4). First non-Radix behavioral dependencies (`vaul`, `embla-carousel-react`). Caught an unanticipated naming collision (`PageHeader`'s own `Breadcrumb` type, renamed to `PageHeaderBreadcrumb`) and three new jsdom test-environment gaps (`matchMedia`, `elementFromPoint`, `IntersectionObserver`).
+- [x] `Collapsible`/`Label`/`ToggleGroup`/`NavigationMenu`/`ShadcnForm` adopted as batch 4 (the ambiguous/overlapping set). `Combobox`/`NativeSelect` unavailable for the `new-york` registry style, dropped. `Sidebar` and `Message`/`MessageScroller`/`Bubble` skipped entirely by direct user decision — judged full functional duplicates of `AppShell`/`AIPanel`, not partial overlaps. First form-state-management dependencies (`react-hook-form`, `@hookform/resolvers`, `zod`) — see `docs/shadcn-integration.md` §7.5.
+- [x] `ShadcnButton`/`ShadcnCard`/`ShadcnTabs`/`ShadcnTooltip`/`ShadcnSelect`/`ShadcnAvatar`/`ShadcnInput`/`ShadcnSwitch`/`ShadcnCheckbox`/`ShadcnPagination`/`ShadcnButtonGroup` (11 `Shadcn`-prefixed) plus `Dialog`/`RadioGroup`/`Table` (3 plain, no collision) adopted as batch 5 — completes the name-colliding-duplicates phase. Caught `ButtonGroup` was missed from the original "no collision" list (Lumen already has one) by re-verifying against the actual export surface, not memory — see `docs/shadcn-integration.md` §7.6.
+- [ ] Remaining: `Calendar`/`Chart` (heaviest dependencies — a date library, Recharts) — not yet started.
+- [ ] Ambiguous/overlapping components, each with documented reasoning: `Collapsible` (vs. `Accordion`), `Combobox`, `ToggleGroup` (vs. `SegmentedControl`), `Form` (brings in `react-hook-form`/`zod`), `NativeSelect`, `NavigationMenu`/`Sidebar` (vs. `AppShell`), `Message`/`MessageScroller`/`Bubble` (vs. `AIPanel`) — not yet started.
+- [ ] Name-colliding duplicates, exported as `ShadcnButton`/`ShadcnCard`/`ShadcnTabs`/`ShadcnTooltip`/`ShadcnSelect`/`ShadcnAvatar`/`ShadcnInput`/`ShadcnSwitch`/`ShadcnCheckbox`/`ShadcnPagination` per the §7.1 convention, plus non-colliding duplicates (`Dialog`, `RadioGroup`, `Table`, `ButtonGroup`) — not yet started.
+- [ ] `Calendar` and `Chart` — each brings in a substantial new third-party dependency beyond Radix (a date library, Recharts) and needs its own scoped check before adoption — not yet started.
 - [ ] React Starter (`@lumen/create-app`) template updated with a compatible `components.json` so generated apps can adopt further shadcn-sourced components the same way — not yet started.
 - [ ] CI check preventing known default shadcn theme values from being committed — not yet started.
 
