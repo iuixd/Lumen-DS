@@ -1,17 +1,26 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Component, provideZonelessChangeDetection } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { LumenButtonComponent, type LumenButtonVariant } from "./lumen-button";
+import {
+  LumenButtonComponent,
+  type LumenButtonSize,
+  type LumenButtonVariant
+} from "./lumen-button";
 
 @Component({
   standalone: true,
   imports: [LumenButtonComponent],
-  template: `<lumen-button [variant]="variant" [disabled]="disabled" (click)="onClick()"
+  template: `<lumen-button
+    [variant]="variant"
+    [size]="size"
+    [disabled]="disabled"
+    (click)="onClick()"
     ><span iconStart>S</span>Save<span iconEnd>E</span></lumen-button
   >`
 })
 class TestHostComponent {
   variant: LumenButtonVariant = "primary";
+  size: LumenButtonSize = "md";
   disabled = false;
   clicked = 0;
   onClick() {
@@ -30,16 +39,17 @@ describe("LumenButtonComponent", () => {
     return fixture;
   }
 
-  it("defaults to primary and renders projected content", () => {
+  it("defaults to primary md and renders projected content", () => {
     const fixture = createHost();
     const host = fixture.nativeElement.querySelector("lumen-button")!;
     expect(host.getAttribute("variant")).toBe("primary");
+    expect(host.getAttribute("size")).toBe("md");
     expect(host.querySelector("button").textContent).toContain("Save");
     expect(host.querySelector("[iconStart]")).not.toBeNull();
     expect(host.querySelector("[iconEnd]")).not.toBeNull();
   });
 
-  it.each(["primary", "accent", "secondary", "outline", "ghost", "link", "destructive"] as const)(
+  it.each(["primary", "accent", "secondary", "outline", "ghost", "destructive"] as const)(
     "reflects variant=%s for styling",
     (variant) => {
       const fixture = createHost({ variant });
@@ -49,12 +59,15 @@ describe("LumenButtonComponent", () => {
     }
   );
 
-  it("ships the compact tokenized link geometry", () => {
-    const styles = String(
-      (LumenButtonComponent as unknown as { ɵcmp: { styles: string[] } }).ɵcmp.styles
-    );
-    expect(styles).toContain('[variant="link"]');
-    expect(styles).toContain("padding: var(--spacing-2) var(--spacing-8)");
+  it.each(["sm", "md", "lg", "xl"] as const)("reflects size=%s for styling", (size) => {
+    const fixture = createHost({ size });
+    expect(fixture.nativeElement.querySelector("lumen-button").getAttribute("size")).toBe(size);
+  });
+
+  it("binds the Figma Ghost hover foreground and surface roles", () => {
+    const styles = (LumenButtonComponent as unknown as { ɵcmp: { styles: string[] } }).ɵcmp.styles;
+    expect(styles.join("\n")).toContain("var(--color-button-ghost-hover-bg)");
+    expect(styles.join("\n")).toContain("var(--color-button-ghost-hover-on-action)");
   });
 
   it("allows activation when enabled", () => {

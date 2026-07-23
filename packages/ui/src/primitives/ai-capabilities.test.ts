@@ -22,7 +22,7 @@ describe("aiCapabilities", () => {
 
 describe("getAICapability", () => {
   it("returns the matching entry for a known id", () => {
-    expect(getAICapability("summarize")?.label).toBe("Summarize");
+    expect(getAICapability("summarize")?.label).toBe("AI Summarize");
   });
 
   it("returns undefined for an unknown id", () => {

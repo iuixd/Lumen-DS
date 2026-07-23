@@ -173,11 +173,8 @@ module.exports = {
   "forest-800": "var(--color-forest-800)",
   "sky-500": "var(--color-sky-500)",
   "button-light-accent-on-action": "var(--color-button-light-accent-on-action)",
-  "button-light-link-hover-bg": "var(--color-button-light-link-hover-bg)",
   "button-dark-accent-on-action": "var(--color-button-dark-accent-on-action)",
   "button-dark-disabled-on-action": "var(--color-button-dark-disabled-on-action)",
-  "button-dark-secondary-hover-bg": "var(--color-button-dark-secondary-hover-bg)",
-  "button-dark-link-hover-bg": "var(--color-button-dark-link-hover-bg)",
   "input-light-disabled-border": "var(--color-input-light-disabled-border)",
   "app-shell-light-text-primary": "var(--color-app-shell-light-text-primary)",
   "app-shell-light-text-heading": "var(--color-app-shell-light-text-heading)",
@@ -302,10 +299,7 @@ module.exports = {
   "button-ghost-bg": "var(--color-button-ghost-bg)",
   "button-ghost-on-action": "var(--color-button-ghost-on-action)",
   "button-ghost-hover-bg": "var(--color-button-ghost-hover-bg)",
-  "button-link-bg": "var(--color-button-link-bg)",
-  "button-link-on-action": "var(--color-button-link-on-action)",
-  "button-link-hover-bg": "var(--color-button-link-hover-bg)",
-  "button-link-hover-on-action": "var(--color-button-link-hover-on-action)",
+  "button-ghost-hover-on-action": "var(--color-button-ghost-hover-on-action)",
   "button-destructive-bg": "var(--color-button-destructive-bg)",
   "button-destructive-on-action": "var(--color-button-destructive-on-action)",
   "button-destructive-hover-bg": "var(--color-button-destructive-hover-bg)",
@@ -396,6 +390,7 @@ module.exports = {
   "30": "var(--spacing-30)",
   "34": "var(--spacing-34)",
   "38": "var(--spacing-38)",
+  "42": "var(--spacing-42)",
   "54": "var(--spacing-54)",
   "74": "var(--spacing-74)",
   "120": "var(--spacing-120)",
@@ -427,6 +422,48 @@ module.exports = {
   "full": "var(--radius-full)"
 },
       fontSize: {
+  "ai-library-h1": [
+    "var(--text-ai-library-h1-size)",
+    {
+      "lineHeight": "var(--text-ai-library-h1-line-height)",
+      "fontWeight": "var(--text-ai-library-h1-weight)"
+    }
+  ],
+  "ai-library-h3": [
+    "var(--text-ai-library-h3-size)",
+    {
+      "lineHeight": "var(--text-ai-library-h3-line-height)",
+      "fontWeight": "var(--text-ai-library-h3-weight)"
+    }
+  ],
+  "ai-library-lead": [
+    "var(--text-ai-library-lead-size)",
+    {
+      "lineHeight": "var(--text-ai-library-lead-line-height)",
+      "fontWeight": "var(--text-ai-library-lead-weight)"
+    }
+  ],
+  "ai-library-card-title": [
+    "var(--text-ai-library-card-title-size)",
+    {
+      "lineHeight": "var(--text-ai-library-card-title-line-height)",
+      "fontWeight": "var(--text-ai-library-card-title-weight)"
+    }
+  ],
+  "ai-library-body": [
+    "var(--text-ai-library-body-size)",
+    {
+      "lineHeight": "var(--text-ai-library-body-line-height)",
+      "fontWeight": "var(--text-ai-library-body-weight)"
+    }
+  ],
+  "ai-library-caption": [
+    "var(--text-ai-library-caption-size)",
+    {
+      "lineHeight": "var(--text-ai-library-caption-line-height)",
+      "fontWeight": "var(--text-ai-library-caption-weight)"
+    }
+  ],
   "display-lg": [
     "var(--text-display-lg-size)",
     {
@@ -707,6 +744,34 @@ module.exports = {
       "fontWeight": "var(--text-app-button-weight)"
     }
   ],
+  "standard-button-sm": [
+    "var(--text-standard-button-sm-size)",
+    {
+      "lineHeight": "var(--text-standard-button-sm-line-height)",
+      "fontWeight": "var(--text-standard-button-sm-weight)"
+    }
+  ],
+  "standard-button-md": [
+    "var(--text-standard-button-md-size)",
+    {
+      "lineHeight": "var(--text-standard-button-md-line-height)",
+      "fontWeight": "var(--text-standard-button-md-weight)"
+    }
+  ],
+  "standard-button-lg": [
+    "var(--text-standard-button-lg-size)",
+    {
+      "lineHeight": "var(--text-standard-button-lg-line-height)",
+      "fontWeight": "var(--text-standard-button-lg-weight)"
+    }
+  ],
+  "standard-button-xl": [
+    "var(--text-standard-button-xl-size)",
+    {
+      "lineHeight": "var(--text-standard-button-xl-line-height)",
+      "fontWeight": "var(--text-standard-button-xl-weight)"
+    }
+  ],
   "app-nav": [
     "var(--text-app-nav-size)",
     {
@@ -838,7 +903,9 @@ module.exports = {
         "sans": ["var(--font-sans)"],
         "interface": ["var(--font-interface)"],
         "brand": ["var(--font-brand)"],
-        "mono": ["var(--font-mono)"]
+        "mono": ["var(--font-mono)"],
+        "editorial": ["var(--font-editorial)"],
+        "documentation-mono": ["var(--font-documentation-mono)"]
       },
       screens: {
         tablet: "768px",

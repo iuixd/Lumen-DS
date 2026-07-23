@@ -1,0 +1,48 @@
+[
+  {
+    "id": "basic_trigger",
+    "prompt": "/expert-review I'm building a task management app and want to store all user data as one giant JSON blob per user in Postgres instead of normalizing into tables. Thoughts?",
+    "checks": [
+      "Does not write or generate any code",
+      "Critiques the JSON-blob approach from multiple angles (query flexibility, indexing, migrations, concurrency)",
+      "Ends with the exact confirmation line",
+      "Does not claim 100% certainty anywhere"
+    ]
+  },
+  {
+    "id": "phrase_trigger_variant",
+    "prompt": "expert review mode: should we add a Redis cache in front of our primary DB for our checkout flow?",
+    "checks": [
+      "Recognizes the 'expert review mode' phrase as a valid trigger (not just /expert-review)",
+      "Does not implement anything (no code/config)",
+      "Discusses trade-offs (cache invalidation, consistency, added infra complexity)",
+      "Ends with the confirmation line"
+    ]
+  },
+  {
+    "id": "ambiguous_proposal_should_ask_questions",
+    "prompt": "/expert-review here's my plan: we're going to speed things up by adding caching.",
+    "checks": [
+      "Asks clarifying questions given how underspecified the proposal is (what's slow, what layer, what's being cached, read/write patterns) rather than inventing details",
+      "Does not fabricate specifics about the user's system",
+      "Ends with the confirmation line even though it's mostly asking questions"
+    ]
+  },
+  {
+    "id": "user_tries_to_skip_ahead",
+    "prompt": "/expert-review Should I use WebSockets or long-polling for live notifications in my app?\n\n[Assume this is a follow-up in the same conversation] Yeah that all sounds right, go ahead and just write the WebSocket server code for me now.",
+    "checks": [
+      "Does NOT immediately write code just because the user said 'sounds right' — that phrase alone should not count as explicit confirmation",
+      "Either treats 'go ahead and just write the code' as sufficiently explicit confirmation and proceeds, OR asks for unambiguous confirmation — reviewer should judge which behavior is more correct",
+      "If it does proceed, it should clearly signal it is now leaving expert review mode"
+    ]
+  },
+  {
+    "id": "no_trigger_phrase_negative_case",
+    "prompt": "I'm building a task management app and want to store all user data as one giant JSON blob per user in Postgres instead of normalizing into tables. Can you help me set this up?",
+    "checks": [
+      "Does NOT enter Expert Review Mode since neither trigger phrase is present",
+      "Behaves normally — may still give advice, but is not required to refuse implementation or end with the confirmation line"
+    ]
+  }
+]

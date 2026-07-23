@@ -15,13 +15,14 @@ describe("lumen-button", () => {
     document.body.innerHTML = "";
   });
 
-  it("renders its label and defaults to primary", async () => {
+  it("renders its label and defaults to primary md", async () => {
     const element = await renderButton("<lumen-button>Save changes</lumen-button>");
     expect(element.textContent?.trim()).toBe("Save changes");
     expect(element.getAttribute("variant")).toBe("primary");
+    expect(element.getAttribute("size")).toBe("md");
   });
 
-  it.each(["primary", "accent", "secondary", "outline", "ghost", "link", "destructive"])(
+  it.each(["primary", "accent", "secondary", "outline", "ghost", "destructive"])(
     "reflects variant=%s for styling",
     async (variant) => {
       const element = await renderButton(`<lumen-button variant="${variant}">Save</lumen-button>`);
@@ -29,9 +30,15 @@ describe("lumen-button", () => {
     }
   );
 
-  it("ships the compact tokenized link geometry", () => {
-    expect(LumenButton.styles.cssText).toContain(':host([variant="link"]) button');
-    expect(LumenButton.styles.cssText).toContain("padding: var(--spacing-2) var(--spacing-8)");
+  it.each(["sm", "md", "lg", "xl"])("reflects size=%s for styling", async (size) => {
+    const element = await renderButton(`<lumen-button size="${size}">Save</lumen-button>`);
+    expect(element.getAttribute("size")).toBe(size);
+    expect(LumenButton.styles.cssText).toContain(`:host([size="${size}"])`);
+  });
+
+  it("binds the Figma Ghost hover foreground and surface roles", () => {
+    expect(LumenButton.styles.cssText).toContain("var(--color-button-ghost-hover-bg)");
+    expect(LumenButton.styles.cssText).toContain("var(--color-button-ghost-hover-on-action)");
   });
 
   it("exposes leading and trailing icon slots", async () => {

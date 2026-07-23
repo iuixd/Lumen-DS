@@ -667,7 +667,8 @@ section is kept in sync with the full specification in
 `docs/component-specifications.md` §5 — that document is authoritative for
 behavior, content, accessibility, and Storybook detail; this section covers
 architecture-level contract shape only. Synchronized against the final
-Lumen-AI-Design-System Button collection at node `1027:3733` on 2026-07-20.
+Lumen-AI-Design-System Button collection at node `1027:3733` and its size
+reference at node `1034:4459`.
 
 ## 7.1 Supported variants
 
@@ -677,19 +678,25 @@ Accent
 Secondary
 Outline
 Ghost
-Link
 Destructive
 ```
 
 ## 7.2 Supported sizes
 
-One standardized size: 34px high with 14px inline padding, 7px block
-padding, an 8px gap/radius, and 14px optional icons.
+```text
+sm
+md
+lg
+xl
+```
+
+The sizes are 30px, 34px, 38px, and 42px high. `md` is the default.
 
 ## 7.3 Supported properties
 
 ```text
 variant
+size
 disabled
 iconStart
 iconEnd
@@ -715,7 +722,7 @@ Web Components, and Angular expose the same final contract through each
 framework's idioms.
 
 ```tsx
-<Button variant="primary" iconStart={<PlusIcon />} disabled={false}>
+<Button variant="primary" size="md" iconStart={<PlusIcon />} disabled={false}>
   Create project
 </Button>
 ```
@@ -724,7 +731,7 @@ framework's idioms.
 
 - Use one primary action per logical region where possible.
 - Do not use a disabled state to hide unavailable permissions without explanation.
-- Link buttons must behave like links when navigation is intended.
+- Navigation uses the separate semantic link component, not Button.
 - Destructive or irreversible actions use the `destructive` variant and
   require confirmation when consequences are significant.
 

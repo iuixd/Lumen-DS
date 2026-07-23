@@ -1,16 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { CheckIcon } from "../icons/generated";
+import { CheckIcon, PlusIcon } from "../icons/generated";
 import { Button, type ButtonProps } from "./Button";
 
-const variants = [
-  "primary",
-  "accent",
-  "secondary",
-  "outline",
-  "ghost",
-  "link",
-  "destructive"
-] as const;
+const variants = ["primary", "accent", "secondary", "outline", "ghost", "destructive"] as const;
+const sizes = ["sm", "md", "lg", "xl"] as const;
 
 const hoverClasses: Record<(typeof variants)[number], string> = {
   primary:
@@ -21,8 +14,7 @@ const hoverClasses: Record<(typeof variants)[number], string> = {
     "border-[var(--color-button-secondary-hover-border)] bg-[var(--color-button-secondary-hover-bg)] text-[var(--color-button-secondary-hover-on-action)]",
   outline:
     "border-[var(--color-button-outline-hover-border)] bg-[var(--color-button-outline-hover-bg)] text-[var(--color-button-outline-hover-on-action)]",
-  ghost: "bg-[var(--color-button-ghost-hover-bg)]",
-  link: "bg-[var(--color-button-link-hover-bg)] text-[var(--color-button-link-hover-on-action)]",
+  ghost: "bg-[var(--color-button-ghost-hover-bg)] text-[var(--color-button-ghost-hover-on-action)]",
   destructive: "bg-[var(--color-button-destructive-hover-bg)]"
 };
 
@@ -34,15 +26,16 @@ const meta = {
     docs: {
       description: {
         component:
-          "The final standard Button collection from Figma node 1027:3733. Primary, Accent, Secondary, Outline, Ghost, and Destructive use the 34px geometry; Link uses its compact 8px inline and 2px block padding. All seven variants use the published light and dark Default, Hover, Focused, and Disabled roles. Use Storybook's theme toggle to inspect either token mode."
+          "The final standard Button variants come from Figma node 1027:3733: Primary, Accent, Secondary, Outline, Ghost, and Destructive. The sm, md, lg, and xl size geometry comes from node 1034:4459. The four sizes are 30px, 34px, 38px, and 42px high, with md remaining the default. Use Storybook's theme toggle to inspect either token mode."
       }
     }
   },
   argTypes: {
     variant: { control: "select", options: variants },
+    size: { control: "select", options: sizes },
     disabled: { control: "boolean" }
   },
-  args: { children: "Primary", variant: "primary", disabled: false }
+  args: { children: "Primary", variant: "primary", size: "md", disabled: false }
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -57,18 +50,19 @@ function StateButton({
   variant: NonNullable<ButtonProps["variant"]>;
   state: "Default" | "Hover" | "Focused" | "Disabled";
 }) {
+  const stateClass =
+    state === "Hover"
+      ? hoverClasses[variant]
+      : state === "Focused"
+        ? `ring-2 ring-[var(--color-button-focus-ring)] ring-offset-2 ring-offset-[var(--color-background-default)] ${variant === "outline" ? "border-[var(--color-button-outline-focus-border)]" : ""}`
+        : "";
+
   return (
     <Button
       variant={variant}
       disabled={state === "Disabled"}
       iconStart={<CheckIcon aria-hidden />}
-      className={
-        state === "Hover"
-          ? hoverClasses[variant]
-          : state === "Focused"
-            ? `ring-2 ring-[var(--color-button-focus-ring)] ring-offset-2 ring-offset-[var(--color-background-default)] ${variant === "outline" ? "border-[var(--color-button-outline-focus-border)]" : ""}`
-            : undefined
-      }
+      className={`justify-self-start ${variant === "destructive" ? "col-start-8" : ""} ${stateClass}`}
     >
       {variant[0].toUpperCase() + variant.slice(1)}
     </Button>
@@ -93,7 +87,7 @@ export const FinalVariantCollection: Story = {
             {variants.map((variant) => (
               <span
                 key={variant}
-                className="text-label-sm capitalize text-[var(--color-text-muted)]"
+                className={`text-label-sm capitalize text-[var(--color-text-muted)] ${variant === "destructive" ? "col-start-8" : ""}`}
               >
                 {variant}
               </span>
@@ -121,6 +115,31 @@ export const IconPositions: Story = {
       <Button iconEnd={<CheckIcon aria-hidden />} variant="secondary">
         Trailing icon
       </Button>
+    </div>
+  )
+};
+
+export const Sizes: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex flex-wrap items-center gap-10">
+      {sizes.map((size) => (
+        <div key={size} className="flex flex-col items-start gap-3">
+          <Button size={size} iconStart={<PlusIcon aria-hidden />}>
+            {size === "sm"
+              ? "Small"
+              : size === "md"
+                ? "Medium"
+                : size === "lg"
+                  ? "Large"
+                  : "X-Large"}
+          </Button>
+          <span className="font-mono text-code-sm text-[var(--color-text-muted)]">
+            {size} -{" "}
+            {size === "sm" ? "30px" : size === "md" ? "34px" : size === "lg" ? "38px" : "42px"}
+          </span>
+        </div>
+      ))}
     </div>
   )
 };

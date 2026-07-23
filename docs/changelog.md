@@ -296,6 +296,88 @@ Example:
 
 ### Added
 
+- Replaced the existing AI Button component library and Storybook surface
+  with the canonical “One AI button, every capability” collection.
+  - Affected token group/component: `typography.ai-library-*`, editorial and
+    documentation-mono font families, `AIButton`, `<lumen-ai-button>`,
+    `LumenAIButtonComponent`, and the AI capability catalog
+  - Figma source: Lumen-AI-Design-System node `760:1965`, audited on
+    2026-07-23 with design context, metadata, variables, and the full-node
+    screenshot
+  - Previous: the pre-release component exposed Raised, Primary, Secondary,
+    Tertiary, Outline, Link, status tints, a 32/36/40/48px `xs/sm/md/lg`
+    scale, and behavioral-only destructive intent. Loading hid its visible
+    label; split AI buttons were deferred; the Storybook MDX library
+    documented those obsolete behaviors.
+  - Current: one component exposes Primary, Secondary, Ghost, Outline,
+    Destructive, exact 30/34/38/42px `sm/md/lg/xl` sizes, four-size icon-only
+    treatments, visible-label Loading, and Primary/Secondary/Outline split
+    buttons. The data-driven catalog contains the exact 24 Figma labels,
+    descriptions, and capability icons across Content & Drafting, Data
+    Analysis & Insights, Workflow & Automation, and Search & Knowledge.
+    Storybook now lives at
+    `AI Components/One AI Button, Every Capability`; the old
+    `AIButtonComponentLibrary.mdx` was deleted.
+  - Affects: `packages/ui/src/primitives/{AIButton,AIButton.stories,
+    AIButton.test,ai-capabilities,ai-capabilities.test}.*`,
+    `packages/{web-components,angular}/src/ai-button/*`,
+    `packages/tokens/src/typography.json` and generated token outputs,
+    framework READMEs, `docs/{component-specifications,figma-sync}.md`
+  - Migration: breaking — replace `raised` with `primary`, `tertiary` with
+    `ghost`, remove `link` and `status`, rename `xs/sm/md/lg` sizing to the
+    canonical `sm/md/lg/xl` scale, and use `variant="destructive"` instead of
+    the old `destructive` boolean
+  - Validation: token build, repo-wide lint, and all package typechecks
+    passed; all 339 workspace tests passed (162 React/UI, 74 Web Components,
+    70 Angular, 27 create-app, 6 patterns); production Storybook built successfully
+    and registered the new `Library` story. A 1608px full-page Chromium
+    screenshot confirmed the hero, 12-card variant grid, exact four-size
+    icon-only rows, visible Loading label, three split treatments, and all
+    24 catalog actions against the Figma reference. The in-app browser
+    backend was unavailable, so console capture could not be completed.
+  - Changeset: `.changeset/one-ai-button-every-capability.md`
+    (`@lumen/tokens` minor; `@lumen/ui`, `@lumen/web-components`, and
+    `@lumen/angular` major)
+
+- Added the published standard Button size scale across React, Web Components,
+  Angular, and Storybook.
+  - Affected token group/component: `spacing.42`,
+    `typography.standard-button-{sm,md,lg,xl}`, and standard `Button`
+  - Figma source: Lumen-AI-Design-System node `1034:4459` ("Sizes"), verified
+    with `get_design_context`, `get_metadata`, and per-instance
+    `get_variable_defs`; variant/state colors remain sourced from node
+    `1027:3733`
+  - Previous: the final Button reconciliation exposed one fixed 34px
+    geometry and no `size` API, so the published 30/34/38/42px scale was
+    missing from all three framework packages and Storybook.
+  - Current: `size="sm" | "md" | "lg" | "xl"` binds exact 30/34/38/42px
+    heights, 14/16/16/16px inline padding, 6/8/8/8px gaps, 12/14/16/18px
+    icons, and Instrument Sans Medium 12/14/16/18px labels with 1% letter
+    spacing. `md` remains the default and preserves the previous 34px height;
+    its inline padding is corrected from 14px to the newly published 16px.
+    The separate 34px icon-only reference is not a size and remains outside
+    this change.
+  - Affects: `packages/tokens/src/{spacing,typography}.json`, token generator
+    and generated output, `packages/ui/src/primitives/{Button,AIButton}.*`,
+    `packages/web-components/src/button/lumen-button.{ts,test.ts}`,
+    `packages/angular/src/button/lumen-button.{ts,test.ts}`, the Button
+    package READMEs, and
+    `docs/{component-architecture,component-specifications,design-tokens,development-guidelines,figma-sync,roadmap}.md`
+  - Migration: none — `size` is additive and defaults to `md`; existing
+    Buttons retain their 34px height but become 4px wider overall because
+    `md` uses Figma's corrected 16px inline padding
+  - Validation: token generation and repeat-build output passed, including
+    `--spacing-42` and all four `--text-standard-button-*` tiers; repository
+    typecheck and lint passed; all 345 workspace tests passed (168 React/UI,
+    including 16 Button tests; 74 Web Components, including 15 Button tests;
+    70 Angular, including 15 Button tests; 27 create-app; 6 patterns);
+    production Storybook built with 2,125 modules and registered
+    `primitives-button--sizes`; a Playwright screenshot of the built story
+    confirmed the four rendered heights, labels, icons, and spacing against
+    the Figma reference. `git diff --check` passed.
+  - Changeset: `.changeset/button-sizes.md` (`@lumen/tokens` minor,
+    `@lumen/ui` minor, `@lumen/web-components` minor, `@lumen/angular` minor)
+
 - Added `AIPanel`, a new composite (right-side assistant chat panel), and a Button `accent` variant, correcting a Figma-source error from the same-day sync below: the AppShell reconciliation two entries down was audited against node `1197:1652` ("appshell-desktop-closed-light"), which turned out to be one example instance living inside a larger canonical "AppShell" canvas (node `1007:3700`), not the canonical source itself. Re-auditing against that canvas surfaced a real design that example instance didn't show at all.
   - Source: user-reported mismatch between Storybook's `AppShell` and Figma, pointing at `https://www.figma.com/design/GJBYRm6ySR7XIECFcHMgy2/Lumen-AI-Design-System?node-id=1007-3700`. Extracted via `get_metadata`/`get_design_context`/`get_variable_defs` on 2026-07-20: `SideNav/Expanded` (`1079:2427`), `NavigationRail` (`1079:2686`), `AIPanel` (`1079:3141`), and the `Breakpoint=Desktop/Theme=Light` composition (`1127:4196`, instance `1119:3351` for AIPanel).
   - Previous: `AIPanel` didn't exist in any framework package. `Button` had no near-black "accent" treatment.
@@ -639,9 +721,91 @@ warning,error}-text` and `-border` (surfaces reuse the existing
 
 ### Removed
 
-- None.
+- Removed `link` from the standard Button variant collection and public API
+  across React, Web Components, Angular, and Storybook.
+  - Affected token group/component: standard `Button` and the
+    `button.link-*` component color roles; the standalone semantic
+    `TextLink` component and `text.link*` roles are unchanged
+  - Figma source: Lumen-AI-Design-System node `1027:3733`, re-verified with
+    `get_design_context` on 2026-07-23. The current `Style` property contains
+    only `Primary | Accent | Secondary | Outline | Ghost | Danger`, producing
+    48 variant/state/theme combinations; `Link` is absent.
+  - Previous: all three framework Button APIs exposed `link`, Storybook
+    rendered a seventh Link column, and component-scoped Link background/text
+    tokens remained generated from an older extraction of the same node.
+  - Current: the standard Button contract exposes only
+    `primary | accent | secondary | outline | ghost | destructive`;
+    Storybook renders the exact
+    six-column Figma collection in light and dark. The unused
+    `button.link-*` semantic roles and their two component-only hover
+    primitives are removed. Navigation continues to use `TextLink` or a
+    semantic anchor.
+  - Affects: `packages/tokens/src/{primitives/color,semantic/color}.json` and
+    generated output; `packages/ui/src/primitives/Button.{tsx,stories.tsx,test.tsx}`;
+    `packages/web-components/src/button/lumen-button.{ts,test.ts}`;
+    `packages/angular/src/button/lumen-button.{ts,test.ts}`; package READMEs;
+    and
+    `docs/{component-architecture,component-specifications,development-guidelines,figma-sync,roadmap}.md`
+  - Migration: breaking — replace standard `<Button variant="link">` usage
+    with `TextLink`/an anchor for navigation, or `ghost` for a low-emphasis
+    action; remove direct use of `--color-button-link-*`
+  - Validation: token generation passed and generated output contains no
+    `button-link`/`--color-button-link-*` roles; repository typecheck and
+    lint passed; all 339 workspace tests passed (166 React/UI, including 14
+    Button tests; 72 Web Components, including 13 Button tests; 68 Angular,
+    including 13 Button tests; 27 create-app; 6 patterns); production
+    Storybook built with 2,125 modules. A Playwright screenshot of
+    `FinalVariantCollection` confirmed the six compact variant columns in
+    all four states and both themes, with the removed Link slot left empty
+    before Destructive to match the Figma collection layout.
+  - Changeset: `.changeset/final-button-collection.md` (`@lumen/tokens`
+    major, `@lumen/ui` major, `@lumen/web-components` major,
+    `@lumen/angular` major)
 
 ### Fixed
+
+- Corrected every standard Button Hover color against the 12 current
+  light/dark Hover instances.
+  - Affected token group/component: `color.button` Hover surface,
+    foreground, and border roles; Button in React, Web Components, Angular,
+    and Storybook
+  - Figma source: Lumen-AI-Design-System node `1027:3733` (collection frame
+    `1174:1349`), verified with `get_design_context`, `get_metadata`, and
+    individual `get_variable_defs` reads for all six Hover variants in both
+    themes
+  - Previous: Primary, Accent, Destructive, and the light hover surfaces were
+    correct, but dark Secondary/Ghost used the obsolete `#2D1A26` surface;
+    dark Outline used the wrong surface, foreground, and border ramp steps;
+    Ghost retained its default foreground on hover; and light Secondary
+    retained the wrong hover foreground alias.
+  - Current: Primary (`#720024` light / `#CB3363` dark), Accent (same
+    surfaces), and Destructive (`#AE1820` / `#E14B53`) remain unchanged.
+    Secondary now resolves to `#DBE1E2` / `#A8939F`, Outline to `#F2CCD8` /
+    `#F9E6EC`, and Ghost to `#DBE1E2` / `#A8939F`; their exact
+    mode-specific foregrounds and Secondary/Outline borders are bound as
+    published. Ghost gains an explicit `ghost-hover-on-action` semantic role
+    and all three framework implementations and the static Storybook Hover
+    row consume it.
+  - Affects:
+    `packages/tokens/src/{primitives/color,semantic/color}.json` and generated
+    token output; `packages/ui/src/primitives/Button.{tsx,stories.tsx,test.tsx}`;
+    `packages/web-components/src/button/lumen-button.{ts,test.ts}`;
+    `packages/angular/src/button/lumen-button.{ts,test.ts}`;
+    `.changeset/final-button-collection.md`; and
+    `docs/{changelog,component-specifications,design-tokens,figma-sync}.md`
+  - Migration: none â€” public variants and props are unchanged; this is a
+    visual token correction
+  - Validation: token generation passed and generated CSS resolves all 12
+    Hover combinations to the exact Figma values; repository-wide typecheck
+    and lint passed; all 342 workspace tests passed (167 React/UI, including
+    15 Button tests; 73 Web Components, including 14 Button tests; 69
+    Angular, including 14 Button tests; 27 create-app; 6 patterns);
+    production Storybook built successfully with 2,125 modules and contains
+    the updated static Hover row. Browser-backed hover screenshots were not
+    available because this session exposed no local browser surface, so no
+    browser visual signoff is claimed.
+  - Changeset: `.changeset/final-button-collection.md` (existing pending
+    Button release entry expanded)
 
 - Corrected `KPICard`'s shadow opacity and `PageHeader`/`Footer`'s link colors against the canonical Figma source, found during the same-day AppShell audit (see the AIPanel/accent entry above).
   - Source: canonical "AppShell" page (Lumen-AI-Design-System, node `1007:3700`), `Breakpoint=Desktop/Theme=Light` composition `1127:4196`, `KPICard` instances `1119:3343`-`45`, `PageHeader` instance `1119:3341`, `Footer` instance `1119:3352` — re-verifying the same components previously sourced from the non-canonical `1197:1652` example instance.

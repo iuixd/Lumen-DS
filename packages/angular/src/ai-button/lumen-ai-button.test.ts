@@ -11,7 +11,6 @@ import { LumenAIButtonComponent, type LumenAIButtonVariant } from "./lumen-ai-bu
       [variant]="variant"
       [loading]="loading"
       [disabled]="disabled"
-      [destructive]="destructive"
       (click)="onClick()"
     >
       Summarize
@@ -22,7 +21,6 @@ class TestHostComponent {
   variant: LumenAIButtonVariant = "primary";
   loading = false;
   disabled = false;
-  destructive = false;
   clicked = 0;
   onClick() {
     this.clicked++;
@@ -90,7 +88,7 @@ describe("LumenAIButtonComponent", () => {
     warnSpy.mockRestore();
   });
 
-  it.each(["primary", "secondary", "tertiary", "outline"] as const)(
+  it.each(["primary", "secondary", "ghost", "outline", "destructive"] as const)(
     "reflects variant=%s as a host attribute",
     (variant) => {
       const fixture = createHost({ variant });
@@ -98,8 +96,10 @@ describe("LumenAIButtonComponent", () => {
     }
   );
 
-  it("marks destructive intent via a data attribute without changing behavior otherwise", () => {
-    const fixture = createHost({ variant: "secondary", destructive: true });
-    expect(innerButton(fixture.nativeElement).getAttribute("data-destructive")).toBe("true");
+  it("renders destructive as a visual variant", () => {
+    const fixture = createHost({ variant: "destructive" });
+    expect(fixture.nativeElement.querySelector("lumen-ai-button")!.getAttribute("variant")).toBe(
+      "destructive"
+    );
   });
 });

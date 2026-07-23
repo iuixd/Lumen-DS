@@ -64,7 +64,7 @@ describe("lumen-ai-button", () => {
     warnSpy.mockRestore();
   });
 
-  it.each(["primary", "secondary", "tertiary", "outline"] as const)(
+  it.each(["primary", "secondary", "ghost", "outline", "destructive"] as const)(
     "reflects variant=%s as a host attribute",
     async (variant) => {
       const el = await renderButton(`<lumen-ai-button variant="${variant}">Summarize</lumen-ai-button>`);
@@ -78,9 +78,11 @@ describe("lumen-ai-button", () => {
     expect(el.getAttribute("size")).toBe("md");
   });
 
-  it("marks destructive intent via a data attribute without changing behavior otherwise", async () => {
-    const el = await renderButton('<lumen-ai-button variant="secondary" destructive>Clean up records</lumen-ai-button>');
-    expect(innerButton(el).getAttribute("data-destructive")).toBe("true");
+  it("renders destructive as a visual variant", async () => {
+    const el = await renderButton(
+      '<lumen-ai-button variant="destructive">AI Clean Up Records</lumen-ai-button>'
+    );
+    expect(el.getAttribute("variant")).toBe("destructive");
   });
 
   it("accepts a custom leading icon via the icon slot", async () => {

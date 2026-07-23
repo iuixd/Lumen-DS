@@ -1,5 +1,5 @@
 {
-  "_comment": "Sourced from Figma 'Lumen-AI-Design-System' file, page 'Design Tokens' > '02 Typography' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 428:13769). Font family: Inter (UI text), Roboto Mono (code). H1-H6/Body/Label/Overline/Caption/Code map directly onto this scale's tiers: display-*=H1-H3, headline-*=H4-H6, title-* sits between H6 and Body at medium weight (Figma has no distinct 'title' tier), label-*/body-*/overline/caption/code-* are exact matches. button-* is a separate scale read directly off the Button component's own text spans on the 'Buttons' page (node 466:4365) — it's close to label-* but not pixel-identical on line-height, and button-lg (16px) has no equivalent at all in label-* (label tops out at 14px), which is why reusing label-lg for both md and lg previously made those two sizes render identically.",
+  "_comment": "Sourced from Figma 'Lumen-AI-Design-System' file, page 'Design Tokens' > '02 Typography' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 428:13769). Font family: Inter (UI text), Roboto Mono (code). H1-H6/Body/Label/Overline/Caption/Code map directly onto this scale's tiers: display-*=H1-H3, headline-*=H4-H6, title-* sits between H6 and Body at medium weight (Figma has no distinct 'title' tier), label-*/body-*/overline/caption/code-* are exact matches. button-* is a separate legacy scale read directly off the earlier Button page. standard-button-* is the current Instrument Sans Medium 12/14/16/18px scale from node 1034:4459, with Figma's normal line height and 1% letter spacing.",
   "fontFamily": {
     "sans": { "value": ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"] },
     "interface": {
@@ -15,9 +15,52 @@
     "brand": {
       "value": ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"]
     },
-    "mono": { "value": ["Roboto Mono", "SFMono-Regular", "Menlo", "monospace"] }
+    "mono": { "value": ["Roboto Mono", "SFMono-Regular", "Menlo", "monospace"] },
+    "editorial": { "value": ["Source Serif Pro", "Georgia", "serif"] },
+    "documentation-mono": {
+      "value": ["Space Mono", "Roboto Mono", "SFMono-Regular", "Menlo", "monospace"]
+    }
   },
   "scale": {
+    "ai-library-h1": {
+      "fontSize": 60,
+      "lineHeight": 72,
+      "weight": 400,
+      "letterSpacing": -1.8,
+      "usage": "One AI Button library title (Figma node 760:1965)"
+    },
+    "ai-library-h3": {
+      "fontSize": 40,
+      "lineHeight": 50,
+      "weight": 400,
+      "letterSpacing": -0.8,
+      "usage": "One AI Button library section heading (Figma node 760:1965)"
+    },
+    "ai-library-lead": {
+      "fontSize": 20,
+      "lineHeight": 22,
+      "weight": 400,
+      "usage": "One AI Button library introduction (Figma node 760:1965)"
+    },
+    "ai-library-card-title": {
+      "fontSize": 20,
+      "lineHeight": 32,
+      "weight": 600,
+      "usage": "One AI Button library card title (Figma node 760:1965)"
+    },
+    "ai-library-body": {
+      "fontSize": 14,
+      "lineHeight": 16,
+      "weight": 400,
+      "usage": "One AI Button library card description (Figma node 760:1965)"
+    },
+    "ai-library-caption": {
+      "fontSize": 14,
+      "lineHeight": 18,
+      "weight": 400,
+      "letterSpacing": 0.028,
+      "usage": "One AI Button library eyebrow and labels (Figma node 760:1965)"
+    },
     "display-lg": {
       "fontSize": 60,
       "lineHeight": 72,
@@ -260,6 +303,34 @@
       "weight": 500,
       "letterSpacing": 0.14,
       "usage": "AppShell page action button"
+    },
+    "standard-button-sm": {
+      "fontSize": 12,
+      "lineHeight": "normal",
+      "weight": 500,
+      "letterSpacing": 0.12,
+      "usage": "Standard Button label, size=sm (Figma node 1034:4459)"
+    },
+    "standard-button-md": {
+      "fontSize": 14,
+      "lineHeight": "normal",
+      "weight": 500,
+      "letterSpacing": 0.14,
+      "usage": "Standard Button label, size=md (Figma node 1034:4459)"
+    },
+    "standard-button-lg": {
+      "fontSize": 16,
+      "lineHeight": "normal",
+      "weight": 500,
+      "letterSpacing": 0.16,
+      "usage": "Standard Button label, size=lg (Figma node 1034:4459)"
+    },
+    "standard-button-xl": {
+      "fontSize": 18,
+      "lineHeight": "normal",
+      "weight": 500,
+      "letterSpacing": 0.18,
+      "usage": "Standard Button label, size=xl (Figma node 1034:4459)"
     },
     "app-nav": {
       "fontSize": 13,

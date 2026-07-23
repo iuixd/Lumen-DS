@@ -1,42 +1,43 @@
+import type { ReactNode } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { AIButton } from "./AIButton";
-import { WandSparklesIcon, LanguagesIcon } from "../icons/generated";
 import { aiCapabilities } from "./ai-capabilities";
 
 const meta = {
-  title: "AI Components/AI Button",
+  title: "AI Components/One AI Button, Every Capability",
   component: AIButton,
   tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
         component:
-          "Sourced from the Figma 'Buttons' page's AI Communication Component Library (Lumen-AI-Design-System, node 760:1965): Primary, Raised (Primary with elevation), Secondary, Tertiary, Outline, and Link AI, each in xs/sm/md/lg, always with a leading `lm-aisymbol` icon. `destructive` documents intent only — Figma specs no distinct color for it, so callers must add their own confirmation step before invoking a destructive AI action. `status` (success/warning/error) is a tinted status override sourced from the same 'States' table (node 852:7996) — Primary/Raised get a solid fill instead of the subtle tint the other variants use, see the StatusStates story and the component's own doc comment. See the 'AI Components/AI Button Component Library' docs page for the full capability catalog and usage guidance."
+          "The canonical One AI Button collection from Lumen AI Design System node 760:1965. One component covers labeled, icon-only, loading, destructive, and split-button treatments; capability changes come from label, icon, action, and prompt—not new visual variants."
       }
     }
   },
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "raised", "secondary", "tertiary", "outline", "link"]
+      options: ["primary", "secondary", "ghost", "outline", "destructive"]
     },
-    size: { control: "select", options: ["xs", "sm", "md", "lg"] },
-    status: { control: "select", options: [undefined, "success", "warning", "error"] },
-    isLoading: { control: "boolean" },
-    disabled: { control: "boolean" },
-    destructive: { control: "boolean" },
+    size: { control: "select", options: ["sm", "md", "lg", "xl"] },
     capability: {
       control: "select",
-      options: [undefined, ...aiCapabilities.map((c) => c.id)]
-    }
+      options: [undefined, ...aiCapabilities.map((capability) => capability.id)]
+    },
+    iconOnly: { control: "boolean" },
+    isLoading: { control: "boolean" },
+    split: { control: "boolean" },
+    disabled: { control: "boolean" }
   },
   args: {
-    children: "Summarize",
+    children: "AI Draft",
     variant: "primary",
     size: "md",
+    iconOnly: false,
     isLoading: false,
-    disabled: false,
-    destructive: false
+    split: false,
+    disabled: false
   }
 } satisfies Meta<typeof AIButton>;
 
@@ -45,174 +46,167 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
-export const AllVariants: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <AIButton variant="primary">Primary AI</AIButton>
-      <AIButton variant="raised">Raised AI</AIButton>
-      <AIButton variant="secondary">Secondary AI</AIButton>
-      <AIButton variant="tertiary">Tertiary AI</AIButton>
-      <AIButton variant="outline">Outline AI</AIButton>
-      <AIButton variant="link">Link AI</AIButton>
-    </div>
-  )
-};
-
-export const StatusStates: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-3">
-        <AIButton variant="primary" status="success">
-          Success
-        </AIButton>
-        <AIButton variant="primary" status="warning">
-          Warning
-        </AIButton>
-        <AIButton variant="primary" status="error">
-          Error
-        </AIButton>
+function VariantCard({
+  title,
+  description,
+  children
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <article className="flex min-h-[var(--spacing-240)] flex-col justify-between rounded-lg border border-[var(--color-app-shell-border-table)] bg-[var(--color-background-default)] p-[var(--spacing-24)]">
+      <div>
+        <h3 className="font-interface text-ai-library-card-title text-[var(--color-app-shell-text-primary)]">
+          {title}
+        </h3>
+        <p className="mt-[var(--spacing-4)] font-interface text-ai-library-body text-[var(--color-app-shell-text-secondary)]">
+          {description}
+        </p>
       </div>
-      <div className="flex flex-wrap items-center gap-3">
-        <AIButton variant="raised" status="success">
-          Success
-        </AIButton>
-        <AIButton variant="raised" status="warning">
-          Warning
-        </AIButton>
-        <AIButton variant="raised" status="error">
-          Error
-        </AIButton>
+      <div className="mt-[var(--spacing-32)] flex flex-wrap items-center gap-[var(--spacing-12)]">
+        {children}
       </div>
-      <div className="flex flex-wrap items-center gap-3">
-        <AIButton variant="secondary" status="success">
-          Success
-        </AIButton>
-        <AIButton variant="secondary" status="warning">
-          Warning
-        </AIButton>
-        <AIButton variant="secondary" status="error">
-          Error
-        </AIButton>
-      </div>
-    </div>
-  )
-};
+    </article>
+  );
+}
 
-export const Sizes: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <AIButton size="xs">Extra small</AIButton>
-      <AIButton size="sm">Small</AIButton>
-      <AIButton size="md">Medium</AIButton>
-      <AIButton size="lg">Large</AIButton>
-    </div>
-  )
-};
+function CapabilityCard({ category }: { category: string }) {
+  const capabilities = aiCapabilities.filter((capability) => capability.category === category);
 
-export const IconOnly: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <AIButton iconOnly size="sm" aria-label="AI actions" />
-      <AIButton iconOnly size="md" aria-label="AI actions" />
-      <AIButton iconOnly size="lg" aria-label="AI actions" />
-    </div>
-  )
-};
-
-export const CustomIcon: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <AIButton icon={<WandSparklesIcon className="size-[18px]" aria-hidden />}>Rewrite</AIButton>
-      <AIButton icon={<LanguagesIcon className="size-[18px]" aria-hidden />}>Translate</AIButton>
-    </div>
-  )
-};
-
-export const Loading: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <AIButton isLoading>Generating...</AIButton>
-      <AIButton isLoading variant="secondary">
-        Generating...
-      </AIButton>
-    </div>
-  )
-};
-
-export const Destructive: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <AIButton variant="secondary" destructive>
-      Clean Up Records
-    </AIButton>
-  )
-};
-
-export const Disabled: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <AIButton disabled>Summarize</AIButton>
-      <AIButton disabled variant="secondary">
-        Summarize
-      </AIButton>
-      <AIButton disabled variant="outline">
-        Summarize
-      </AIButton>
-    </div>
-  )
-};
-
-/**
- * Capability Catalog — the pattern documented on the same Figma section
- * (node 860:9109), mapping AI Buttons to example actions grouped by
- * category. Shown here as a Storybook composition, not a new exported
- * component — see `docs/changelog.md` `[Unreleased]` for why this stayed a
- * story rather than a shipped `packages/patterns` pattern. Data-driven from
- * `./ai-capabilities` (the single source of truth also used by the
- * `capability` prop itself) rather than a hardcoded local array.
- */
-export const CapabilityCatalog: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => {
-    const categories = Array.from(new Set(aiCapabilities.map((c) => c.category)));
-    return (
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {categories.map((category) => (
-          <div key={category} className="flex flex-col gap-3">
-            <p className="text-label-md font-semibold uppercase text-[var(--color-text-muted)]">{category}</p>
-            <div className="flex flex-col gap-2">
-              {aiCapabilities
-                .filter((c) => c.category === category)
-                .map((c) => (
-                  <AIButton key={c.id} capability={c.id} variant="secondary" size="sm" className="justify-start" />
-                ))}
-            </div>
+  return (
+    <article className="rounded-lg border border-[var(--color-app-shell-border-table)] bg-[var(--color-background-default)] p-[var(--spacing-24)]">
+      <h3 className="font-interface text-ai-library-card-title text-[var(--color-app-shell-text-primary)]">
+        {category}
+      </h3>
+      <div className="mt-[var(--spacing-24)] flex flex-col gap-[var(--spacing-20)]">
+        {capabilities.map((capability) => (
+          <div key={capability.id}>
+            <AIButton
+              capability={capability.id}
+              variant={capability.id === "conversational-search" ? "primary" : "secondary"}
+            />
+            <p className="mt-[var(--spacing-8)] font-interface text-ai-library-body text-[var(--color-app-shell-text-secondary)]">
+              {capability.description}
+            </p>
           </div>
         ))}
       </div>
+    </article>
+  );
+}
+
+/** Pixel-matched reference composition for Figma node `760:1965`. */
+export const Library: Story = {
+  parameters: {
+    layout: "fullscreen",
+    controls: { disable: true },
+    options: { showPanel: false }
+  },
+  render: () => {
+    const categories = Array.from(new Set(aiCapabilities.map((capability) => capability.category)));
+
+    return (
+      <main className="min-h-screen bg-[var(--color-app-shell-background)] px-[var(--spacing-96)] py-[var(--spacing-80)]">
+        <header>
+          <p className="font-documentation-mono text-ai-library-caption uppercase text-[var(--color-app-shell-text-tertiary)]">
+            AI Button Library · V1.0
+          </p>
+          <h1 className="mt-[var(--spacing-24)] font-editorial text-ai-library-h1 text-[var(--color-app-shell-text-primary)]">
+            One AI button, every capability.
+          </h1>
+          <p className="mt-[var(--spacing-24)] font-interface text-ai-library-lead text-[var(--color-app-shell-text-secondary)]">
+            A single reusable AI Button component. Applications expose different capabilities by
+            changing only the label, icon, action, and prompt — never by inventing new button
+            styles.
+          </p>
+        </header>
+
+        <section className="mt-[var(--spacing-96)]">
+          <h2 className="font-editorial text-ai-library-h3 text-[var(--color-app-shell-text-primary)]">
+            Component variants
+          </h2>
+          <div className="mt-[var(--spacing-32)] grid grid-cols-1 gap-[var(--spacing-16)] md:grid-cols-2 xl:grid-cols-4">
+            <VariantCard title="Primary AI" description="Highest-emphasis AI action">
+              <AIButton capability="draft" />
+            </VariantCard>
+            <VariantCard title="Secondary AI" description="Default reusable AI action">
+              <AIButton capability="summarize" variant="secondary" />
+            </VariantCard>
+            <VariantCard title="Ghost AI" description="Low-emphasis contextual AI action">
+              <AIButton capability="rewrite" variant="ghost" />
+            </VariantCard>
+            <VariantCard title="Outline AI" description="AI action on a neutral surface">
+              <AIButton capability="translate" variant="outline" />
+            </VariantCard>
+            <VariantCard title="Primary Icon Only AI" description="Compact primary AI trigger">
+              {(["sm", "md", "lg", "xl"] as const).map((size) => (
+                <AIButton key={size} iconOnly size={size} aria-label={`AI action, ${size}`} />
+              ))}
+            </VariantCard>
+            <VariantCard title="Secondary Icon Only AI" description="Compact secondary AI trigger">
+              {(["sm", "md", "lg", "xl"] as const).map((size) => (
+                <AIButton
+                  key={size}
+                  iconOnly
+                  size={size}
+                  variant="secondary"
+                  aria-label={`AI action, ${size}`}
+                />
+              ))}
+            </VariantCard>
+            <VariantCard title="Outline Icon Only AI" description="Compact outlined AI trigger">
+              {(["sm", "md", "lg", "xl"] as const).map((size) => (
+                <AIButton
+                  key={size}
+                  iconOnly
+                  size={size}
+                  variant="outline"
+                  aria-label={`AI action, ${size}`}
+                />
+              ))}
+            </VariantCard>
+            <VariantCard title="Split Button AI" description="Primary action with related AI menu">
+              <AIButton split capability="draft" />
+            </VariantCard>
+            <VariantCard
+              title="Secondary Split Button AI"
+              description="Secondary action with related AI menu"
+            >
+              <AIButton split capability="draft" variant="secondary" />
+            </VariantCard>
+            <VariantCard
+              title="Outline Split Button AI"
+              description="Outlined action with related AI menu"
+            >
+              <AIButton split variant="outline">
+                AI Draft...
+              </AIButton>
+            </VariantCard>
+            <VariantCard title="Loading AI" description="Visible progress with a stable label">
+              <AIButton isLoading>Generating...</AIButton>
+            </VariantCard>
+            <VariantCard title="Destructive AI" description="AI action with destructive impact">
+              <AIButton variant="destructive">AI Clean Up Records</AIButton>
+            </VariantCard>
+          </div>
+        </section>
+
+        <section className="mt-[var(--spacing-96)]">
+          <h2 className="font-editorial text-ai-library-h3 text-[var(--color-app-shell-text-primary)]">
+            Capability catalog
+          </h2>
+          <p className="mt-[var(--spacing-16)] font-interface text-ai-library-lead text-[var(--color-app-shell-text-secondary)]">
+            Use the same AI Button visual language for every supported capability.
+          </p>
+          <div className="mt-[var(--spacing-32)] grid grid-cols-1 gap-[var(--spacing-16)] md:grid-cols-2 xl:grid-cols-4">
+            {categories.map((category) => (
+              <CapabilityCard key={category} category={category} />
+            ))}
+          </div>
+        </section>
+      </main>
     );
   }
-};
-
-/**
- * Focused demo of the `capability` prop itself — no `icon`/`children` passed,
- * label and icon both come from `./ai-capabilities`.
- */
-export const ByCapability: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <AIButton capability="draft" />
-      <AIButton capability="summarize" variant="secondary" />
-      <AIButton capability="translate" variant="tertiary" />
-      <AIButton capability="search-knowledge" variant="outline" />
-    </div>
-  )
 };

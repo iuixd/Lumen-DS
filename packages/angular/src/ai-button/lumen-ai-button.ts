@@ -29,8 +29,13 @@ import { NgTemplateOutlet } from "@angular/common";
  * `<ng-content>` alone can't express "default icon unless overridden" the
  * way a native `<slot>` can.
  */
-export type LumenAIButtonVariant = "primary" | "secondary" | "tertiary" | "outline";
-export type LumenAIButtonSize = "xs" | "sm" | "md" | "lg";
+export type LumenAIButtonVariant =
+  | "primary"
+  | "secondary"
+  | "ghost"
+  | "outline"
+  | "destructive";
+export type LumenAIButtonSize = "sm" | "md" | "lg" | "xl";
 
 @Component({
   selector: "lumen-ai-button",
@@ -41,13 +46,11 @@ export type LumenAIButtonSize = "xs" | "sm" | "md" | "lg";
     "[attr.variant]": "variant",
     "[attr.size]": "size",
     "[attr.icon-only]": "iconOnly ? '' : null",
-    "[attr.destructive]": "destructive ? '' : null"
   },
   template: `
     <button
       type="button"
       part="button"
-      [attr.data-destructive]="destructive ? 'true' : null"
       [attr.aria-disabled]="isDisabled ? 'true' : null"
       [attr.aria-busy]="loading ? 'true' : null"
       [attr.aria-label]="resolvedAriaLabel"
@@ -66,7 +69,7 @@ export type LumenAIButtonSize = "xs" | "sm" | "md" | "lg";
           />
         </svg>
       }
-      <span class="label" [class.sr-only]="loading">
+      <span class="label">
         <ng-content></ng-content>
       </span>
     </button>
@@ -86,163 +89,156 @@ export type LumenAIButtonSize = "xs" | "sm" | "md" | "lg";
       white-space: nowrap;
       cursor: pointer;
       border-radius: var(--radius-lg);
-      border: 1.5px solid transparent;
+      border: 1px solid transparent;
       transition:
         background-color 0.15s ease,
         border-color 0.15s ease;
     }
 
     button:focus-visible {
-      outline: 2px solid var(--color-border-focus);
-      outline-offset: 4px;
+      outline: 2px solid var(--color-button-focus-ring);
+      outline-offset: 2px;
     }
 
     button[aria-disabled="true"] {
       pointer-events: none;
     }
 
-    :host([size="xs"]) button {
-      height: var(--spacing-32);
-      min-width: var(--spacing-64);
-      padding: var(--spacing-5) var(--spacing-10);
-      font-size: var(--text-button-xs-size);
-      line-height: var(--text-button-xs-line-height);
-      font-weight: var(--text-button-xs-weight);
-    }
     :host([size="sm"]) button {
-      height: var(--spacing-36);
-      min-width: var(--spacing-80);
-      padding: var(--spacing-6) var(--spacing-12);
-      font-size: var(--text-button-sm-size);
-      line-height: var(--text-button-sm-line-height);
-      font-weight: var(--text-button-sm-weight);
+      height: var(--spacing-30);
+      padding: 0 var(--spacing-14);
+      font-size: var(--text-standard-button-sm-size);
+      line-height: var(--text-standard-button-sm-line-height);
+      font-weight: var(--text-standard-button-sm-weight);
     }
     :host([size="md"]) button,
     :host(:not([size])) button {
-      height: var(--spacing-40);
-      min-width: var(--spacing-96);
-      padding: var(--spacing-8) var(--spacing-16);
-      font-size: var(--text-button-md-size);
-      line-height: var(--text-button-md-line-height);
-      font-weight: var(--text-button-md-weight);
+      height: var(--spacing-34);
+      padding: 0 var(--spacing-14);
+      font-size: var(--text-standard-button-md-size);
+      line-height: var(--text-standard-button-md-line-height);
+      font-weight: var(--text-standard-button-md-weight);
     }
     :host([size="lg"]) button {
-      height: var(--spacing-48);
-      min-width: var(--spacing-120);
-      padding: var(--spacing-10) var(--spacing-20);
-      font-size: var(--text-button-lg-size);
-      line-height: var(--text-button-lg-line-height);
-      font-weight: var(--text-button-lg-weight);
+      height: var(--spacing-38);
+      padding: 0 var(--spacing-16);
+      font-size: var(--text-standard-button-lg-size);
+      line-height: var(--text-standard-button-lg-line-height);
+      font-weight: var(--text-standard-button-lg-weight);
+    }
+    :host([size="xl"]) button {
+      height: var(--spacing-42);
+      padding: 0 var(--spacing-16);
+      font-size: var(--text-standard-button-xl-size);
+      line-height: var(--text-standard-button-xl-line-height);
+      font-weight: var(--text-standard-button-xl-weight);
     }
 
     :host([icon-only]) button {
       min-width: 0;
       padding: 0;
     }
-    :host([icon-only][size="xs"]) button {
-      width: var(--spacing-32);
-      height: var(--spacing-32);
-    }
     :host([icon-only][size="sm"]) button {
-      width: var(--spacing-36);
-      height: var(--spacing-36);
+      width: var(--spacing-30);
+      height: var(--spacing-30);
     }
     :host([icon-only][size="md"]) button,
     :host([icon-only]:not([size])) button {
-      width: var(--spacing-40);
-      height: var(--spacing-40);
+      width: var(--spacing-34);
+      height: var(--spacing-34);
     }
     :host([icon-only][size="lg"]) button {
-      width: var(--spacing-48);
-      height: var(--spacing-48);
+      width: var(--spacing-38);
+      height: var(--spacing-38);
+    }
+    :host([icon-only][size="xl"]) button {
+      width: var(--spacing-42);
+      height: var(--spacing-42);
     }
 
     :host([variant="primary"]) button,
     :host(:not([variant])) button {
-      background-color: var(--color-brand-default);
-      color: var(--color-neutral-white);
+      background-color: var(--color-button-primary-bg);
+      color: var(--color-button-primary-on-action);
     }
     :host([variant="primary"]) button:hover:not([aria-disabled="true"]),
     :host(:not([variant])) button:hover:not([aria-disabled="true"]) {
-      background-color: var(--color-brand-hover);
+      background-color: var(--color-button-primary-hover-bg);
+      color: var(--color-button-primary-hover-on-action);
     }
     :host([variant="primary"]) button:active:not([aria-disabled="true"]),
     :host(:not([variant])) button:active:not([aria-disabled="true"]) {
-      background-color: var(--color-brand-pressed);
+      background-color: var(--color-button-primary-hover-bg);
     }
     :host([variant="primary"]) button[aria-disabled="true"],
     :host(:not([variant])) button[aria-disabled="true"] {
-      background-color: var(--color-button-disabled-background);
-      color: var(--color-button-disabled-text);
+      background-color: var(--color-button-disabled-bg);
+      color: var(--color-button-disabled-on-action);
     }
 
     :host([variant="secondary"]) button {
-      border-color: var(--color-brand-border-strong);
-      background-color: var(--color-brand-subtle);
-      color: var(--color-brand-default);
+      border-color: var(--color-button-secondary-border);
+      background-color: var(--color-button-secondary-bg);
+      color: var(--color-button-secondary-on-action);
     }
     :host([variant="secondary"]) button:hover:not([aria-disabled="true"]),
     :host([variant="secondary"]) button:active:not([aria-disabled="true"]) {
-      border-color: var(--color-brand-default);
+      border-color: var(--color-button-secondary-hover-border);
     }
     :host([variant="secondary"]) button:active:not([aria-disabled="true"]) {
-      background-color: var(--color-brand-subtle-pressed);
+      background-color: var(--color-button-secondary-hover-bg);
+      color: var(--color-button-secondary-hover-on-action);
     }
     :host([variant="secondary"]) button[aria-disabled="true"] {
-      border-color: var(--color-button-disabled-border);
-      background-color: var(--color-button-disabled-background);
-      color: var(--color-button-disabled-text);
+      border-color: transparent;
+      background-color: var(--color-button-disabled-bg);
+      color: var(--color-button-disabled-on-action);
     }
 
-    :host([variant="tertiary"]) button {
-      background-color: transparent;
-      color: var(--color-brand-default);
+    :host([variant="ghost"]) button {
+      background-color: var(--color-button-ghost-bg);
+      color: var(--color-app-shell-text-primary);
     }
-    :host([variant="tertiary"]) button:hover:not([aria-disabled="true"]) {
-      background-color: var(--color-brand-subtle);
+    :host([variant="ghost"]) button:hover:not([aria-disabled="true"]) {
+      background-color: var(--color-button-ghost-hover-bg);
+      color: var(--color-button-ghost-hover-on-action);
     }
-    :host([variant="tertiary"]) button:active:not([aria-disabled="true"]) {
-      background-color: var(--color-brand-subtle-pressed);
-    }
-    :host([variant="tertiary"]) button[aria-disabled="true"] {
-      background-color: transparent;
-      color: var(--color-button-disabled-text);
+    :host([variant="ghost"][size="md"]) button {
+      height: var(--spacing-36);
+      padding-inline: var(--spacing-16);
     }
 
     :host([variant="outline"]) button {
-      border-color: var(--color-brand-border-strong);
-      background-color: transparent;
-      color: var(--color-brand-default);
+      border-color: var(--color-button-outline-border);
+      background-color: var(--color-button-outline-bg);
+      color: var(--color-button-outline-on-action);
     }
     :host([variant="outline"]) button:hover:not([aria-disabled="true"]) {
-      border-color: var(--color-brand-subtle);
-      background-color: var(--color-brand-subtle);
+      border-color: var(--color-button-outline-hover-border);
+      background-color: var(--color-button-outline-hover-bg);
+      color: var(--color-button-outline-hover-on-action);
     }
     :host([variant="outline"]) button:active:not([aria-disabled="true"]) {
-      border-color: var(--color-brand-default);
-      background-color: var(--color-brand-subtle-pressed);
+      border-color: var(--color-button-outline-hover-border);
+      background-color: var(--color-button-outline-hover-bg);
     }
     :host([variant="outline"]) button[aria-disabled="true"] {
-      border-color: var(--color-button-disabled-border);
-      background-color: transparent;
-      color: var(--color-button-disabled-text);
+      border-color: transparent;
+      background-color: var(--color-button-disabled-bg);
+      color: var(--color-button-disabled-on-action);
     }
 
-    .label.sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+    :host([variant="destructive"]) button {
+      background-color: var(--color-button-destructive-bg);
+      color: var(--color-button-destructive-on-action);
+    }
+    :host([variant="destructive"]) button:hover:not([aria-disabled="true"]) {
+      background-color: var(--color-button-destructive-hover-bg);
     }
 
     .spinner {
-      width: 1em;
-      height: 1em;
+      width: var(--spacing-12);
+      height: var(--spacing-12);
       flex-shrink: 0;
       border-radius: var(--radius-full);
       border: 2px solid currentColor;
@@ -257,8 +253,8 @@ export type LumenAIButtonSize = "xs" | "sm" | "md" | "lg";
     }
 
     svg {
-      width: 18px;
-      height: 18px;
+      width: var(--spacing-14);
+      height: var(--spacing-14);
       flex-shrink: 0;
     }
   `
@@ -272,7 +268,6 @@ export class LumenAIButtonComponent implements OnChanges {
   @Input({ transform: booleanAttribute }) iconOnly = false;
   @Input({ transform: booleanAttribute }) loading = false;
   @Input({ transform: booleanAttribute }) disabled = false;
-  @Input({ transform: booleanAttribute }) destructive = false;
 
   get isDisabled(): boolean {
     return this.disabled || this.loading;

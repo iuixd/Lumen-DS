@@ -1,9 +1,10 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-/** Final standard Button collection, sourced from Figma node 1027:3733. */
+/** Standard Button, sourced from Figma nodes 1027:3733 (variants/states) and 1034:4459 (sizes). */
 export type LumenButtonVariant =
-  "primary" | "accent" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+  "primary" | "accent" | "secondary" | "outline" | "ghost" | "destructive";
+export type LumenButtonSize = "sm" | "md" | "lg" | "xl";
 
 @customElement("lumen-button")
 export class LumenButton extends LitElement {
@@ -15,19 +16,19 @@ export class LumenButton extends LitElement {
       all: unset;
       box-sizing: border-box;
       display: inline-flex;
-      height: var(--spacing-34);
+      height: var(--button-height);
       align-items: center;
       justify-content: center;
-      gap: var(--spacing-8);
-      padding: var(--spacing-7) var(--spacing-14);
+      gap: var(--button-gap);
+      padding-inline: var(--button-padding-x);
       border: 1px solid transparent;
       border-radius: var(--radius-lg);
       color: inherit;
       font-family: var(--font-interface);
-      font-size: var(--text-app-button-size);
-      font-weight: var(--text-app-button-weight);
-      line-height: var(--text-app-button-line-height);
-      letter-spacing: var(--text-app-button-letter-spacing);
+      font-size: var(--button-font-size);
+      font-weight: var(--button-font-weight);
+      line-height: var(--button-line-height);
+      letter-spacing: var(--button-letter-spacing);
       white-space: nowrap;
       cursor: pointer;
       transition:
@@ -44,9 +45,50 @@ export class LumenButton extends LitElement {
     }
     ::slotted([slot="icon-start"]),
     ::slotted([slot="icon-end"]) {
-      width: var(--spacing-14);
-      height: var(--spacing-14);
+      width: var(--button-icon-size);
+      height: var(--button-icon-size);
       flex: none;
+    }
+
+    :host([size="sm"]) {
+      --button-height: var(--spacing-30);
+      --button-padding-x: var(--spacing-14);
+      --button-gap: var(--spacing-6);
+      --button-icon-size: var(--spacing-12);
+      --button-font-size: var(--text-standard-button-sm-size);
+      --button-font-weight: var(--text-standard-button-sm-weight);
+      --button-line-height: var(--text-standard-button-sm-line-height);
+      --button-letter-spacing: var(--text-standard-button-sm-letter-spacing);
+    }
+    :host([size="md"]) {
+      --button-height: var(--spacing-34);
+      --button-padding-x: var(--spacing-16);
+      --button-gap: var(--spacing-8);
+      --button-icon-size: var(--spacing-14);
+      --button-font-size: var(--text-standard-button-md-size);
+      --button-font-weight: var(--text-standard-button-md-weight);
+      --button-line-height: var(--text-standard-button-md-line-height);
+      --button-letter-spacing: var(--text-standard-button-md-letter-spacing);
+    }
+    :host([size="lg"]) {
+      --button-height: var(--spacing-38);
+      --button-padding-x: var(--spacing-16);
+      --button-gap: var(--spacing-8);
+      --button-icon-size: var(--spacing-16);
+      --button-font-size: var(--text-standard-button-lg-size);
+      --button-font-weight: var(--text-standard-button-lg-weight);
+      --button-line-height: var(--text-standard-button-lg-line-height);
+      --button-letter-spacing: var(--text-standard-button-lg-letter-spacing);
+    }
+    :host([size="xl"]) {
+      --button-height: var(--spacing-42);
+      --button-padding-x: var(--spacing-16);
+      --button-gap: var(--spacing-8);
+      --button-icon-size: var(--spacing-18);
+      --button-font-size: var(--text-standard-button-xl-size);
+      --button-font-weight: var(--text-standard-button-xl-weight);
+      --button-line-height: var(--text-standard-button-xl-line-height);
+      --button-letter-spacing: var(--text-standard-button-xl-letter-spacing);
     }
 
     :host([variant="primary"]) button {
@@ -94,16 +136,7 @@ export class LumenButton extends LitElement {
     }
     :host([variant="ghost"]) button:hover:not([aria-disabled="true"]) {
       background: var(--color-button-ghost-hover-bg);
-    }
-    :host([variant="link"]) button {
-      height: auto;
-      padding: var(--spacing-2) var(--spacing-8);
-      background: var(--color-button-link-bg);
-      color: var(--color-button-link-on-action);
-    }
-    :host([variant="link"]) button:hover:not([aria-disabled="true"]) {
-      background: var(--color-button-link-hover-bg);
-      color: var(--color-button-link-hover-on-action);
+      color: var(--color-button-ghost-hover-on-action);
     }
     :host([variant="destructive"]) button {
       background: var(--color-button-destructive-bg);
@@ -121,6 +154,7 @@ export class LumenButton extends LitElement {
   `;
 
   @property({ reflect: true }) variant: LumenButtonVariant = "primary";
+  @property({ reflect: true }) size: LumenButtonSize = "md";
   @property({ type: Boolean, reflect: true }) disabled = false;
 
   private handleClick(event: MouseEvent): void {

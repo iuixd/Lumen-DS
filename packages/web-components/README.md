@@ -51,10 +51,11 @@ inherit through the shadow DOM boundary, so no extra wiring is needed.
 
 ### `<lumen-button>`
 
-| Property (attribute) | Type                                                                        | Default   | Notes                                         |
-| -------------------- | --------------------------------------------------------------------------- | --------- | --------------------------------------------- |
-| `variant`            | `primary \| accent \| secondary \| outline \| ghost \| link \| destructive` | `primary` | Final collection from Figma node `1027:3733`. |
-| `disabled`           | boolean                                                                     | `false`   |                                               |
+| Property (attribute) | Type                                                                | Default   | Notes                                                   |
+| -------------------- | ------------------------------------------------------------------- | --------- | ------------------------------------------------------- |
+| `variant`            | `primary \| accent \| secondary \| outline \| ghost \| destructive` | `primary` | Final collection from Figma node `1027:3733`.           |
+| `size`               | `sm \| md \| lg \| xl`                                              | `md`      | 30px, 34px, 38px, and 42px from Figma node `1034:4459`. |
+| `disabled`           | boolean                                                             | `false`   |                                                         |
 
 `disabled` sets `aria-disabled` and prevents the click from reaching
 listeners, matching `@lumen/ui`'s `Button` — native `disabled` is
@@ -110,19 +111,17 @@ Mirrors `AIButton.tsx` (`packages/ui/src/primitives/AIButton.tsx`).
 
 | Property (attribute) | Type                                          | Default   | Notes                                                                                                                                 |
 | -------------------- | --------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant`            | `primary \| secondary \| tertiary \| outline` | `primary` | Specialized AI treatment; overlapping names do not inherit the final standard `<lumen-button>` colors.                                |
-| `size`               | `xs \| sm \| md \| lg`                        | `md`      | Figma's `xs` AI Button is 28px tall vs. this package's 32px `xs` — not matched exactly, same known limitation as the React component. |
+| `variant`            | `primary \| secondary \| ghost \| outline \| destructive` | `primary` | Canonical One AI Button treatments from node `760:1965`. |
+| `size`               | `sm \| md \| lg \| xl`                        | `md`      | Exact 30/34/38/42px Figma size scale. |
 | `icon-only`          | boolean                                       | `false`   | Requires `aria-label` or `aria-labelledby`.                                                                                           |
 | `loading`            | boolean                                       | `false`   |                                                                                                                                       |
 | `disabled`           | boolean                                       | `false`   |                                                                                                                                       |
-| `destructive`        | boolean                                       | `false`   | Behavioral only — sets `data-destructive` on the inner button for hook-in; Figma specs no distinct color for it.                      |
 
 A leading icon is always rendered — default slot content (`<span
 slot="icon">`) is a sparkle glyph; override it for capability-specific
 icons (Figma swaps the glyph per action, e.g. a wand for Rewrite).
-`raised`, `link`, and `status` remain React-only AI Button extensions; they
-are not part of this Web Components implementation or the final standard
-Button contract.
+The React-only capability lookup and split composition are documented in
+`docs/component-specifications.md` §46.
 
 ## History: the spec discrepancy this package surfaced
 

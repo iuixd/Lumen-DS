@@ -52,10 +52,11 @@ Icon content uses Angular's native content-projection selectors, not React's
 ### `LumenButtonComponent` (`<lumen-button>`)
 
 Final Figma node `1027:3733` contract: `variant` is `primary | accent |
-secondary | outline | ghost | link | destructive` (default `primary`) and
+secondary | outline | ghost | destructive` (default `primary`) and
+`size` is `sm | md | lg | xl` (30px, 34px, 38px, and 42px; default `md`).
 `disabled` is boolean (default `false`). Leading and trailing icons use the
 `[iconStart]` and `[iconEnd]` projection selectors. The standard Button has
-one fixed 34px size and no size, status, pill, icon-only, or loading inputs.
+no status, pill, icon-only, or loading inputs.
 
 ### `LumenSplitButtonComponent` (`<lumen-split-button>`)
 
@@ -88,17 +89,13 @@ icon by default and a fixed check icon only when `selected`, matching
 
 ### `LumenAIButtonComponent` (`<lumen-ai-button>`)
 
-Mirrors the baseline AI Button contract. `variant` (`primary | secondary |
-tertiary | outline`, default `primary`; overlapping names do not inherit the
-final standard `LumenButtonComponent` colors), `size` (`xs | sm | md
-| lg`, default `md`; Figma's `xs` AI Button is 28px tall vs. this package's
-32px `xs`, not matched exactly), `iconOnly`, `loading`, `disabled`,
-`destructive` (behavioral only — sets `data-destructive` on the inner
-button, no color change). A leading icon is always rendered; override via
+Mirrors the canonical One AI Button visual contract. `variant` (`primary |
+secondary | ghost | outline | destructive`, default `primary`) and `size`
+(`sm | md | lg | xl`, default `md`, exact 30/34/38/42px scale), plus
+`iconOnly`, `loading`, and `disabled`. A leading icon is always rendered; override via
 the `[icon]` `TemplateRef` input (same pattern as `LumenFilterChipComponent`).
-`raised`, `link`, and `status` remain React-only AI Button extensions; they
-are not part of this Angular implementation or the final standard Button
-contract.
+The React-only capability lookup and split composition are documented in
+`docs/component-specifications.md` §46.
 
 ## Why classic `@Input()` decorators, not signal `input()`
 

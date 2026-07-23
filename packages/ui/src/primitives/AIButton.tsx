@@ -4,218 +4,95 @@ import {
   type MouseEventHandler,
   type ReactNode
 } from "react";
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
+import { ChevronDownIcon, LmAisymbolIcon } from "../icons/generated";
 import { cn } from "../lib/cn";
-import { LmAisymbolIcon } from "../icons/generated";
 import { getAICapability, type AICapabilityId } from "./ai-capabilities";
 
-/**
- * AIButton
- * Sourced from the new "AI Communication Component Library" section of the
- * Figma "Buttons" page (Lumen-AI-Design-System, node 760:1965), added 2026-07-14 —
- * confirmed via `get_design_context` on the Primary/Secondary/Tertiary/
- * Outline AI instances, the Icon-Only AI instances, Loading AI, and
- * Destructive AI. This is a distinct component from the final standard
- * `Button`, not a variant of it: it retains its independently sourced
- * variants, four-size scale, loading/status states, and icon-only modifier.
- * Overlapping variant names do not inherit the final Button collection at
- * node `1027:3733`.
- *
- * Every instance in Figma — every variant, every size, Loading, even
- * Destructive — carries a mandatory leading icon, the `lm-aisymbol` glyph
- * (confirmed via `get_design_context` on node 760:1965's Secondary Icon
- * Only AI instances, 2026-07-15 — supersedes the generic sparkle glyph
- * this shipped with initially); there is no icon-less AI Button instance.
- * `icon` is still an overridable prop (Figma swaps the glyph per
- * capability — Rewrite uses a wand icon, Translate a languages icon — see
- * the Capability Catalog), but it always renders one.
- *
- * `destructive` is a behavioral flag, not a color: Figma's "Destructive AI"
- * instance is pixel-identical to Secondary AI (same surface/border/text
- * tokens) — the distinction is that destructive AI actions require
- * confirmation before running, consistent with the standard destructive-
- * action principle. No dedicated visual treatment was invented.
- *
- * Corner radius (2026-07-16): moved to `rounded-lg` (8px), confirmed via
- * `get_design_context` on a "Split Button
- * Groups" AI instance (node 769:9290) binding `--radius/segment`.
- *
- * `isLoading` replaces the leading icon with a spinner and the label is
- * expected to change ("Generating…")
- * — confirmed via the Loading AI instance, which is otherwise identical to
- * Primary AI.
- *
- * AI Button retains its 32/36/40/48px size scale. Figma specs `xs` at 28px,
- * which remains a known limitation. This scale is independent of the final
- * standard Button's single 34px geometry.
- *
- * Split Button AI (a dropdown-toggle pairing, analogous to `SplitButton`)
- * is documented in Figma but not implemented here — see
- * `docs/changelog.md` `[Unreleased]`.
- *
- * `raised`, `link`, and `status` (2026-07-16, via `get_design_context` on
- * the "AI Button Component Library" States table, node `852:7996`, which
- * specs 6 variant columns × 9 state rows — this component previously only
- * covered 4 of those columns and none of the status rows):
- * - `raised` uses the legacy elevation roles confirmed on node `852:8035`.
- * - `link` (node `860:8464`) is always underlined, carries the mandatory
- *   leading icon, and uses its own compact `gap-8`/`p-4`/`min-w-0` layout.
- * - `status` (success/error/warning) is an AI-specific treatment. Figma
- *   treats `primary`/`raised` differently from the rest:
- *   `secondary`/`tertiary`/`outline`/`link` get the familiar subtle tint
- *   (confirmed on node `860:8344` Secondary+Success: `success.subtle`
- *   bg/`success.border` border/`success.text` text with a Secondary-only
- *   tinted-border exception), but `primary`/`raised` get a **solid** fill with white
- *   text instead (confirmed on nodes `860:8278`/`860:8242`: solid
- *   `success.text` (green.700, `#006400`) background, not the usual
- *   light `success.subtle`). Error/Warning are solid `status.error`/
- *   `status.warning` (red.500/orange.500) rather than their own "-text"
- *   tier — an asymmetry versus Success that's reproduced as literally
- *   specced (likely a contrast-driven choice: green.500 against white
- *   wouldn't clear the same ratio red.500/orange.500 do). `raised` keeps
- *   its elevation shadow under a status override (confirmed on node
- *   `860:8242`, which still carries the drop-shadow); plain `primary`
- *   has no shadow to keep either way.
- *
- * `capability` is a convenience prop, not a Figma-sourced property: it looks
- * up `./ai-capabilities`' catalog and supplies a default label/icon so
- * callers don't have to hand-assemble both for every AI action (e.g.
- * `<AIButton capability="summarize" />` instead of manually passing
- * `icon`/`children`). Explicit `icon`/`children` always win when both are
- * given — `capability` only fills in what's missing. It also stamps
- * `data-capability`/`data-ai-analytics-event` on the rendered `<button>` so
- * a consuming app can wire its own action/tracking; see `ai-capabilities.ts`
- * for why `analyticsEvent` is a naming convention only, not a real
- * analytics integration.
- */
+/** Canonical One AI Button collection, sourced from Figma node `760:1965`. */
+export type AIButtonVariant = "primary" | "secondary" | "ghost" | "outline" | "destructive";
+export type AIButtonSize = "sm" | "md" | "lg" | "xl";
+export type AIButtonSplitVariant = Extract<AIButtonVariant, "primary" | "secondary" | "outline">;
+
 const aiButtonVariants = cva(
-  "inline-flex items-center justify-center gap-[var(--spacing-8)] whitespace-nowrap rounded-lg border-[1.5px] border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-[var(--color-border-focus)] aria-disabled:pointer-events-none",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-transparent font-interface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-button-focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background-default)] aria-disabled:pointer-events-none aria-disabled:border-transparent aria-disabled:bg-[var(--color-button-disabled-bg)] aria-disabled:text-[var(--color-button-disabled-on-action)]",
   {
     variants: {
       variant: {
         primary:
-          "bg-[var(--color-brand-default)] text-neutral-white hover:bg-[var(--color-brand-hover)] active:bg-[var(--color-brand-pressed)] aria-disabled:bg-[var(--color-button-disabled-background)] aria-disabled:text-[var(--color-button-disabled-text)]",
-        raised:
-          "bg-[var(--color-brand-default)] text-neutral-white [box-shadow:var(--shadow-button-default)] hover:bg-[var(--color-brand-hover)] hover:[box-shadow:var(--shadow-button-hover)] active:bg-[var(--color-brand-pressed)] active:[box-shadow:var(--shadow-button-active)] aria-disabled:bg-[var(--color-button-disabled-background)] aria-disabled:text-[var(--color-button-disabled-text)] aria-disabled:[box-shadow:var(--shadow-button-disabled)]",
+          "bg-[var(--color-button-primary-bg)] text-[var(--color-button-primary-on-action)] hover:bg-[var(--color-button-primary-hover-bg)] hover:text-[var(--color-button-primary-hover-on-action)]",
         secondary:
-          "border-[var(--color-brand-border-strong)] bg-[var(--color-brand-subtle)] text-[var(--color-brand-default)] hover:border-[var(--color-brand-default)] active:border-[var(--color-brand-default)] active:bg-[var(--color-brand-subtle-pressed)] aria-disabled:border-[var(--color-button-disabled-border)] aria-disabled:bg-[var(--color-button-disabled-background)] aria-disabled:text-[var(--color-button-disabled-text)]",
-        tertiary:
-          "bg-transparent text-[var(--color-brand-default)] hover:bg-[var(--color-brand-subtle)] active:bg-[var(--color-brand-subtle-pressed)] aria-disabled:bg-transparent aria-disabled:text-[var(--color-button-disabled-text)]",
+          "border-[var(--color-button-secondary-border)] bg-[var(--color-button-secondary-bg)] text-[var(--color-button-secondary-on-action)] hover:border-[var(--color-button-secondary-hover-border)] hover:bg-[var(--color-button-secondary-hover-bg)] hover:text-[var(--color-button-secondary-hover-on-action)]",
+        ghost:
+          "bg-[var(--color-button-ghost-bg)] text-[var(--color-app-shell-text-primary)] hover:bg-[var(--color-button-ghost-hover-bg)] hover:text-[var(--color-button-ghost-hover-on-action)]",
         outline:
-          "border-[var(--color-brand-border-strong)] bg-transparent text-[var(--color-brand-default)] hover:bg-[var(--color-brand-subtle)] hover:border-[var(--color-brand-subtle)] active:border-[var(--color-brand-default)] active:bg-[var(--color-brand-subtle-pressed)] aria-disabled:border-[var(--color-button-disabled-border)] aria-disabled:bg-transparent aria-disabled:text-[var(--color-button-disabled-text)]",
-        link: "min-w-0 border-0 bg-transparent p-[var(--spacing-4)] text-[var(--color-brand-default)] underline aria-disabled:text-[var(--color-button-disabled-text)]"
+          "border-[var(--color-button-outline-border)] bg-[var(--color-button-outline-bg)] text-[var(--color-button-outline-on-action)] hover:border-[var(--color-button-outline-hover-border)] hover:bg-[var(--color-button-outline-hover-bg)] hover:text-[var(--color-button-outline-hover-on-action)] focus-visible:border-[var(--color-button-outline-focus-border)]",
+        destructive:
+          "bg-[var(--color-button-destructive-bg)] text-[var(--color-button-destructive-on-action)] hover:bg-[var(--color-button-destructive-hover-bg)]"
       },
       size: {
-        xs: "h-[var(--spacing-32)] min-w-[var(--spacing-64)] px-[var(--spacing-10)] py-[var(--spacing-5)] text-button-xs",
-        sm: "h-[var(--spacing-36)] min-w-[var(--spacing-80)] px-[var(--spacing-12)] py-[var(--spacing-6)] text-button-sm",
-        md: "h-[var(--spacing-40)] min-w-[var(--spacing-96)] px-[var(--spacing-16)] py-[var(--spacing-8)] text-button-md",
-        lg: "h-[var(--spacing-48)] min-w-[var(--spacing-120)] px-[var(--spacing-20)] py-[var(--spacing-10)] text-button-lg"
+        sm: "h-[var(--spacing-30)] gap-[var(--spacing-6)] px-[var(--spacing-14)] text-standard-button-sm",
+        md: "h-[var(--spacing-34)] gap-[var(--spacing-8)] px-[var(--spacing-14)] text-standard-button-md",
+        lg: "h-[var(--spacing-38)] gap-[var(--spacing-8)] px-[var(--spacing-16)] text-standard-button-lg",
+        xl: "h-[var(--spacing-42)] gap-[var(--spacing-8)] px-[var(--spacing-16)] text-standard-button-xl"
       },
       iconOnly: {
-        true: "min-w-0 p-0"
-      },
-      /**
-       * Figma's Success/Error/Warning "State" values, modeled independently
-       * of `variant`; base
-       * classes here are the subtle tint shared by secondary/tertiary/
-       * outline/link; `primary`/`raised` get a solid override via
-       * `compoundVariants` below. See the file doc comment for the exact
-       * Figma evidence.
-       */
-      status: {
-        success:
-          "border-transparent bg-[var(--color-status-success-subtle)] text-[var(--color-status-success-text)] hover:bg-[var(--color-status-success-subtle)] hover:text-[var(--color-status-success-text)] active:bg-[var(--color-status-success-subtle)] active:text-[var(--color-status-success-text)]",
-        warning:
-          "border-transparent bg-[var(--color-status-warning-subtle)] text-[var(--color-status-warning-text)] hover:bg-[var(--color-status-warning-subtle)] hover:text-[var(--color-status-warning-text)] active:bg-[var(--color-status-warning-subtle)] active:text-[var(--color-status-warning-text)]",
-        error:
-          "border-transparent bg-[var(--color-status-error-subtle)] text-[var(--color-status-error-text)] hover:bg-[var(--color-status-error-subtle)] hover:text-[var(--color-status-error-text)] active:bg-[var(--color-status-error-subtle)] active:text-[var(--color-status-error-text)]"
+        true: "aspect-square min-w-0 p-0"
       }
     },
     compoundVariants: [
-      { iconOnly: true, size: "xs", class: "size-[var(--spacing-32)]" },
-      { iconOnly: true, size: "sm", class: "size-[var(--spacing-36)]" },
-      { iconOnly: true, size: "md", class: "size-[var(--spacing-40)]" },
-      { iconOnly: true, size: "lg", class: "size-[var(--spacing-48)]" },
-      // Only Secondary (the sole bordered non-solid variant Figma specced a
-      // Success/Error/Warning instance for) gets a status-tinted border.
-      ...(["secondary"] as const).flatMap((variant) =>
-        (["success", "warning", "error"] as const).map((status) => ({
-          variant,
-          status,
-          class: `border-[var(--color-status-${status}-border)] hover:border-[var(--color-status-${status}-border)] active:border-[var(--color-status-${status}-border)]`
-        }))
-      ),
-      // Primary/Raised: Figma overrides the subtle tint with a solid fill +
-      // white text instead (see file doc comment). Success uses the darker
-      // "-text" tier as its own fill (green.700, since green.500 doesn't
-      // clear the same white-text contrast red.500/orange.500 do);
-      // Error/Warning use their base tier directly.
-      ...(["primary", "raised"] as const).flatMap((variant) => [
-        {
-          variant,
-          status: "success" as const,
-          class:
-            "border-transparent bg-[var(--color-status-success-text)] text-neutral-white hover:bg-[var(--color-status-success-text)] hover:text-neutral-white active:bg-[var(--color-status-success-text)] active:text-neutral-white"
-        },
-        {
-          variant,
-          status: "warning" as const,
-          class:
-            "border-transparent bg-[var(--color-status-warning)] text-neutral-white hover:bg-[var(--color-status-warning)] hover:text-neutral-white active:bg-[var(--color-status-warning)] active:text-neutral-white"
-        },
-        {
-          variant,
-          status: "error" as const,
-          class:
-            "border-transparent bg-[var(--color-status-error)] text-neutral-white hover:bg-[var(--color-status-error)] hover:text-neutral-white active:bg-[var(--color-status-error)] active:text-neutral-white"
-        }
-      ])
+      { variant: "ghost", size: "md", class: "h-[var(--spacing-36)] px-[var(--spacing-16)]" }
     ],
     defaultVariants: { variant: "primary", size: "md" }
   }
 );
 
+const splitVariantClasses: Record<AIButtonSplitVariant, string> = {
+  primary:
+    "border-transparent bg-[var(--color-button-primary-bg)] text-[var(--color-button-primary-on-action)] hover:bg-[var(--color-button-primary-hover-bg)] hover:text-[var(--color-button-primary-hover-on-action)]",
+  secondary:
+    "border-[var(--color-button-secondary-border)] bg-[var(--color-button-secondary-bg)] text-[var(--color-button-secondary-on-action)] hover:border-[var(--color-button-secondary-hover-border)] hover:bg-[var(--color-button-secondary-hover-bg)] hover:text-[var(--color-button-secondary-hover-on-action)]",
+  outline:
+    "border-[var(--color-button-outline-border)] bg-[var(--color-button-outline-bg)] text-[var(--color-button-outline-on-action)] hover:border-[var(--color-button-outline-hover-border)] hover:bg-[var(--color-button-outline-hover-bg)] hover:text-[var(--color-button-outline-hover-on-action)]"
+};
+
+const splitDividerClasses: Record<AIButtonSplitVariant, string> = {
+  primary: "border-[color-mix(in_srgb,currentColor_32%,transparent)]",
+  secondary: "border-[var(--color-button-secondary-border)]",
+  outline: "border-[var(--color-button-outline-border)]"
+};
+
 export interface AIButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof aiButtonVariants> {
-  /** Leading icon override — defaults to the Figma-specced `lm-aisymbol` glyph, present on every instance. */
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
+  variant?: AIButtonVariant;
+  size?: AIButtonSize;
+  /** Leading capability icon. The AI symbol is used when no override is supplied. */
   icon?: ReactNode;
-  isLoading?: boolean;
-  /**
-   * Renders a square, label-less button sized to just the icon. Per the
-   * Buttons page's a11y notes (already followed by Button/SplitButton), an
-   * icon-only button must have an accessible name — pass `aria-label`.
-   */
+  /** Square button treatment. An accessible name is required. */
   iconOnly?: boolean;
-  /**
-   * Marks this as a destructive AI action (e.g. "Clean Up Records"). Purely
-   * behavioral — Figma specs no distinct color for it — so callers are
-   * expected to require confirmation before invoking `onClick`; this prop
-   * only documents intent and does not change styling.
-   */
-  destructive?: boolean;
-  /**
-   * Looks up `./ai-capabilities` and supplies a default `icon`/label for a
-   * known AI action (e.g. `capability="summarize"`). Not a Figma property —
-   * see the file doc comment above. Explicit `icon`/`children` still take
-   * precedence when passed; an unrecognized id falls back to default
-   * rendering with a dev-mode warning, same pattern as the `iconOnly`
-   * accessible-name check below.
-   */
+  /** Replaces the icon with the Figma spinner while retaining the visible label. */
+  isLoading?: boolean;
+  /** Supplies the Figma label, description metadata, icon, and analytics convention. */
   capability?: AICapabilityId | (string & NonNullable<unknown>);
+  /** Renders the canonical two-action split button. Available for primary, secondary, and outline. */
+  split?: boolean;
+  onDropdownClick?: MouseEventHandler<HTMLButtonElement>;
+  dropdownLabel?: string;
 }
 
 export const AIButton = forwardRef<HTMLButtonElement, AIButtonProps>(
   (
     {
       className,
-      variant,
-      size,
-      status,
+      variant = "primary",
+      size = "md",
       icon,
-      isLoading,
       iconOnly,
-      destructive,
+      isLoading,
       capability,
+      split,
+      onDropdownClick,
+      dropdownLabel = "More AI actions",
       disabled,
       onClick,
       children,
@@ -227,10 +104,12 @@ export const AIButton = forwardRef<HTMLButtonElement, AIButtonProps>(
     const resolvedCapability = capability ? getAICapability(capability) : undefined;
     const label = children ?? resolvedCapability?.label;
     const CapabilityIcon = resolvedCapability?.icon;
+    const resolvedIcon =
+      icon ??
+      (CapabilityIcon ? <CapabilityIcon aria-hidden /> : <LmAisymbolIcon aria-hidden />);
     const resolvedAriaLabel =
-      isLoading && iconOnly && !props["aria-label"]
-        ? "Generating"
-        : (props["aria-label"] ?? (iconOnly ? resolvedCapability?.label : undefined));
+      props["aria-label"] ??
+      (iconOnly ? (isLoading ? "Generating" : resolvedCapability?.label) : undefined);
 
     if (process.env.NODE_ENV !== "production") {
       if (iconOnly && !resolvedAriaLabel && !props["aria-labelledby"]) {
@@ -239,46 +118,114 @@ export const AIButton = forwardRef<HTMLButtonElement, AIButtonProps>(
       }
       if (capability && !resolvedCapability) {
         // eslint-disable-next-line no-console
-        console.warn(
-          `AIButton: unrecognized capability "${capability}" — falling back to default rendering.`
-        );
+        console.warn(`AIButton: unrecognized capability "${capability}".`);
+      }
+      if (split && !["primary", "secondary", "outline"].includes(variant)) {
+        // eslint-disable-next-line no-console
+        console.warn("AIButton: split buttons support primary, secondary, and outline variants.");
       }
     }
 
-    const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
       if (isDisabled) {
-        e.preventDefault();
+        event.preventDefault();
         return;
       }
-      onClick?.(e);
+      onClick?.(event);
     };
+
+    const sharedData = {
+      "data-capability": capability || undefined,
+      "data-ai-analytics-event": resolvedCapability?.analyticsEvent
+    };
+
+    if (split) {
+      const splitVariant: AIButtonSplitVariant =
+        variant === "secondary" || variant === "outline" ? variant : "primary";
+
+      return (
+        <span
+          role="group"
+          className={cn(
+            "inline-flex h-[var(--spacing-34)] min-w-[var(--spacing-120)] overflow-hidden rounded-lg font-interface text-standard-button-md",
+            className
+          )}
+        >
+          <button
+            ref={ref}
+            type="button"
+            {...props}
+            {...sharedData}
+            className={cn(
+              "inline-flex min-w-0 flex-1 items-center justify-center gap-[var(--spacing-8)] border py-[var(--spacing-7)] pl-[var(--spacing-14)] pr-[var(--spacing-10)] transition-colors focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-button-focus-ring)] aria-disabled:pointer-events-none aria-disabled:bg-[var(--color-button-disabled-bg)] aria-disabled:text-[var(--color-button-disabled-on-action)]",
+              splitVariantClasses[splitVariant]
+            )}
+            aria-disabled={disabled || undefined}
+            aria-busy={isLoading || undefined}
+            onClick={handleClick}
+          >
+            <span className="flex size-[var(--spacing-18)] shrink-0 items-center justify-center [&>svg]:size-full">
+              {isLoading ? (
+                <span
+                  className="size-[var(--spacing-12)] animate-spin rounded-full border-2 border-current border-t-transparent"
+                  aria-hidden
+                />
+              ) : (
+                resolvedIcon
+              )}
+            </span>
+            {label}
+          </button>
+          <button
+            type="button"
+            className={cn(
+              "inline-flex w-[var(--spacing-34)] shrink-0 items-center justify-center border border-l transition-colors focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-button-focus-ring)] aria-disabled:pointer-events-none aria-disabled:bg-[var(--color-button-disabled-bg)] aria-disabled:text-[var(--color-button-disabled-on-action)]",
+              splitVariantClasses[splitVariant],
+              splitDividerClasses[splitVariant]
+            )}
+            aria-label={dropdownLabel}
+            aria-haspopup="menu"
+            aria-disabled={isDisabled || undefined}
+            onClick={isDisabled ? undefined : onDropdownClick}
+          >
+            <ChevronDownIcon className="w-[var(--spacing-10)]" aria-hidden />
+          </button>
+        </span>
+      );
+    }
 
     return (
       <button
         ref={ref}
         type="button"
         {...props}
-        data-destructive={destructive || undefined}
-        data-capability={capability || undefined}
-        data-ai-analytics-event={resolvedCapability?.analyticsEvent}
-        className={cn(aiButtonVariants({ variant, size, iconOnly, status }), className)}
-        aria-disabled={isDisabled || undefined}
+        {...sharedData}
+        className={cn(
+          aiButtonVariants({ variant, size, iconOnly }),
+          isLoading && "px-[var(--spacing-16)]",
+          className
+        )}
+        aria-disabled={disabled || undefined}
         aria-busy={isLoading || undefined}
         aria-label={resolvedAriaLabel}
         onClick={handleClick}
       >
-        {isLoading ? (
-          <span
-            className="size-[1em] shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent"
-            aria-hidden
-          />
-        ) : (
-          (icon ??
-          (CapabilityIcon ? (
-            <CapabilityIcon className="size-[18px] shrink-0" aria-hidden />
-          ) : undefined) ?? <LmAisymbolIcon className="size-[18px] shrink-0" aria-hidden />)
-        )}
-        {isLoading ? label && <span className="sr-only">{label}</span> : label}
+        <span
+          className={cn(
+            "flex size-[var(--spacing-14)] shrink-0 items-center justify-center [&>svg]:size-full",
+            !iconOnly && variant === "outline" && "size-[var(--spacing-16)]"
+          )}
+        >
+          {isLoading ? (
+            <span
+              className="size-[var(--spacing-12)] animate-spin rounded-full border-2 border-current border-t-transparent"
+              aria-hidden
+            />
+          ) : (
+            resolvedIcon
+          )}
+        </span>
+        {!iconOnly && label}
       </button>
     );
   }

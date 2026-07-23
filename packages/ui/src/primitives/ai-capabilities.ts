@@ -1,57 +1,28 @@
 import type { ComponentType, SVGProps } from "react";
 import {
-  NotepadTextIcon,
-  PencilSparklesIcon,
-  WandSparklesIcon,
-  SparklesIcon,
-  SpellCheckIcon,
-  LanguagesIcon,
+  ArrowRightIcon,
+  BookOpenIcon,
+  BotIcon,
+  BrainIcon,
   ChartBarIcon,
+  ChartLineIcon,
+  CircleQuestionMarkIcon,
   FileChartColumnIcon,
   FileSearchIcon,
-  TrendingUpIcon,
-  FileDiffIcon,
-  ChartLineIcon,
-  TagsIcon,
-  RouteIcon,
-  MessageSquareReplyIcon,
-  RepeatIcon,
-  LayersIcon,
-  UserRoundCheckIcon,
-  MessageCircleQuestionMarkIcon,
-  MessageSquareTextIcon,
-  LmSearchIcon,
+  GitCompareArrowsIcon,
+  LanguagesIcon,
+  Link2Icon,
+  LmAisymbolIcon,
+  MessageSquareCheckIcon,
   SearchIcon,
-  FileCheckIcon,
-  LmFilesIcon
+  SpellCheckIcon,
+  TagIcon,
+  UserPlusIcon,
+  WandSparklesIcon,
+  WorkflowIcon
 } from "../icons/generated";
 
-/**
- * AI Button capability catalog.
- *
- * Category names and action `description`s are sourced verbatim from the
- * Figma "AI Communication Component Library" Capability Catalog section
- * (Lumen-AI-Design-System, node 860:9109 — confirmed via `get_design_context`:
- * "Content & Drafting", "Data Analysis & Insights", "Workflow & Automation",
- * "Search & Knowledge", 6 actions each). `label` is a short form of that same
- * Figma sentence, matched to `AIButton`'s existing short-label convention
- * (e.g. the Capability Catalog story's own "Rewrite"/"Translate" usage).
- *
- * `icon` is NOT Figma-sourced — the Capability Catalog frame itself uses the
- * default `lm-aisymbol` glyph on every instance, with no per-action icon
- * override specified anywhere in that section. These icon assignments are an
- * editorial choice for usability (matching the existing `CustomIcon` story's
- * precedent of swapping in a wand icon for "Rewrite" and a languages icon for
- * "Translate"), not a literal Figma citation — flagged here the same way
- * `AIButton`'s `destructive` prop is flagged as "no distinct color specified,
- * behavioral only."
- *
- * `analyticsEvent` is a documented naming convention only — Lumen has no
- * analytics SDK or action/routing system. It is surfaced on the rendered
- * button via `data-ai-analytics-event` (see `AIButton.tsx`) for a consuming
- * application to read and wire up its own tracking; nothing in this package
- * emits telemetry.
- */
+/** Exact capability catalog shown in Figma node `760:1965`. */
 export interface AICapability {
   id: string;
   label: string;
@@ -61,207 +32,179 @@ export interface AICapability {
   analyticsEvent: string;
 }
 
-export const aiCapabilities: readonly AICapability[] = [
-  // Content & Drafting
+export const aiCapabilities = [
   {
     id: "summarize",
-    label: "Summarize",
+    label: "AI Summarize",
     description: "Summarize long content into key points",
     category: "Content & Drafting",
-    icon: NotepadTextIcon,
-    analyticsEvent: "ai_button.summarize"
+    icon: LmAisymbolIcon
   },
   {
     id: "draft",
-    label: "Draft",
+    label: "AI Draft",
     description: "Generate new content",
     category: "Content & Drafting",
-    icon: PencilSparklesIcon,
-    analyticsEvent: "ai_button.draft"
+    icon: LmAisymbolIcon
   },
   {
     id: "rewrite",
-    label: "Rewrite",
+    label: "AI Rewrite",
     description: "Rewrite existing content",
     category: "Content & Drafting",
-    icon: WandSparklesIcon,
-    analyticsEvent: "ai_button.rewrite"
+    icon: WandSparklesIcon
   },
   {
     id: "improve-clarity",
-    label: "Improve Clarity",
+    label: "AI Improve Writing",
     description: "Improve clarity and tone",
     category: "Content & Drafting",
-    icon: SparklesIcon,
-    analyticsEvent: "ai_button.improve_clarity"
+    icon: WandSparklesIcon
   },
   {
     id: "fix-grammar",
-    label: "Fix Grammar",
+    label: "AI Fix Grammar",
     description: "Correct grammar and spelling",
     category: "Content & Drafting",
-    icon: SpellCheckIcon,
-    analyticsEvent: "ai_button.fix_grammar"
+    icon: SpellCheckIcon
   },
   {
     id: "translate",
-    label: "Translate",
+    label: "AI Translate",
     description: "Translate content",
     category: "Content & Drafting",
-    icon: LanguagesIcon,
-    analyticsEvent: "ai_button.translate"
+    icon: LanguagesIcon
   },
-
-  // Data Analysis & Insights
   {
     id: "explain-data",
-    label: "Explain Data",
+    label: "AI Explain Data",
     description: "Explain charts and metrics",
     category: "Data Analysis & Insights",
-    icon: ChartBarIcon,
-    analyticsEvent: "ai_button.explain_data"
+    icon: ChartBarIcon
   },
   {
     id: "generate-report",
-    label: "Generate Report",
+    label: "AI Generate Report",
     description: "Create reports and dashboards",
     category: "Data Analysis & Insights",
-    icon: FileChartColumnIcon,
-    analyticsEvent: "ai_button.generate_report"
+    icon: FileChartColumnIcon
   },
   {
     id: "extract-info",
-    label: "Extract Info",
+    label: "AI Extract Info",
     description: "Extract structured information",
     category: "Data Analysis & Insights",
-    icon: FileSearchIcon,
-    analyticsEvent: "ai_button.extract_info"
+    icon: FileSearchIcon
   },
   {
     id: "detect-trends",
-    label: "Detect Trends",
+    label: "AI Find Insights",
     description: "Detect trends and anomalies",
     category: "Data Analysis & Insights",
-    icon: TrendingUpIcon,
-    analyticsEvent: "ai_button.detect_trends"
+    icon: BrainIcon
   },
   {
     id: "compare-data",
-    label: "Compare Data",
+    label: "AI Compare",
     description: "Compare datasets or documents",
     category: "Data Analysis & Insights",
-    icon: FileDiffIcon,
-    analyticsEvent: "ai_button.compare_data"
+    icon: GitCompareArrowsIcon
   },
   {
     id: "predict-outcomes",
-    label: "Predict Outcomes",
+    label: "AI Forecast",
     description: "Predict future outcomes",
     category: "Data Analysis & Insights",
-    icon: ChartLineIcon,
-    analyticsEvent: "ai_button.predict_outcomes"
+    icon: ChartLineIcon
   },
-
-  // Workflow & Automation
   {
     id: "categorize-work",
-    label: "Categorize Work",
+    label: "AI Auto-Triage",
     description: "Categorize incoming work",
     category: "Workflow & Automation",
-    icon: TagsIcon,
-    analyticsEvent: "ai_button.categorize_work"
+    icon: WorkflowIcon
   },
   {
     id: "recommend-action",
-    label: "Recommend Action",
+    label: "AI Suggest Next Step",
     description: "Recommend the next action",
     category: "Workflow & Automation",
-    icon: RouteIcon,
-    analyticsEvent: "ai_button.recommend_action"
+    icon: ArrowRightIcon
   },
   {
     id: "draft-reply",
-    label: "Draft Reply",
+    label: "AI Auto-Reply",
     description: "Draft contextual replies",
     category: "Workflow & Automation",
-    icon: MessageSquareReplyIcon,
-    analyticsEvent: "ai_button.draft_reply"
+    icon: MessageSquareCheckIcon
   },
   {
     id: "automate-tasks",
-    label: "Automate Tasks",
+    label: "AI Automate",
     description: "Automate repetitive tasks",
     category: "Workflow & Automation",
-    icon: RepeatIcon,
-    analyticsEvent: "ai_button.automate_tasks"
+    icon: BotIcon
   },
   {
     id: "categorize-records",
-    label: "Categorize Records",
+    label: "AI Classify",
     description: "Categorize records",
     category: "Workflow & Automation",
-    icon: LayersIcon,
-    analyticsEvent: "ai_button.categorize_records"
+    icon: TagIcon
   },
   {
     id: "recommend-assignee",
-    label: "Recommend Assignee",
+    label: "AI Assign",
     description: "Recommend assignee",
     category: "Workflow & Automation",
-    icon: UserRoundCheckIcon,
-    analyticsEvent: "ai_button.recommend_assignee"
+    icon: UserPlusIcon
   },
-
-  // Search & Knowledge
   {
     id: "conversational-search",
-    label: "Conversational Search",
+    label: "Ask AI",
     description: "Enterprise conversational search",
     category: "Search & Knowledge",
-    icon: MessageCircleQuestionMarkIcon,
-    analyticsEvent: "ai_button.conversational_search"
+    icon: LmAisymbolIcon
   },
   {
     id: "explain-content",
-    label: "Explain Content",
+    label: "AI Explain",
     description: "Explain selected content",
     category: "Search & Knowledge",
-    icon: MessageSquareTextIcon,
-    analyticsEvent: "ai_button.explain_content"
+    icon: CircleQuestionMarkIcon
   },
   {
     id: "search-knowledge",
-    label: "Search Knowledge",
+    label: "AI Find Answer",
     description: "Search enterprise knowledge",
     category: "Search & Knowledge",
-    icon: LmSearchIcon,
-    analyticsEvent: "ai_button.search_knowledge"
+    icon: SearchIcon
   },
   {
     id: "semantic-search",
-    label: "Semantic Search",
+    label: "AI Search",
     description: "Semantic search",
     category: "Search & Knowledge",
-    icon: SearchIcon,
-    analyticsEvent: "ai_button.semantic_search"
+    icon: SearchIcon
   },
   {
     id: "show-references",
-    label: "Show References",
+    label: "AI Cite Sources",
     description: "Show supporting references",
     category: "Search & Knowledge",
-    icon: FileCheckIcon,
-    analyticsEvent: "ai_button.show_references"
+    icon: BookOpenIcon
   },
   {
     id: "recommend-documents",
-    label: "Recommend Documents",
+    label: "AI Related Content",
     description: "Recommend related documents",
     category: "Search & Knowledge",
-    icon: LmFilesIcon,
-    analyticsEvent: "ai_button.recommend_documents"
+    icon: Link2Icon
   }
-] as const;
+].map((capability) => ({
+  ...capability,
+  analyticsEvent: `ai_button.${capability.id.replace(/-/g, "_")}`
+})) as readonly AICapability[];
 
 export type AICapabilityId = (typeof aiCapabilities)[number]["id"];
 

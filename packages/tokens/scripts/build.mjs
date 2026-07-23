@@ -100,7 +100,7 @@ for (const [key, val] of Object.entries(typography.fontFamily)) {
 }
 for (const [key, val] of Object.entries(typography.scale)) {
   css += `  --text-${key}-size: ${val.fontSize}px;\n`;
-  css += `  --text-${key}-line-height: ${val.lineHeight}px;\n`;
+  css += `  --text-${key}-line-height: ${val.lineHeight}${typeof val.lineHeight === "number" ? "px" : ""};\n`;
   css += `  --text-${key}-weight: ${val.weight};\n`;
   if (val.letterSpacing !== undefined)
     css += `  --text-${key}-letter-spacing: ${val.letterSpacing}px;\n`;

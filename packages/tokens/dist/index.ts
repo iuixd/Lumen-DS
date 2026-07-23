@@ -169,11 +169,8 @@ export const colorPrimitives = {
   "forest.800": "#003118",
   "sky.500": "#2563EB",
   "button.light.accent-on-action": "#FFF5F8",
-  "button.light.link-hover-bg": "#EAF0FD",
   "button.dark.accent-on-action": "#FFF5F8",
   "button.dark.disabled-on-action": "#A7A4A7",
-  "button.dark.secondary-hover-bg": "#2D1A26",
-  "button.dark.link-hover-bg": "#002121",
   "input.light.disabled-border": "#D9DEE0",
   "app-shell.light.text-primary": "#1E2021",
   "app-shell.light.text-heading": "#2B2F2F",
@@ -214,7 +211,7 @@ export const colorPrimitives = {
 export const semanticColor = {
   "_comment": "Semantic tokens reference primitives by dot-path. Consumed by scripts/build.mjs to emit CSS variables that swap by [data-theme]. The Figma source (Lumen-AI-Design-System) defines only one mode per variable collection — there is no Figma-authored dark theme. The 'dark' block below is a manual, documented mapping onto the same primitive ramps, carried over from the previous system. light.brand.hover/pressed are sourced from the actual Primary-button Hover/Active instance fills on the 'Buttons' page (node 475:7210, formerly 466:4365) — trust those over the page's '04 Design Tokens' documentation table, which has a stale/mismatched hover value (a copy-paste artifact, same pattern seen on the Colors page). light.brand.pressed was updated again when that page's own instances were updated: the real Active fill is primary.900 (#310010), one step darker than the primary.800 previously read — see primitives/color.json's note on primary.900. light.brand.border/subtle-pressed are new tokens sourced from that same refresh (button border color at rest, and outlined/text-button active-state fill). dark.brand.border/subtle-pressed have no Figma source (same caveat as the rest of the dark block) — mirrored onto the ramp by position rather than invented outright: border sits one step lighter than dark's subtle, same relative distance light.border sits darker than light.subtle. status.{success,warning,error}-text/-border are sourced from the Button component-set's own Success/Error/Warning State instances (node 475:7210) — exact bound-variable fallback values matched existing primitives exactly (surface = the existing -subtle step, text = the family's 700 step, border = the family's 200 step), so no new primitives were needed. Their dark values have no Figma source (Figma specs no dark mode for these states) and were derived with the same ramp-mirroring rule already used for status.success/-subtle: dark index = 8 minus the light index on each family's 9-step (50-800) ramp. brand.border-strong is sourced from the Split Button's Outline type (node 555:300) default-state border color (`--button/border/secondary/default`, #E599B1 = primary.200) — a step darker than the existing brand.border (primary.100). brand.solid-active (added 2026-07-16) is sourced from a direct re-verification of the core Button component-set's `Type=Secondary, State=Active` and `Type=Outline, State=Active` instances (node 475:7210, nodes 538:1262/806:5989) — both bind to `--button/surface/secondary/active` (#4C0018 = primary.800) with white text and no border, confirming the `[Unreleased]` speculation this token now replaces (\"Secondary's Active/Pressed fill may have changed to a solid primary.800 background with white text\"). Distinct from brand.pressed (primary.900, Primary/Raised's own solid-fill active state) — Figma specs a one-step-lighter tier specifically for the bordered/outlined types' active state, not a reuse of Primary's. dark.brand.solid-active has no Figma source (same caveat as the rest of the dark block); placed at primary.700, one step past dark.brand.border-strong (primary.600), to stay dark enough for the same unconditional white text Primary/Raised already use in dark mode (dark.brand.default is only primary.300) while remaining a distinct, deeper tier. dark.brand.border-strong has no Figma source and was placed one step lighter than dark.brand.border (primary.700), the same relative-distance mirroring already documented above for brand.border/subtle-pressed. light.segment.* (added for the new SegmentedControl primitive, sourced from the Buttons page's 'AI ButtonGroup Component Library' section, node 958:5058 'Segmented Control Group' via get_design_context on 2026-07-16) are aliases onto existing primitives with zero new hex values: surface=#EDF0F1, surface-selected=white, border-selected=#C8D1D4, text=#626B6E, and text-selected=#4C0018 matched lumen-gray.100/neutral.white/lumen-gray.300/lumen-gray.700/primary.800 exactly. dark.segment.* has no Figma source (same caveat as the rest of the dark block) and was derived with the same 8-minus-light-index mirroring rule used for status.*, applied to lumen-gray's own 9-step (50-800) ramp; surface-selected mirrors background.default's own established white-to-neutral.800 pairing. light.border.subtle and light.text.secondary (added for the appshell-desktop-closed-light reference screen, Lumen-AI-Design-System node 1197:1652, via get_variable_defs on 2026-07-20) are new tiers distinct from the existing border.default/text.muted: `stroke/subtle` (#EDF0F1) and `text/secondary` (#626B6E) both appeared alongside `stroke/default`/`text/muted` as separate bound variables in the same frame, not substitutes for them. Both alias lumen-gray (a different family from border.default's neutral) with zero new hex values: border.subtle=lumen-gray.100, text.secondary=lumen-gray.700 — the same two steps already confirmed for light.segment.surface/text above. dark.border.subtle/text.secondary have no Figma source (same caveat as the rest of the dark block) and use the same 8-minus-light-index mirroring already applied to light.segment.* on lumen-gray's own ramp: border.subtle mirrors to lumen-gray.700, text.secondary mirrors to lumen-gray.100. light.background.nav-active (same source/session) is `bg/nav-active` (#EDF0F1) from the NavigationRail's active-item state — also lumen-gray.100, but kept as its own token rather than reused as border.subtle since the two express different purposes (a fill vs. a border) that happen to share a value; dark.background.nav-active mirrors to lumen-gray.700, same rule. light.text.link-subtle, light.background.badge, light.background.prompt, and light.border.table (added 2026-07-20, sourced from the canonical 'AppShell' page, node 1007:3700, Breakpoint=Desktop/Theme=Light instance 1127:4196, via get_variable_defs — the authoritative AppShell composition; the previously-sourced 1197:1652 turned out to be one example instance living inside this same canvas, not the canonical source) are new: `text/link` (#2563EB) is a genuine naming collision with the existing text.link token (which means brand crimson, primary.500, and is consumed by the standalone `TextLink` component) — not the same color, so it is NOT reused or overwritten; instead it's added as the distinct `text.link-subtle` token (aliasing the new `sky.500` primitive — see primitives/color.json, only one step evidenced) for the muted inline-navigational-link look breadcrumbs/footer links use in this AppShell context. `background.badge` (#EBF1FF) aliases the existing cobalt.50 exactly. `background.prompt` (#424849) aliases the existing lumen-gray.800 exactly. `border.table` (#DBE1E2) aliases the existing lumen-gray.200 exactly — despite the Figma variable's name, it's used here as the AI response bubble's border, not a literal table. `status/danger` (#DA1E28) was also found in this same source but needed no new token — it's an exact value match for the already-existing status.error (red.500), just an alternate name Figma uses in this context; not added as a duplicate. dark.text.link-subtle/background.badge/background.prompt/border.table have no Figma source (same caveat as the rest of the dark block); text.link-subtle has no ramp to mirror (sky is a single-step primitive) so the light value is reused unchanged pending real dark evidence; background.badge/background.prompt/border.table use the same 8-minus-light-index mirroring already established for their source families (cobalt.50→cobalt.700 has no established precedent in this file, so background.badge dark uses cobalt.700 as the mirrored step; lumen-gray.800→lumen-gray.0 doesn't exist, so background.prompt dark reuses lumen-gray.700 as the nearest available darker-ramp-end mirror; lumen-gray.200→lumen-gray.600 follows the same rule as border.subtle/nav-active above). light.border.input (same source/session) is `stroke/input` (#C8D1D4) — needed for the new `AIPanel`'s text input (and, not yet built, the Header's SearchBar) — aliases lumen-gray.300 exactly; dark.border.input mirrors to lumen-gray.500 by the same rule.",
   "_appShellComment": "Exception to the legacy dark-theme note above: the app-shell group and the dark Badge roles are sourced directly from the canonical AppShell light/dark variants at Figma node 1007:3700, verified 2026-07-22. Unrelated dark mappings remain provisional.",
-  "_buttonComment": "Exception to the legacy dark-theme note above: the complete button group is sourced directly from the Light and Dark variants at Figma node 1027:3733, re-verified across all 56 variant/state/theme combinations on 2026-07-22.",
+  "_buttonComment": "Exception to the legacy dark-theme note above: the complete button group is sourced directly from the Light and Dark variants at Figma node 1027:3733, re-verified across all 48 variant/state/theme combinations on 2026-07-23. All 12 Hover instances were re-extracted individually; their exact surface, foreground, and border bindings are represented below. Link is not a standard Button style in the current component set.",
   "_inputComment": "Exception to the legacy dark-theme note above: the dark Input primary and search base roles are sourced directly from the canonical desktop dark AppShell at Figma node 1127:4197, verified 2026-07-22. Default-state background, border, placeholder, and search-icon values are exact; hover, focus, error, Radio, and Checkbox dark mappings remain provisional until dedicated dark component states are published.",
   "light": {
     "background": {
@@ -307,7 +304,7 @@ export const semanticColor = {
       "secondary-on-action": "app-shell.light.text-heading",
       "secondary-border": "app-shell.light.button-secondary-border",
       "secondary-hover-bg": "lumen-gray.200",
-      "secondary-hover-on-action": "app-shell.light.text-primary",
+      "secondary-hover-on-action": "app-shell.light.text-heading",
       "secondary-hover-border": "lumen-gray.500",
       "outline-bg": "neutral.transparent",
       "outline-on-action": "primary.500",
@@ -319,10 +316,7 @@ export const semanticColor = {
       "ghost-bg": "neutral.transparent",
       "ghost-on-action": "app-shell.light.text-heading",
       "ghost-hover-bg": "lumen-gray.200",
-      "link-bg": "neutral.transparent",
-      "link-on-action": "sky.500",
-      "link-hover-bg": "button.light.link-hover-bg",
-      "link-hover-on-action": "sky.500",
+      "ghost-hover-on-action": "lumen-gray.800",
       "destructive-bg": "red.500",
       "destructive-on-action": "neutral.white",
       "destructive-hover-bg": "red.600"
@@ -504,23 +498,20 @@ export const semanticColor = {
       "secondary-bg": "neutral.transparent",
       "secondary-on-action": "app-shell.dark.text-primary",
       "secondary-border": "app-shell.dark.border",
-      "secondary-hover-bg": "button.dark.secondary-hover-bg",
-      "secondary-hover-on-action": "app-shell.dark.text-primary",
+      "secondary-hover-bg": "app-shell.dark.text-placeholder",
+      "secondary-hover-on-action": "app-shell.dark.toggle-on-action",
       "secondary-hover-border": "app-shell.dark.border",
       "outline-bg": "neutral.transparent",
       "outline-on-action": "primary.200",
       "outline-border": "primary.700",
-      "outline-hover-bg": "primary.100",
-      "outline-hover-on-action": "primary.500",
-      "outline-hover-border": "primary.900",
+      "outline-hover-bg": "primary.50",
+      "outline-hover-on-action": "primary.600",
+      "outline-hover-border": "primary.200",
       "outline-focus-border": "primary.900",
       "ghost-bg": "neutral.transparent",
       "ghost-on-action": "app-shell.dark.text-primary",
-      "ghost-hover-bg": "button.dark.secondary-hover-bg",
-      "link-bg": "neutral.transparent",
-      "link-on-action": "teal.200",
-      "link-hover-bg": "button.dark.link-hover-bg",
-      "link-hover-on-action": "teal.200",
+      "ghost-hover-bg": "app-shell.dark.text-placeholder",
+      "ghost-hover-on-action": "app-shell.dark.toggle-on-action",
       "destructive-bg": "red.500",
       "destructive-on-action": "neutral.white",
       "destructive-hover-bg": "red.400"
@@ -614,7 +605,7 @@ export const semanticColor = {
   }
 } as const;
 export const typography = {
-  "_comment": "Sourced from Figma 'Lumen-AI-Design-System' file, page 'Design Tokens' > '02 Typography' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 428:13769). Font family: Inter (UI text), Roboto Mono (code). H1-H6/Body/Label/Overline/Caption/Code map directly onto this scale's tiers: display-*=H1-H3, headline-*=H4-H6, title-* sits between H6 and Body at medium weight (Figma has no distinct 'title' tier), label-*/body-*/overline/caption/code-* are exact matches. button-* is a separate scale read directly off the Button component's own text spans on the 'Buttons' page (node 466:4365) — it's close to label-* but not pixel-identical on line-height, and button-lg (16px) has no equivalent at all in label-* (label tops out at 14px), which is why reusing label-lg for both md and lg previously made those two sizes render identically.",
+  "_comment": "Sourced from Figma 'Lumen-AI-Design-System' file, page 'Design Tokens' > '02 Typography' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 428:13769). Font family: Inter (UI text), Roboto Mono (code). H1-H6/Body/Label/Overline/Caption/Code map directly onto this scale's tiers: display-*=H1-H3, headline-*=H4-H6, title-* sits between H6 and Body at medium weight (Figma has no distinct 'title' tier), label-*/body-*/overline/caption/code-* are exact matches. button-* is a separate legacy scale read directly off the earlier Button page. standard-button-* is the current Instrument Sans Medium 12/14/16/18px scale from node 1034:4459, with Figma's normal line height and 1% letter spacing.",
   "fontFamily": {
     "sans": {
       "value": [
@@ -651,9 +642,64 @@ export const typography = {
         "Menlo",
         "monospace"
       ]
+    },
+    "editorial": {
+      "value": [
+        "Source Serif Pro",
+        "Georgia",
+        "serif"
+      ]
+    },
+    "documentation-mono": {
+      "value": [
+        "Space Mono",
+        "Roboto Mono",
+        "SFMono-Regular",
+        "Menlo",
+        "monospace"
+      ]
     }
   },
   "scale": {
+    "ai-library-h1": {
+      "fontSize": 60,
+      "lineHeight": 72,
+      "weight": 400,
+      "letterSpacing": -1.8,
+      "usage": "One AI Button library title (Figma node 760:1965)"
+    },
+    "ai-library-h3": {
+      "fontSize": 40,
+      "lineHeight": 50,
+      "weight": 400,
+      "letterSpacing": -0.8,
+      "usage": "One AI Button library section heading (Figma node 760:1965)"
+    },
+    "ai-library-lead": {
+      "fontSize": 20,
+      "lineHeight": 22,
+      "weight": 400,
+      "usage": "One AI Button library introduction (Figma node 760:1965)"
+    },
+    "ai-library-card-title": {
+      "fontSize": 20,
+      "lineHeight": 32,
+      "weight": 600,
+      "usage": "One AI Button library card title (Figma node 760:1965)"
+    },
+    "ai-library-body": {
+      "fontSize": 14,
+      "lineHeight": 16,
+      "weight": 400,
+      "usage": "One AI Button library card description (Figma node 760:1965)"
+    },
+    "ai-library-caption": {
+      "fontSize": 14,
+      "lineHeight": 18,
+      "weight": 400,
+      "letterSpacing": 0.028,
+      "usage": "One AI Button library eyebrow and labels (Figma node 760:1965)"
+    },
     "display-lg": {
       "fontSize": 60,
       "lineHeight": 72,
@@ -897,6 +943,34 @@ export const typography = {
       "letterSpacing": 0.14,
       "usage": "AppShell page action button"
     },
+    "standard-button-sm": {
+      "fontSize": 12,
+      "lineHeight": "normal",
+      "weight": 500,
+      "letterSpacing": 0.12,
+      "usage": "Standard Button label, size=sm (Figma node 1034:4459)"
+    },
+    "standard-button-md": {
+      "fontSize": 14,
+      "lineHeight": "normal",
+      "weight": 500,
+      "letterSpacing": 0.14,
+      "usage": "Standard Button label, size=md (Figma node 1034:4459)"
+    },
+    "standard-button-lg": {
+      "fontSize": 16,
+      "lineHeight": "normal",
+      "weight": 500,
+      "letterSpacing": 0.16,
+      "usage": "Standard Button label, size=lg (Figma node 1034:4459)"
+    },
+    "standard-button-xl": {
+      "fontSize": 18,
+      "lineHeight": "normal",
+      "weight": 500,
+      "letterSpacing": 0.18,
+      "usage": "Standard Button label, size=xl (Figma node 1034:4459)"
+    },
     "app-nav": {
       "fontSize": 13,
       "lineHeight": 20,
@@ -1008,7 +1082,7 @@ export const typography = {
   }
 } as const;
 export const spacing = {
-  "_comment": "Sourced from Figma 'Lumen-AI-Design-System' file, page 'Design Tokens' > '04 Spacing' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 511:2). An 8pt grid with 2px/4px sub-steps. Keys are literal pixel values, not indices. 'layout' is a curated subset of the same scale for page/section-level rhythm; 'space' is the full scale for component-internal spacing. '5', '36', and '120' were added later, sourced from the Button component's exact box-model values on the 'Buttons' page (node 466:4365, e.g. the xs size's 5px vertical padding, the sm size's 36px height, and the lg size's 120px min-width) rather than the Spacing page itself. '14' and '18' were added the same way, sourced from the Buttons page's Left/Right icon-position instances (node 475:7210, e.g. 658:751/658:607/658:535 — the icon glyph is 14px square at Button size xs, 16px at sm (already covered by the existing '16' key), and 18px at both md and lg) — a `var(--spacing-N)` reference to a key that doesn't exist here resolves to nothing, silently invalidating the CSS property using it, so every arbitrary-value reference to this scale needs a real, defined key. '38' was added 2026-07-16, sourced from the 'AI ButtonGroup Component Library' Toggle Group pills (node 969:5287/969:5299, confirmed via `get_design_context`: `py-8` auto-layout around an 18px-line-height 14px label yields a hugged 38px height) — distinct from `ChoiceChip`'s own 36px `lg`-size spec (node 581:485), which is a different Figma component instance. IMPORTANT: these keys are literal pixel values and collide in name with Tailwind's own default proportional spacing scale (e.g. core `h-8` means 32px) — see the TAILWIND_CORE_SPACING_KEYS guard in scripts/build.mjs. Only keys Tailwind's core scale does not already define (plus '0') are merged into the Tailwind preset; use `[var(--spacing-N)]` arbitrary-value syntax for any other key.",
+  "_comment": "Sourced from Figma 'Lumen-AI-Design-System' file, page 'Design Tokens' > '04 Spacing' (fileKey GJBYRm6ySR7XIECFcHMgy2, node 511:2). An 8pt grid with 2px/4px sub-steps. Keys are literal pixel values, not indices. 'layout' is a curated subset of the same scale for page/section-level rhythm; 'space' is the full scale for component-internal spacing. '5', '36', and '120' were added later, sourced from the Button component's exact box-model values on the 'Buttons' page (node 466:4365, e.g. the xs size's 5px vertical padding, the sm size's 36px height, and the lg size's 120px min-width) rather than the Spacing page itself. '14' and '18' were added the same way, sourced from the Buttons page's Left/Right icon-position instances (node 475:7210, e.g. 658:751/658:607/658:535 — the icon glyph is 14px square at Button size xs, 16px at sm (already covered by the existing '16' key), and 18px at both md and lg) — a `var(--spacing-N)` reference to a key that doesn't exist here resolves to nothing, silently invalidating the CSS property using it, so every arbitrary-value reference to this scale needs a real, defined key. '38' was added 2026-07-16 from Toggle Group pills; '42' was added 2026-07-23 from the standard Button xl height at node 1034:4459. IMPORTANT: these keys are literal pixel values and collide in name with Tailwind's own default proportional spacing scale (e.g. core `h-8` means 32px) — see the TAILWIND_CORE_SPACING_KEYS guard in scripts/build.mjs. Only keys Tailwind's core scale does not already define (plus '0') are merged into the Tailwind preset; use `[var(--spacing-N)]` arbitrary-value syntax for any other key.",
   "layout": {
     "xs": {
       "value": 8
@@ -1101,6 +1175,9 @@ export const spacing = {
     },
     "40": {
       "value": 40
+    },
+    "42": {
+      "value": 42
     },
     "44": {
       "value": 44

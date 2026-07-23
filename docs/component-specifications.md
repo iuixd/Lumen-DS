@@ -333,10 +333,9 @@ Exact color values, aliases, modes, font families, font weights, letter spacing,
 ## Status
 
 Final specification, synchronized across React, Web Components, Angular,
-and Storybook from Lumen-AI-Design-System node `1027:3733`, re-verified on
-2026-07-22 across all light and dark variant/state combinations.
-This final collection supersedes the previous standard Button collection's
-multiple sizes, Raised/Tertiary variants,
+and Storybook from Lumen-AI-Design-System variant/state node `1027:3733` and
+size node `1034:4459`. The size collection was synchronized on 2026-07-23.
+The final contract supersedes the previous Raised/Tertiary variants,
 Pressed/Loading/status states, Pill, or Icon-only modifiers.
 
 ## Purpose
@@ -384,7 +383,6 @@ Accent
 Secondary
 Outline
 Ghost
-Link
 Destructive
 ```
 
@@ -404,11 +402,6 @@ Use for a transparent, brand-colored bordered action.
 
 Use for a lower-emphasis action without a visible boundary at rest.
 
-### Link
-
-Use for the lowest-emphasis blue/teal text action. Use a semantic link element
-when the action navigates.
-
 ### Accent
 
 Use for an emphasized action whose application-context treatment is distinct
@@ -422,11 +415,15 @@ require confirmation.
 
 ## Sizes
 
-Primary, Accent, Secondary, Outline, Ghost, and Destructive use the standard
-34px height, 14px inline padding, and 7px block padding. Link hugs its content
-with 8px inline padding and 2px block padding. All variants use an 8px content
-gap, 8px radius, 14px icons, and Instrument Sans Medium 14/20 with 0.14px
-letter spacing; bordered variants use a 1px border.
+| Size | Height | Inline padding | Gap | Icon | Label                                              |
+| ---- | -----: | -------------: | --: | ---: | -------------------------------------------------- |
+| `sm` |   30px |           14px | 6px | 12px | Instrument Sans Medium 12px, 0.12px letter spacing |
+| `md` |   34px |           16px | 8px | 14px | Instrument Sans Medium 14px, 0.14px letter spacing |
+| `lg` |   38px |           16px | 8px | 16px | Instrument Sans Medium 16px, 0.16px letter spacing |
+| `xl` |   42px |           16px | 8px | 18px | Instrument Sans Medium 18px, 0.18px letter spacing |
+
+`md` is the default. All variants use an 8px radius; bordered variants use a
+1px border.
 
 ## States
 
@@ -441,6 +438,17 @@ Disabled
 
 Pressed, Loading, and status states are not part of this collection and must
 not be inferred.
+
+The published Hover colors are:
+
+| Variant     | Light surface | Light foreground | Light border | Dark surface | Dark foreground | Dark border |
+| ----------- | ------------- | ---------------- | ------------ | ------------ | --------------- | ----------- |
+| Primary     | `#720024`     | `#FFFFFF`        | -            | `#CB3363`    | `#FFFFFF`       | -           |
+| Accent      | `#720024`     | `#FFF5F8`        | -            | `#CB3363`    | `#FFF5F8`       | -           |
+| Secondary   | `#DBE1E2`     | `#2B2F2F`        | `#A4B3B7`    | `#A8939F`    | `#17101A`       | `#3D3039`   |
+| Outline     | `#F2CCD8`     | `#BE003C`        | `#D8668A`    | `#F9E6EC`    | `#980030`       | `#E599B1`   |
+| Ghost       | `#DBE1E2`     | `#424849`        | -            | `#A8939F`    | `#17101A`       | -           |
+| Destructive | `#AE1820`     | `#FFFFFF`        | -            | `#E14B53`    | `#FFFFFF`       | -           |
 
 ## Properties
 
@@ -459,7 +467,8 @@ Trailing icon
 Property contract (framework-neutral — every framework package exposes these, named and typed identically in spirit):
 
 ```text
-variant   enum: primary | accent | secondary | outline | ghost | link | destructive
+variant   enum: primary | accent | secondary | outline | ghost | destructive
+size      enum: sm | md | lg | xl (default: md)
 disabled  boolean
 iconStart renderable content (icon)
 iconEnd   renderable content (icon)
@@ -469,7 +478,8 @@ Reference implementation — React (`@lumen/ui`, `packages/ui/src/primitives/But
 
 ```ts
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "accent" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+  variant?: "primary" | "accent" | "secondary" | "outline" | "ghost" | "destructive";
+  size?: "sm" | "md" | "lg" | "xl";
   iconStart?: React.ReactNode;
   iconEnd?: React.ReactNode;
 }
@@ -480,7 +490,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 - Activation occurs through pointer click, Enter, or Space.
 - Disabled buttons do not receive interaction.
 - Focus-visible treatment appears for keyboard navigation.
-- Link-styled buttons must use semantic anchors for navigation.
+- Navigation uses a semantic link component rather than Button.
 - Destructive or irreversible actions use `destructive` and should use
   confirmation when consequences are significant.
 
@@ -526,11 +536,12 @@ Required stories:
 
 ```text
 Playground
-Final Variant Collection (all seven variants and four states, light and dark)
+Final Variant Collection (all six variants and four states, light and dark)
 Icon Positions
+Sizes
 ```
 
-The React Storybook implements all three required stories.
+The React Storybook implements all four required stories.
 
 ## Testing
 
@@ -2094,6 +2105,32 @@ behavior.
 
 # 46. AI Button
 
+> Replaced 2026-07-23: the canonical contract is the “One AI button, every
+> capability” collection at Figma node `760:1965`. The legacy details below
+> are retained only as pre-release history and no longer describe the shipped
+> API.
+
+## Canonical contract
+
+- Variants: `primary | secondary | ghost | outline | destructive`
+- Sizes: `sm | md | lg | xl` = 30/34/38/42px
+- Modifiers: `iconOnly`, `isLoading`, and React `split`
+- Split variants: Primary, Secondary, and Outline, with separately focusable
+  main and dropdown actions
+- Loading: spinner replaces the leading icon while “Generating...” remains
+  visible
+- Capability catalog: the exact four Figma categories and 24 labels,
+  descriptions, and glyphs in `ai-capabilities.ts`
+- Storybook: `AI Components/One AI Button, Every Capability` (`Playground`
+  and the fullscreen `Library` reference composition)
+- Removed: Raised, Tertiary, Link, status tints, legacy 32/36/40/48px
+  `xs/sm/md/lg`, behavioral-only `destructive`, and
+  `AIButtonComponentLibrary.mdx`
+- React source: `packages/ui/src/primitives/AIButton.tsx`
+- Web Components source:
+  `packages/web-components/src/ai-button/lumen-ai-button.ts`
+- Angular source: `packages/angular/src/ai-button/lumen-ai-button.ts`
+
 ## Status
 
 Baseline specification, added 2026-07-14. Supersedes the variant/state
@@ -2181,7 +2218,7 @@ Lg
 
 Retains the independently sourced 32/36/40/48px AI Button size scale. Figma's
 `xs` AI Button is 28px tall and remains a known limitation. This scale is not
-derived from the final standard Button, which now has one 34px size.
+derived from the standard Button's 30/34/38/42px `sm`/`md`/`lg`/`xl` scale.
 
 ## States
 

@@ -4,141 +4,88 @@ import userEvent from "@testing-library/user-event";
 import { AIButton } from "./AIButton";
 
 describe("AIButton", () => {
-  it("renders its label with a leading lm-aisymbol icon by default", () => {
-    render(<AIButton>Summarize</AIButton>);
-    const button = screen.getByRole("button", { name: "Summarize" });
-    expect(button).toBeInTheDocument();
+  it("renders the default AI symbol and label", () => {
+    render(<AIButton>AI Draft</AIButton>);
+    const button = screen.getByRole("button", { name: "AI Draft" });
     expect(button.querySelector("svg")).toBeInTheDocument();
   });
 
-  it("calls onClick when clicked", async () => {
-    const onClick = vi.fn();
-    render(<AIButton onClick={onClick}>Summarize</AIButton>);
-    await userEvent.click(screen.getByRole("button", { name: "Summarize" }));
-    expect(onClick).toHaveBeenCalledOnce();
+  it.each(["primary", "secondary", "ghost", "outline", "destructive"] as const)(
+    "renders the canonical %s variant",
+    (variant) => {
+      render(<AIButton variant={variant}>AI Draft</AIButton>);
+      expect(screen.getByRole("button", { name: "AI Draft" })).toBeInTheDocument();
+    }
+  );
+
+  it.each(["sm", "md", "lg", "xl"] as const)("renders the canonical %s size", (size) => {
+    render(<AIButton size={size}>AI Draft</AIButton>);
+    expect(screen.getByRole("button", { name: "AI Draft" })).toBeInTheDocument();
   });
 
-  it("does not call onClick when disabled", async () => {
+  it("keeps the loading label visible and blocks activation", async () => {
     const onClick = vi.fn();
     render(
-      <AIButton onClick={onClick} disabled>
-        Summarize
+      <AIButton isLoading onClick={onClick}>
+        Generating...
       </AIButton>
     );
-    await userEvent.click(screen.getByRole("button", { name: "Summarize" }));
-    expect(onClick).not.toHaveBeenCalled();
-  });
-
-  it("marks the button aria-disabled and aria-busy while loading, and swaps the icon for a spinner", () => {
-    render(<AIButton isLoading>Generating</AIButton>);
-    const button = screen.getByRole("button", { name: "Generating" });
-    expect(button).toHaveAttribute("aria-disabled", "true");
+    const button = screen.getByRole("button", { name: "Generating..." });
     expect(button).toHaveAttribute("aria-busy", "true");
-  });
-
-  it("does not call onClick while loading", async () => {
-    const onClick = vi.fn();
-    render(
-      <AIButton onClick={onClick} isLoading>
-        Generating
-      </AIButton>
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Generating" }));
+    expect(button).toHaveTextContent("Generating...");
+    await userEvent.click(button);
     expect(onClick).not.toHaveBeenCalled();
   });
 
-  it("warns in dev when an iconOnly button has no accessible name", () => {
+  it("requires an accessible name for icon-only use", () => {
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     render(<AIButton iconOnly />);
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("accessible name"));
     warnSpy.mockRestore();
   });
 
-  it.each(["primary", "raised", "secondary", "tertiary", "outline", "link"] as const)(
-    "renders the %s variant without throwing",
-    (variant) => {
-      render(<AIButton variant={variant}>Summarize</AIButton>);
-      expect(screen.getByRole("button", { name: "Summarize" })).toBeInTheDocument();
-    }
-  );
-
-  it.each(["success", "warning", "error"] as const)(
-    "renders the %s status without throwing, for both solid and subtle variants",
-    (status) => {
-      render(
-        <>
-          <AIButton variant="primary" status={status}>
-            Primary
-          </AIButton>
-          <AIButton variant="secondary" status={status}>
-            Secondary
-          </AIButton>
-        </>
-      );
-      expect(screen.getByRole("button", { name: "Primary" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Secondary" })).toBeInTheDocument();
-    }
-  );
-
-  it("marks destructive intent via a data attribute without changing the visible style", () => {
-    render(
-      <AIButton variant="secondary" destructive>
-        Clean up records
-      </AIButton>
-    );
-    const button = screen.getByRole("button", { name: "Clean up records" });
-    expect(button).toHaveAttribute("data-destructive", "true");
+  it("resolves the exact Figma capability label and icon", () => {
+    render(<AIButton capability="summarize" />);
+    const button = screen.getByRole("button", { name: "AI Summarize" });
+    expect(button).toHaveAttribute("data-capability", "summarize");
+    expect(button).toHaveAttribute("data-ai-analytics-event", "ai_button.summarize");
+    expect(button.querySelector("svg")).toBeInTheDocument();
   });
 
-  it("accepts a custom leading icon override", () => {
+  it("uses a capability label as the icon-only accessible name", () => {
+    render(<AIButton iconOnly capability="translate" />);
+    expect(screen.getByRole("button", { name: "AI Translate" })).toBeInTheDocument();
+  });
+
+  it("lets explicit content and icon override capability defaults", () => {
     render(
-      <AIButton icon={<span data-testid="custom-icon" />} isLoading={false}>
-        Rewrite
+      <AIButton capability="summarize" icon={<span data-testid="custom-icon" />}>
+        Custom action
       </AIButton>
     );
+    expect(screen.getByRole("button", { name: "Custom action" })).toBeInTheDocument();
     expect(screen.getByTestId("custom-icon")).toBeInTheDocument();
   });
 
-  describe("capability", () => {
-    it("resolves a default label and icon from the catalog when no children are passed", () => {
-      render(<AIButton capability="summarize" />);
-      const button = screen.getByRole("button", { name: "Summarize" });
-      expect(button).toBeInTheDocument();
-      expect(button.querySelector("svg")).toBeInTheDocument();
-    });
-
-    it("lets explicit children override the capability's default label", () => {
-      render(<AIButton capability="summarize">Custom label</AIButton>);
-      expect(screen.getByRole("button", { name: "Custom label" })).toBeInTheDocument();
-    });
-
-    it("lets an explicit icon override the capability's default icon", () => {
+  it.each(["primary", "secondary", "outline"] as const)(
+    "renders the canonical %s split button with two actions",
+    async (variant) => {
+      const onClick = vi.fn();
+      const onDropdownClick = vi.fn();
       render(
-        <AIButton capability="summarize" icon={<span data-testid="custom-icon" />}>
-          Summarize
+        <AIButton
+          split
+          variant={variant}
+          onClick={onClick}
+          onDropdownClick={onDropdownClick}
+        >
+          AI Draft
         </AIButton>
       );
-      expect(screen.getByTestId("custom-icon")).toBeInTheDocument();
-    });
-
-    it("stamps data-capability and data-ai-analytics-event on the rendered button", () => {
-      render(<AIButton capability="draft" />);
-      const button = screen.getByRole("button", { name: "Draft" });
-      expect(button).toHaveAttribute("data-capability", "draft");
-      expect(button).toHaveAttribute("data-ai-analytics-event", "ai_button.draft");
-    });
-
-    it("defaults aria-label to the capability's label for an icon-only button with no explicit label", () => {
-      render(<AIButton iconOnly capability="translate" />);
-      expect(screen.getByRole("button", { name: "Translate" })).toBeInTheDocument();
-    });
-
-    it("warns in dev and falls back to default rendering for an unrecognized capability id", () => {
-      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-      render(<AIButton capability="not-a-real-capability">Fallback label</AIButton>);
-      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("unrecognized capability"));
-      expect(screen.getByRole("button", { name: "Fallback label" })).toBeInTheDocument();
-      warnSpy.mockRestore();
-    });
-  });
+      await userEvent.click(screen.getByRole("button", { name: "AI Draft" }));
+      await userEvent.click(screen.getByRole("button", { name: "More AI actions" }));
+      expect(onClick).toHaveBeenCalledOnce();
+      expect(onDropdownClick).toHaveBeenCalledOnce();
+    }
+  );
 });

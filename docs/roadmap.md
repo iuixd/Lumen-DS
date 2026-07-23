@@ -1258,8 +1258,9 @@ Building the Web Components Button surfaced that `docs/component-specifications.
 
 This finding is historical. On 2026-07-20, final Figma node `1027:3733`
 superseded the older node `475:7210` Button collection. All three framework
-implementations and the authoritative specification now use the final seven
-variants, one 34px size, and Default/Hover/Focused/Disabled states.
+implementations and the authoritative specification now use the final six
+variants, the 30/34/38/42px `sm`/`md`/`lg`/`xl` size scale, and
+Default/Hover/Focused/Disabled states.
 
 Building `@lumen/angular` surfaced a separate, tooling-level finding (not a spec discrepancy): Angular's JIT compiler cannot recognize signal-based `input()`/`output()` fields when components are transformed by plain esbuild (what Vitest uses) instead of a real Angular/TypeScript compiler pipeline — see `packages/angular/README.md` for the full explanation and `angular/angular#54013`. The fix (classic `@Input()` decorators instead of signal inputs) kept this package's tooling as light as `@lumen/ui` and `@lumen/web-components`, avoiding a dependency on `@angular/build`/`@analogjs/vite-plugin-angular`. Apply the same check before building the Vue package: verify Vue's Vitest/testing story doesn't have an equivalent gap before assuming the same lightweight approach works there too.
 

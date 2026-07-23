@@ -402,6 +402,18 @@ text-decoration
 
 Avoid implicit browser defaults.
 
+## Standard Button scale
+
+The standard Button size reference at Figma node `1034:4459` defines four
+Instrument Sans Medium label tiers:
+
+| Runtime token        | Font size | Line height | Letter spacing |
+| -------------------- | --------: | ----------- | -------------: |
+| `standard-button-sm` |      12px | normal      |         0.12px |
+| `standard-button-md` |      14px | normal      |         0.14px |
+| `standard-button-lg` |      16px | normal      |         0.16px |
+| `standard-button-xl` |      18px | normal      |         0.18px |
+
 ## Typography quality requirements
 
 - Use semantic text styles instead of raw font-size variables in components.
@@ -676,9 +688,11 @@ Button/Disabled/On Action
 ## Published theme-aware button roles
 
 The final standard Button collection at node `1027:3733` publishes semantic
-roles for `primary`, `accent`, `secondary`, `outline`, `ghost`, `link`, and
+roles for `primary`, `accent`, `secondary`, `outline`, `ghost`, and
 `destructive`. Each variant exposes its evidenced default and hover surface,
 content, and border roles through `--color-button-{variant}-*` variables.
+Ghost also exposes `--color-button-ghost-hover-on-action`; the foreground
+changes with its hover surface in both themes.
 Shared interaction roles are:
 
 | Role                    | CSS custom property                 | Light     | Dark      |
