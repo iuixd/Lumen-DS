@@ -1,6 +1,6 @@
 ---
 name: lumen-figma-sync
-description: Use when the user asks to sync, synchronize, or propagate the Lumen Design System from Figma into code across React, Web Components, Angular, and Storybook, then commit and push. Triggers on phrases like "sync figma", "sync the design system", "figma to code", "pull the latest from figma", "update storybook from figma", "propagate this figma change to all frameworks", or a figma.com/design/GJBYRm6ySR7XIECFcHMgy2 URL. Runs the full read-audit-report-confirm-implement-validate-commit-push sequence in strict framework order (React, then Web Components, then Angular, then Storybook), gated by two explicit user confirmations.
+description: Use when the user asks to sync, synchronize, or propagate the Lumen AI Design System from Figma into code across React, Web Components, Angular, and Storybook, then commit and push. Triggers on phrases like "sync figma", "sync the design system", "figma to code", "pull the latest from figma", "update storybook from figma", "propagate this figma change to all frameworks", or a figma.com/design/GJBYRm6ySR7XIECFcHMgy2 URL. Runs the full read-audit-report-confirm-implement-validate-commit-push sequence in strict framework order (React, then Web Components, then Angular, then Storybook), gated by two explicit user confirmations.
 ---
 
 # Lumen Figma-to-Code Synchronization
