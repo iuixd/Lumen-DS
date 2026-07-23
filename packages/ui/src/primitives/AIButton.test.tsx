@@ -84,8 +84,72 @@ describe("AIButton", () => {
       );
       await userEvent.click(screen.getByRole("button", { name: "AI Draft" }));
       await userEvent.click(screen.getByRole("button", { name: "More AI actions" }));
+      expect(screen.getByRole("menu", { name: "More AI actions" })).toBeInTheDocument();
+      expect(screen.getAllByRole("menuitem").map((item) => item.textContent)).toEqual([
+        "AI Summarize",
+        "AI Rewrite",
+        "AI Fix Grammar",
+        "AI Translate"
+      ]);
+      expect(screen.getByRole("button", { name: "AI Draft" })).toHaveClass("rounded-l-lg");
+      expect(screen.getByRole("button", { name: "More AI actions" })).toHaveClass(
+        "rounded-r-lg"
+      );
       expect(onClick).toHaveBeenCalledOnce();
       expect(onDropdownClick).toHaveBeenCalledOnce();
     }
   );
+
+  it("selects a dropdown capability and closes the menu", async () => {
+    const onDropdownOptionSelect = vi.fn();
+    render(<AIButton split onDropdownOptionSelect={onDropdownOptionSelect}>AI Draft</AIButton>);
+    await userEvent.click(screen.getByRole("button", { name: "More AI actions" }));
+    await userEvent.click(screen.getByRole("menuitem", { name: "AI Rewrite" }));
+    expect(onDropdownOptionSelect).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "rewrite", label: "AI Rewrite" })
+    );
+    expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+  });
+
+  it("uses auto width and caps the visible menu at eight options", async () => {
+    const dropdownOptions = [
+      "summarize",
+      "draft",
+      "rewrite",
+      "improve-clarity",
+      "fix-grammar",
+      "translate",
+      "explain-data",
+      "generate-report",
+      "extract-info",
+      "detect-trends"
+    ] as const;
+    render(
+      <AIButton split dropdownOptions={dropdownOptions}>
+        AI Draft
+      </AIButton>
+    );
+    await userEvent.click(screen.getByRole("button", { name: "More AI actions" }));
+    const menu = screen.getByRole("menu");
+    expect(screen.getAllByRole("menuitem")).toHaveLength(10);
+    expect(menu).toHaveClass("w-max", "overflow-y-auto");
+    expect(menu).not.toHaveClass("w-[var(--spacing-200)]");
+    expect(menu).toHaveStyle({
+      maxHeight: "calc(var(--spacing-32) * 8 + var(--spacing-16))"
+    });
+  });
+
+  it("supports arrow navigation and Escape in the dropdown menu", async () => {
+    render(<AIButton split>AI Draft</AIButton>);
+    const trigger = screen.getByRole("button", { name: "More AI actions" });
+    trigger.focus();
+    await userEvent.keyboard("{ArrowDown}");
+    const items = screen.getAllByRole("menuitem");
+    expect(items[0]).toHaveFocus();
+    await userEvent.keyboard("{ArrowDown}");
+    expect(items[1]).toHaveFocus();
+    await userEvent.keyboard("{Escape}");
+    expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+  });
 });

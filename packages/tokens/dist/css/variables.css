@@ -286,6 +286,7 @@
   --shadow-button-disabled: 0px 1px 1px rgba(0,0,0,0.12);
   --shadow-button-pressed-inset: inset 0px 2px 4px rgba(0,0,0,0.18);
   --shadow-elevation-sm: 0px 1px 2px rgba(0,0,0,0.08);
+  --shadow-menu-default: 0px 1px 4px rgba(0,0,0,0.06), 0px 4px 16px rgba(0,0,0,0.12);
 
   /* divider (translucent, raw rgba — see divider.json) */
   --divider-button-primary: rgba(255, 255, 255, 0.3);
@@ -365,6 +366,9 @@
   --text-badge-lg-size: 14px;
   --text-badge-lg-line-height: 20px;
   --text-badge-lg-weight: 500;
+  --text-ai-menu-item-size: 14px;
+  --text-ai-menu-item-line-height: 16px;
+  --text-ai-menu-item-weight: 400;
   --text-body-lg-size: 20px;
   --text-body-lg-line-height: 32px;
   --text-body-lg-weight: 400;

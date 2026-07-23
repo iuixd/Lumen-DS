@@ -151,6 +151,12 @@
       "weight": 500,
       "usage": "Badge label text, size=lg (Figma node 1079:893)"
     },
+    "ai-menu-item": {
+      "fontSize": 14,
+      "lineHeight": 16,
+      "weight": 400,
+      "usage": "AI Split Button dropdown option (Figma node 1046:1875)"
+    },
     "body-lg": {
       "fontSize": 20,
       "lineHeight": 32,

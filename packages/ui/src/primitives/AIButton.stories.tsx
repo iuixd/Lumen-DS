@@ -11,7 +11,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "The canonical One AI Button collection from Lumen AI Design System node 760:1965. One component covers labeled, icon-only, loading, destructive, and split-button treatments; capability changes come from label, icon, action, and prompt—not new visual variants."
+          "The canonical One AI Button collection from Lumen AI Design System node 760:1965. One component covers labeled, icon-only, loading, destructive, and split-button treatments; every React split treatment includes the dropdown menu from node 1046:1875. Capability changes come from label, icon, action, and prompt—not new visual variants."
       }
     }
   },
@@ -45,6 +45,29 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
+
+const scrollDemoOptions = aiCapabilities.slice(0, 10).map((capability) => capability.id);
+
+export const SplitDropdownMenus: Story = {
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          "Primary, Secondary, and Outline Split Button AI share the Figma-sourced dropdown. The Primary example contains ten options to demonstrate the compact scrollbar, which appears only during menu interaction after the eighth visible row."
+      }
+    }
+  },
+  render: () => (
+    <div className="flex min-h-[var(--spacing-240)] flex-wrap items-start gap-[var(--spacing-32)]">
+      <AIButton split capability="draft" dropdownOptions={scrollDemoOptions} />
+      <AIButton split capability="draft" variant="secondary" />
+      <AIButton split variant="outline">
+        AI Draft...
+      </AIButton>
+    </div>
+  )
+};
 
 function VariantCard({
   title,
@@ -167,18 +190,18 @@ export const Library: Story = {
                 />
               ))}
             </VariantCard>
-            <VariantCard title="Split Button AI" description="Primary action with related AI menu">
+            <VariantCard title="Split Button AI" description="Open to inspect the four AI options">
               <AIButton split capability="draft" />
             </VariantCard>
             <VariantCard
               title="Secondary Split Button AI"
-              description="Secondary action with related AI menu"
+              description="Open to inspect the four AI options"
             >
               <AIButton split capability="draft" variant="secondary" />
             </VariantCard>
             <VariantCard
               title="Outline Split Button AI"
-              description="Outlined action with related AI menu"
+              description="Open to inspect the four AI options"
             >
               <AIButton split variant="outline">
                 AI Draft...

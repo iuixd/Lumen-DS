@@ -2116,7 +2116,7 @@ behavior.
 - Sizes: `sm | md | lg | xl` = 30/34/38/42px
 - Modifiers: `iconOnly`, `isLoading`, and React `split`
 - Split variants: Primary, Secondary, and Outline, with separately focusable
-  main and dropdown actions
+  main and dropdown actions and the shared four-option AI capability menu
 - Loading: spinner replaces the leading icon while “Generating...” remains
   visible
 - Capability catalog: the exact four Figma categories and 24 labels,
@@ -2140,7 +2140,8 @@ serves; only its old, pre-Figma variant and state lists were wrong.
 
 ## Figma source
 
-- Node: `760:1965` ("AI Communication Component Library", Buttons page)
+- Nodes: `760:1965` ("AI Communication Component Library", Buttons page);
+  `1046:1875` (Split Button AI dropdown menu)
 - Component set: AI Button (Primary/Secondary/Tertiary/Outline AI, plus
   Icon-Only and Split Button AI sub-sections)
 - Last synchronized: 2026-07-15 — re-verified the leading-icon instance
@@ -2148,6 +2149,28 @@ serves; only its old, pre-Figma variant and state lists were wrong.
   showed a component explicitly named `lm-aisymbol`, nodes `843:7818`–
   `843:7824`); the initial 2026-07-14 sync had approximated this as a
   generic sparkle glyph before that instance swap was visible
+- Dropdown synchronized 2026-07-23 from node `1046:1875`: 12px radius,
+  8px vertical inset, 32px rows, 16px inline padding, 10px icon gap, 14px
+  icons, and regular 14/16 text. The original 200px frame width was
+  subsequently made content-driven by user direction.
+
+## Split dropdown
+
+Every React `split` treatment opens the same built-in capability menu:
+AI Summarize, AI Rewrite, AI Fix Grammar, and AI Translate. Consumers may
+replace that ordered subset with `dropdownOptions` and receive the selected
+catalog entry through `onDropdownOptionSelect`. `onDropdownClick` continues
+to report activation of the chevron segment.
+
+The menu width is automatic. Up to eight option rows are visible; additional
+options remain available through vertical overflow. Its compact scrollbar is
+visually hidden at rest and appears only while the menu is hovered or contains
+keyboard focus. Menus with eight or fewer options do not show a scrollbar.
+
+The trigger supports Enter/Space through native button behavior and opens
+with Arrow Down or Arrow Up. Within the menu, Arrow keys wrap, Home/End jump
+to the first/last option, Escape closes and returns focus, Tab closes, and
+pointer interaction outside closes the menu.
 
 ## Purpose
 
@@ -2362,9 +2385,6 @@ behavior.
 
 - `status` (Success/Warning/Error) not implemented — see States above.
 - `xs` size is 32px tall in code vs. Figma's 28px — see Sizes above.
-- Split Button AI (a dropdown-toggle pairing analogous to `SplitButton`,
-  documented under node `760:1965`) is not implemented — no shipped
-  component composes `AIButton` with a dropdown segment yet.
 - The Capability Catalog is shown only as a Storybook story (now data-
   driven, see Storybook above), not shipped as a `packages/patterns`
   composition — it has no interaction behavior beyond the individual
@@ -2383,6 +2403,17 @@ behavior.
 ## Change history
 
 - 2026-07-14: added, sourced from node `760:1965`.
+- 2026-07-23: corrected `split` Primary/Secondary/Outline segment geometry
+  from updated node `817:9861` (`1381:854`–`1381:856`). The main action now
+  owns the 8px top-left/bottom-left corners and the dropdown action owns the
+  8px top-right/bottom-right corners; inner corners remain square.
+- 2026-07-23: added the built-in four-option dropdown menu to all React
+  `split` treatments from node `1046:1875`, including keyboard navigation,
+  outside-click dismissal, `dropdownOptions`, and
+  `onDropdownOptionSelect`.
+- 2026-07-23: changed the menu to automatic content width and capped its
+  visible area at eight rows, with an interaction-only compact scrollbar
+  for longer option sets.
 - 2026-07-15: added the `capability` prop and its backing
   `ai-capabilities.ts` catalog (React only), renamed the Storybook category
   from `Primitives/AIButton` to `AI Components/AI Button`, refactored the
