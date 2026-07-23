@@ -1,0 +1,77 @@
+/**
+ * shadcn <-> Lumen token bridge.
+ *
+ * shadcn-generated component source (packages/ui/src/components/internal/**)
+ * is written against a small, fixed set of CSS custom properties
+ * (--background, --primary, --ring, --radius, ...) that are normally filled
+ * in by shadcn's own default (uncustomized) theme. This file is the ONLY
+ * place those variables are defined for Lumen — every value below points at
+ * an existing `@lumen/tokens` semantic variable (see
+ * packages/tokens/dist/css/variables.css), never a raw color or shadcn's
+ * own defaults. Lumen tokens remain the single source of truth; this file
+ * only translates their names into the vocabulary shadcn's generated
+ * markup expects.
+ *
+ * Mapping direction is always: shadcn compatibility variable -> Lumen
+ * semantic token. Do not add a value here that isn't traceable to an
+ * existing `--color-*`/`--radius-*`/`--shadow-*` variable.
+ *
+ * Every Lumen variable referenced below already swaps value under
+ * `[data-theme="dark"]` (see packages/tokens/scripts/build.mjs) — so this
+ * bridge does not need, and must not add, its own `[data-theme="dark"]`
+ * override block. Redefining these per-theme here would create a second,
+ * parallel theme switch instead of forwarding to the one Lumen already has.
+ */
+
+@layer base {
+  :root {
+    --background: var(--color-background-default);
+    --foreground: var(--color-text-body);
+
+    --card: var(--color-background-raised);
+    --card-foreground: var(--color-text-body);
+
+    --popover: var(--color-background-raised);
+    --popover-foreground: var(--color-text-body);
+
+    --primary: var(--color-brand-default);
+    --primary-foreground: var(--color-text-inverse);
+
+    /* No general-purpose "secondary surface" token exists outside
+       component-specific groups (button, badge) — reusing Button's own
+       named secondary tokens is the closest non-invented match. */
+    --secondary: var(--color-button-secondary-bg);
+    --secondary-foreground: var(--color-button-secondary-on-action);
+
+    --muted: var(--color-background-subtle);
+    --muted-foreground: var(--color-text-muted);
+
+    /* No dedicated "selected row" surface token exists at the general
+       semantic level either — reusing NavigationRail's active-item token,
+       the closest existing "this row is the current selection" surface in
+       the system. Revisit if design ships a purpose-built token. */
+    --accent: var(--color-background-nav-active);
+    --accent-foreground: var(--color-text-title);
+
+    --destructive: var(--color-button-destructive-bg);
+    --destructive-foreground: var(--color-button-destructive-on-action);
+
+    --border: var(--color-border-default);
+    --input: var(--color-border-input);
+    --ring: var(--color-border-focus);
+
+    /* Single base radius shadcn's nested lg/md/sm scale is calculated from.
+       --radius-lg matches the raised-surface radius already used by Modal
+       and Card. */
+    --radius: var(--radius-lg);
+  }
+
+  /* Standard shadcn convention: bare `border`/`border-b`/etc. utilities only
+     set border-width, not color — they inherit color from here. Without
+     this, every unadorned `border` class in generated source would fall
+     back to Tailwind's own default gray instead of the bridged Lumen
+     token. */
+  * {
+    border-color: var(--border);
+  }
+}

@@ -1310,3 +1310,41 @@ requirement that shipped work be discoverable here.
 - [x] `pnpm create:react` produces an app that installs, type-checks, and builds without manual intervention, verified both in CI and via a local end-to-end run
 - [x] the generated app requires no Git-dependency pinning or publish step to consume `@lumen/tokens`/`@lumen/ui`/`@lumen/patterns`
 - [x] generated scaffolds are excluded from the repository's own lint/typecheck/test runs by construction, not by convention
+
+# 30. Phase 15: shadcn component integration
+
+## Objective
+
+Adopt shadcn/ui as a component *source* and behavioral-implementation layer for complex interaction patterns Lumen doesn't yet have hand-built primitives for (command palettes, sheets, dropdown menus, popovers), without shadcn ever becoming a second, competing visual theme. Lumen tokens remain the only source of truth for color, typography, spacing, radius, shadow, motion, and dark mode; shadcn/Radix supply composition, keyboard interaction, and ARIA behavior only.
+
+## Status
+
+```text
+Started 2026-07-23. Not planned ahead of time on this roadmap — it is recorded
+here retroactively for tracking, per this document's own governance
+requirement that shipped work be discoverable here (same pattern as Phase 14).
+First component: Command (no existing Lumen equivalent). See
+docs/shadcn-integration.md for the full governance model and
+docs/changelog.md's [Unreleased] entry for the concrete token bridge and
+dependency list.
+```
+
+## Deliverables
+
+- [x] `packages/ui/components.json` — shadcn CLI configuration targeting this repo's actual Tailwind v3 setup and monorepo aliases (generates into `packages/ui/src`, never into an application).
+- [x] `packages/ui/src/styles/shadcn-lumen-bridge.css` — a one-directional mapping from shadcn's compatibility variables onto existing Lumen semantic tokens (no invented tokens, no committed shadcn default theme values).
+- [x] `Command` adopted as the first component: internal generated source kept at `packages/ui/src/components/internal`, public API re-exported from `@lumen/ui` at `packages/ui/src/components/command`.
+- [ ] Additional components (`Sheet`, `DropdownMenu`, `Popover`, `ScrollArea`) adopted one at a time, each following the same internal/public split and bridge-only styling rule — not yet started.
+- [ ] React Starter (`@lumen/create-app`) template updated with a compatible `components.json` so generated apps can adopt further shadcn-sourced components the same way — not yet started.
+- [ ] CI check preventing known default shadcn theme values from being committed — not yet started.
+
+## Findings
+
+Lumen's `Modal.tsx` already carried a comment anticipating a future Radix dependency ("swap in Radix Dialog if strict focus trapping / portal behavior is required") — this phase is the first place that swap actually happens, scoped to `Command`'s underlying dialog behavior. The repository's color tokens resolve to full hex values, not bare HSL channels, which rules out shadcn's default `hsl(var(--x))` Tailwind wiring; the bridge and Tailwind preset use `var(--x)` directly instead. Lumen has no general-purpose "secondary/muted/accent" surface tokens outside component-specific ones (button, badge) — the bridge reuses the closest existing named token per role rather than inventing a new tier; see `docs/shadcn-integration.md` for which mappings are exact reuses versus judgment calls.
+
+## Exit criteria
+
+- [ ] At least one shadcn-sourced component ships with full Storybook coverage, tests, and passing typecheck/build, importable only via `@lumen/ui`
+- [ ] No shadcn default theme values present anywhere in committed CSS
+- [ ] Dark mode for every adopted component follows Lumen's existing `data-theme` mechanism with no second theme system introduced
+- [ ] `docs/shadcn-integration.md` documents the rules clearly enough that a future component adoption doesn't require re-deriving this phase's decisions

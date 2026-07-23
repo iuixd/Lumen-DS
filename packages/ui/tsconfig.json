@@ -4,7 +4,11 @@
     "jsx": "react-jsx",
     "outDir": "./tsc-out",
     "rootDir": "./src",
-    "types": ["@testing-library/jest-dom", "node"]
+    "types": ["@testing-library/jest-dom", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "@lumen/ui/*": ["./src/*"]
+    }
   },
   "include": ["src"]
 }

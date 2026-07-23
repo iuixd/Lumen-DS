@@ -10,6 +10,7 @@
    token-owned (`--font-interface`/`--font-brand`); this only supplies glyphs. */
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@600;700&display=swap");
 @import "@lumen/tokens/css";
+@import "@lumen/ui/shadcn.css";
 
 @tailwind base;
 @tailwind components;

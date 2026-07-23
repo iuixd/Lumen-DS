@@ -24,6 +24,9 @@ export * from "./primitives/KPICard";
 export * from "./icons/generated";
 export type { IconName } from "./icons/generated/registry";
 
+// Command (shadcn-sourced — see docs/shadcn-integration.md)
+export * from "./components/command/Command";
+
 // Composite
 export * from "./composite/Card";
 export * from "./composite/Modal";
