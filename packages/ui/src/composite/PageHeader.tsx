@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
 
-export interface Breadcrumb {
+export interface PageHeaderBreadcrumb {
   label: string;
   href?: string;
 }
 
 export interface PageHeaderProps {
-  breadcrumbs?: Breadcrumb[];
+  breadcrumbs?: PageHeaderBreadcrumb[];
   title: string;
   description?: string;
   actions?: ReactNode;
