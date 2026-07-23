@@ -571,6 +571,13 @@ module.exports = {
       "fontWeight": "var(--text-badge-lg-weight)"
     }
   ],
+  "ai-menu-item": [
+    "var(--text-ai-menu-item-size)",
+    {
+      "lineHeight": "var(--text-ai-menu-item-line-height)",
+      "fontWeight": "var(--text-ai-menu-item-weight)"
+    }
+  ],
   "body-lg": [
     "var(--text-body-lg-size)",
     {

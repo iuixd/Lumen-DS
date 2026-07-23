@@ -414,6 +414,10 @@ Instrument Sans Medium label tiers:
 | `standard-button-lg` |      16px | normal      |         0.16px |
 | `standard-button-xl` |      18px | normal      |         0.18px |
 
+The Split Button AI dropdown at node `1046:1875` uses
+`typography.ai-menu-item`: Instrument Sans Regular, 14px size, and 16px
+line height.
+
 ## Typography quality requirements
 
 - Use semantic text styles instead of raw font-size variables in components.
@@ -544,6 +548,9 @@ Elevation/Xl
 ```
 
 Elevation tokens should define complete shadow values, not only blur radius.
+The Split Button AI dropdown binds `shadow.menu-default` to the published
+two-layer menu shadow: `0 1px 4px rgb(0 0 0 / 6%)` plus
+`0 4px 16px rgb(0 0 0 / 12%)`.
 
 ## Opacity
 

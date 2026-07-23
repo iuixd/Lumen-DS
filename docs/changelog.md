@@ -176,6 +176,17 @@ Use the following headings for every release:
 
 ### Fixed
 
+- Corrected the Primary, Secondary, and Outline Split Button AI sublayer
+  corner radii.
+  - Affected component: React `AIButton split` and its `AI Components/One AI Button, Every Capability` Storybook library; no token group changed
+  - Figma source: Lumen-AI-Design-System node `817:9861`, component instances `1381:854` (Primary), `1381:855` (Secondary), and `1381:856` (Outline)
+  - Previous: only the composite container carried the 8px radius; the `Main` and `Dropdown` interactive sublayers had square corners, allowing their painted states to expose a corner-rendering bug
+  - Current: `Main` applies 8px top-left/bottom-left radii and `Dropdown` applies 8px top-right/bottom-right radii, matching the updated Figma layers while leaving both inner corners square at the divider
+  - Affects: `packages/ui/src/primitives/AIButton.{tsx,test.tsx}`, `docs/{changelog.md,component-specifications.md,figma-sync.md}`, and `.changeset/split-button-ai-segment-radius.md`
+  - Migration: none — props, events, slots, dimensions, colors, states, and tokens are unchanged
+  - Validation: Figma `get_design_context` confirmed the exact four exposed 8px sublayer corners on all three instances; repository-wide lint and typecheck passed; all 339 tests passed (162 React/UI, 74 Web Components, 70 Angular, 27 create-app, 6 patterns), with the existing Primary/Secondary/Outline split test now asserting both segment radii; production Storybook built successfully with 2,124 modules, and the emitted `AIButton` library bundle contains `rounded-l-lg` and `rounded-r-lg` on the two split actions
+  - Changeset: `.changeset/split-button-ai-segment-radius.md` (`@lumen/ui` patch)
+
 - Removed Link from the standard Button collection in every framework package and Storybook.
   - Affected token group/component: `color.button.link-*`, `typography.button-link*`, and standard Button in React, Web Components, Angular, and Storybook
   - Figma source: Lumen-AI-Design-System collection frame `1174:1349`; user-directed scope exclusion on 2026-07-22
@@ -325,6 +336,16 @@ Example:
 ## [Unreleased]
 
 ### Added
+
+- Added the published dropdown option design to every React Split Button AI.
+  - Affected token group/component: `typography.ai-menu-item`, `shadow.menu-default`, and React `AIButton split`
+  - Figma source: Lumen-AI-Design-System node `1046:1875`
+  - Previous: Primary, Secondary, and Outline Split Button AI exposed separate main and chevron actions, but the chevron only reported `onDropdownClick`; no built-in menu rendered in the component or Storybook.
+  - Current: every React split variant opens the same 12px-radius surface with the four published rows—AI Summarize, AI Rewrite, AI Fix Grammar, and AI Translate—using the exact spacing, typography, border, icon geometry, and two-layer shadow. By subsequent user direction, the menu width is content-driven rather than fixed at Figma's original 200px frame; up to eight options are visible and longer menus scroll vertically, with a compact scrollbar that appears only on hover or keyboard focus. `dropdownOptions` can provide an ordered catalog subset and `onDropdownOptionSelect` receives the selected capability. The menu supports Arrow Up/Down, Home/End, Escape, Tab dismissal, and outside-click dismissal.
+  - Affects: `packages/tokens/src/{shadow,typography}.json`, generated token output, `packages/ui/src/primitives/AIButton.{tsx,test.tsx,stories.tsx}`, `.changeset/ai-split-dropdown-menu.md`, and `docs/{changelog,component-specifications,design-tokens,figma-sync}.md`
+  - Migration: none—existing split props and callbacks remain valid; the chevron now additionally opens the built-in menu
+  - Validation: Figma design context and screenshot confirmed the source menu anatomy and values. The automatic-width/eight-row scrolling refinement is user-directed. Token generation, repository lint, and React/UI typecheck passed; all 21 focused AIButton tests passed, including the ten-option overflow case; production Storybook rebuilt successfully with 2,124 modules. Its emitted CSS contains thin, transparent-at-rest scrollbar rules plus hover/focus-within thumb rules, and its AIButton bundle contains the eight-row max-height calculation and ten-option demonstration.
+  - Changeset: `.changeset/ai-split-dropdown-menu.md` (`@lumen/tokens` minor, `@lumen/ui` minor)
 
 - Replaced the existing AI Button component library and Storybook surface
   with the canonical “One AI button, every capability” collection.

@@ -791,6 +791,12 @@ export const typography = {
       "weight": 500,
       "usage": "Badge label text, size=lg (Figma node 1079:893)"
     },
+    "ai-menu-item": {
+      "fontSize": 14,
+      "lineHeight": 16,
+      "weight": 400,
+      "usage": "AI Split Button dropdown option (Figma node 1046:1875)"
+    },
     "body-lg": {
       "fontSize": 20,
       "lineHeight": 32,
@@ -1300,6 +1306,11 @@ export const shadow = {
   "elevation": {
     "sm": {
       "value": "0px 1px 2px rgba(0,0,0,0.08)"
+    }
+  },
+  "menu": {
+    "default": {
+      "value": "0px 1px 4px rgba(0,0,0,0.06), 0px 4px 16px rgba(0,0,0,0.12)"
     }
   }
 } as const;
